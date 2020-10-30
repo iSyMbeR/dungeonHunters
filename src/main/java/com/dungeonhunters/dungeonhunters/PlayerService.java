@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 
+
 @Service
 @RequiredArgsConstructor
 public class PlayerService {
@@ -19,8 +20,8 @@ public class PlayerService {
         playerRepository.save(player);
     }
 
-    public void deletePlayerById(Long id){
-        playerRepository.deleteById(id);
+    public void deletePlayer(Player player){
+        playerRepository.delete(player);
     }
 
     public List<Player> getPlayers()

@@ -1,6 +1,7 @@
 package com.dungeonhunters.dungeonhunters.model;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.UUID;
 
 @Entity
 public class ItemBonus implements Serializable {

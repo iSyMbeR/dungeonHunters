@@ -3,10 +3,13 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@Builder
 public class Player implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -18,10 +21,4 @@ public class Player implements Serializable {
     private Deck deck;
     @OneToOne
     private Inventory inventory;
-
-    public Player(String name, Double stage, Double experience) {
-        this.name = name;
-        this.stage = stage;
-        this.experience = experience;
-    }
 }
