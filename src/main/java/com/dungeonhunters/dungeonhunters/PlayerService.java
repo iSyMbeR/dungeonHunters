@@ -29,4 +29,9 @@ public class PlayerService {
         return playerRepository.findAll();
     }
 
+    public String getPlayerById(Long id){return playerRepository.findById(id).orElseThrow().getName();}
+
+    public int getSize(){
+        return (int)playerRepository.count();
+    }
 }
