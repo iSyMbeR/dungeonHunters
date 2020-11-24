@@ -18,8 +18,8 @@ public class Enemy implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
-    private Double base_life;
-    private Double dmg;
-    private Double min_level;
+    private int base_life;
+    private int dmg;
+    private int min_level;
 
 }

@@ -117,17 +117,17 @@ public class GameController implements CommandLineRunner {
             //dodawanie gracza do bazy trzeba potem dodac sprawdzanie czy nie jest juz w bazie
             player = Player.builder()
                     .name(choiceString)
-                    .deck(deckService.getDeckById(1L))
+                    .deck(deckService.addDeck(new Deck()))
                     .inventory(inventoryService.addInventory(new Inventory()))
-                    .stage(2D)
-                    .experience(100D)
+                    .stage(2)
+                    .experience(100)
                     .build();
             playerService.addPlayer(player);
-            increaseExp(20, player);
+
             while (x) {
                 cleanScreen();
                 System.out.println(BLUE + "\tHello " + HIGH_INTENSITY + GREEN + player.getName().toUpperCase() + LOW_INTENSITY +
-                        BLUE+"\tXP:"+ GREEN +player.getExperience() +
+                        BLUE+"\tXP:"+ GREEN + player.getExperience() +
                         BLUE+"\tITEMS:"+ GREEN + player.getDeck());
 
 
@@ -150,10 +150,11 @@ public class GameController implements CommandLineRunner {
                         cleanScreen();
                         //boolean game = true;
                         //while (game)
+                        //increaseExp(20, player);
                         break;
                     }
                     case 2: {
-                        System.out.println(playerService.getPlayerById(player.getId()));
+                        inventoryService.getAllInventory();
                     }
                     case 3:
                     case 4:
@@ -177,8 +178,9 @@ public class GameController implements CommandLineRunner {
         return validEnemies.get(randomNum);
     }
 
-    public void increaseExp(int exp, Player player){
-        playerService.updatePlayerExperience(player.getId(), player.getExperience()+exp);
+    public void increaseExp(int exp, Player playerUpdate){
+        player = playerService.updatePlayerExperience(playerUpdate.getId(), playerUpdate.getExperience()+exp);
+
     }
 
 
