@@ -1,13 +1,17 @@
 package com.dungeonhunters.dungeonhunters.model;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.UUID;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@ToString
+@Builder
 public class Card implements Serializable {
 
     @Id
