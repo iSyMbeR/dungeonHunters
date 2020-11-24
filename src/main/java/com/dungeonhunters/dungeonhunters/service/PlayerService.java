@@ -1,4 +1,4 @@
-package com.dungeonhunters.dungeonhunters;
+package com.dungeonhunters.dungeonhunters.service;
 
 import com.dungeonhunters.dungeonhunters.Repository.PlayerRepository;
 
@@ -29,4 +29,9 @@ public class PlayerService {
         return playerRepository.findAll();
     }
 
+    public String getPlayerById(Long id){return playerRepository.findById(id).orElseThrow().getName();}
+
+    public int getSize(){
+        return (int)playerRepository.count();
+    }
 }
