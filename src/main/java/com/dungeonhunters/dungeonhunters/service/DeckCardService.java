@@ -43,5 +43,8 @@ public class DeckCardService {
         deckCardRepository.deleteCardFromDeck(deck,card);
     }
 
+    public List<Card> getAllCardsFromDeck (Long id) {
+        return deckCardRepository.getAllCardsFromDeck(id);
+    }
 
 }

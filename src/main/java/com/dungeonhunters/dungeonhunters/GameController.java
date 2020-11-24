@@ -151,16 +151,17 @@ public class GameController implements CommandLineRunner {
                         System.out.println(BLUE + "\tTHE GAME HAS STARTED, GOOD LUCK!!");
                         Integer turn = 1;
                         Integer energy = 3;
-                        Integer playerDefense=0;
+                        Integer playerDefense = 0;
                         Enemy enemy = selectEnemy(player.getExperience());
                         List<Card> currentDeck;
                         Area currentArea = selectArea();
 
                         String fightView;
-                        while(player.getHp()>0 && enemy.getBase_life()>0){
-                            System.out.print("\tArea: " + currentArea.getName()+"\n\n");
-                            System.out.print("\t"+player.getName());
+                        while (player.getHp() > 0 && enemy.getBase_life() > 0) {
+                            System.out.print("\tArea: " + currentArea.getName() + "\n\n");
+                            System.out.print("\t" + player.getName());
                             System.out.print(" vs ");
+
                             System.out.print(enemy.getName()+"\n\n");
                             fightView = updateView(player,enemy, turn);
                             System.out.println(fightView);
@@ -170,17 +171,19 @@ public class GameController implements CommandLineRunner {
                             }
                             System.out.println("\t[0] Zakończ turę");
                             int cardIndex = -1;
-                            while(cardIndex!='0'){
+                            while (cardIndex != '0') {
                                 cardIndex = scanner.nextInt();
-                                if(cardIndex==0) break;
-                                if(cardIndex<=currentDeck.size()){
+                                if (cardIndex == 0) break;
+                                if (cardIndex <= currentDeck.size()) {
                                     Card c = currentDeck.get(cardIndex);
                                     enemy.setBase_life(enemy.getBase_life() - c.getDmg());
+
                                     playerDefense+=c.getDefense();
                                     deckCardService.deleteCardFromDeck(player.getDeck(),c);
                                 }
                             }
-                            player.setHp(player.getHp() - enemy.getDmg());;
+                            player.setHp(player.getHp() - enemy.getDmg());
+                            ;
                             turn++;
                         }
 
@@ -188,20 +191,6 @@ public class GameController implements CommandLineRunner {
                     }
 
                     case 2: {
-                        System.out.println(inventoryService.getAllItemsFromPlayerInventory(player.getInventory().getId()));
-                        break;
-                    }
-                    case 3: {
-                        System.out.println(deckService.getAllCards(player.getDeck().getId()));
-                        break;
-                    }
-                    case 4: {
-                        System.out.println(BLUE +"UŻYTO BARDZO SKOMPLIKOWANY ALGORYTM ZAPISYWANIA GRY."+GREEN+" GRA ZOSTALA ZAPISANA");
-                        break;
-
-                    }
-                    case 5: {
-                        System.out.println(RED + "Żegnaj " +GREEN + player.getName() + RED + " :)");
                         boolean w = true;
                         while (w) {
                             cleanScreen();
@@ -215,7 +204,7 @@ public class GameController implements CommandLineRunner {
 
 
                             List<Card> allCardsFromBase = cardService.getAllCards();
-                            List<Card> allCardsPlayerFromDeck = deckService.getAllCards(player.getDeck().getId());
+                            List<Card> allCardsPlayerFromDeck = deckCardService.getAllCardsFromDeck(player.getDeck().getId());
 
                             choiceInt = scanner.nextInt();
                             switch (choiceInt) {
@@ -231,10 +220,10 @@ public class GameController implements CommandLineRunner {
                                 }
                                 case 2: {
                                     cleanScreen();
-                                    if (deckService.getAllCards(player.getDeck().getId()).isEmpty())
+                                    if (deckCardService.getAllCardsFromDeck(player.getDeck().getId()).isEmpty())
                                         System.out.println(RED + "Twoj deck jest pusty, powrót do panelu za 5 sec");
                                     else
-                                        System.out.println(deckService.getAllCards(player.getDeck().getId()));
+                                        System.out.println(deckCardService.getAllCardsFromDeck(player.getDeck().getId()));
 
                                     TimeUnit.SECONDS.sleep(5);
                                     break;
@@ -249,20 +238,23 @@ public class GameController implements CommandLineRunner {
                                     }
 
                                     int i = 1;
-                                    //wypisuje wszystkie karty z bazy
+                                    //wypisuje wszystkie karty z bazy, których gracz nie posiada
                                     for (Card c : allCardsFromBase) {
                                         System.out.println(CYAN + i + BLACK + ". " + "Name:" + c.getName() + "\t Dmg:" + c.getDmg() + "\t Defense:" + c.getDefense() + "\t Cose:" + c.getCost());
                                         i++;
                                     }
 
-                                    System.out.println("\n" + BLUE + "\tWybierz karte do swojego decku\n" + BLACK + "\tTwój aktualny deck:" + allCardsPlayerFromDeck);
+                                    System.out.println("\n" + BLUE + "\tWybierz karte do swojego decku\n" + BLACK + "\tTwój aktualny deck:" + deckCardService.getAllCardsFromDeck(player.getDeck().getId()));
 
                                     choiceInt = scanner.nextInt();
 //                                    allCardsPlayerFromDeck.add(allCardsSet.get(choiceInt-1));
 //                                    System.out.println(allCardsSet.get(choiceInt-1));
-                                    deckCardService.addCardToDeck(allCardsFromBase.get(choiceInt-1).getId(), player.getDeck().getId());
-                                    System.out.println(deckCardService.getDeckCard());
-                                    System.out.println("Poprawnie dodano "+ allCardsFromBase.get(choiceInt -1).getName());
+                                    deckCardService.addCardToDeck(allCardsFromBase.get(choiceInt - 1).getId(), player.getDeck().getId());
+                                    System.out.println(deckCardService.getAllCardsFromDeck(player.getDeck().getId()));
+
+
+                                    System.out.println("Poprawnie dodano " + allCardsFromBase.get(choiceInt - 1).getName());
+
                                     TimeUnit.SECONDS.sleep(2);
                                     break;
                                 }
@@ -278,26 +270,39 @@ public class GameController implements CommandLineRunner {
                             }
                         }
                     }
+
+                    case 3: {
+                        System.out.println(BLUE + "UŻYTO BARDZO SKOMPLIKOWANY ALGORYTM ZAPISYWANIA GRY." + GREEN + " GRA ZOSTALA ZAPISANA");
+                        break;
+                    }
+
+                    case 4: {
+                        System.out.println(RED + "Żegnaj " + GREEN + "ADMIN" + RED + " :)");
+                        System.exit(0);
+                        break;
+                    }
                 }
             }
         }
     }
 
+
     public String updateView(Player player, Enemy enemy, int turn){
+
         String fightText = fight;
         int enMaxHp, enHp, plMaxHp, plHp;
         enMaxHp = enemyService.getEnemyById(enemy.getId()).getBase_life();
         enHp = enemy.getBase_life();
         plMaxHp = playerService.getPlayerById(player.getId()).getHp();
         plHp = player.getHp();
-        String numericValue = plMaxHp+"/"+plHp;
+        String numericValue = plMaxHp + "/" + plHp;
         Integer len = numericValue.length();
-        for(int i=0; i<(20-len)/2;i++) numericValue = " " + numericValue;
-        for(int i=0; i<(20-len)/2;i++) numericValue = numericValue + " ";
-        if((20-len)%2==1) numericValue=" "+numericValue;
-        fightText = fightText.replace("#friendly_health_bar",numericValue);
-
-        numericValue = enMaxHp+"/"+enHp;
+        for (int i = 0; i < (20 - len) / 2; i++) numericValue = " " + numericValue;
+        for (int i = 0; i < (20 - len) / 2; i++) numericValue = numericValue + " ";
+        if ((20 - len) % 2 == 1) numericValue = " " + numericValue;
+        fightText = fightText.replace("#friendly_health_bar", numericValue);
+      
+        numericValue = enMaxHp + "/" + enHp;
         len = numericValue.length();
         for(int i=0; i<(20-len)/2;i++) numericValue = " " + numericValue;
         for(int i=0; i<(20-len)/2;i++) numericValue = numericValue + " ";
