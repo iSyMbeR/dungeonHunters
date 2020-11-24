@@ -33,6 +33,7 @@ public class DeckService {
         return (int) deckRepository.count();
     }
 
+
     public List<Card> getAllCards(Long id) {return deckRepository.getAllCards(id);}
 
 }

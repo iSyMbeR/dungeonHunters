@@ -31,7 +31,7 @@ public class PlayerService {
         return playerRepository.findAll();
     }
 
-    public String getPlayerById(Long id){return playerRepository.findById(id).orElseThrow().getName();}
+    public Player getPlayerById(Long id){return playerRepository.findById(id).orElseThrow();}
 
     public int getSize(){
         return (int)playerRepository.count();
@@ -42,5 +42,9 @@ public class PlayerService {
         return playerRepository.findById(id).orElseThrow();
     }
 
+    public void updateExperience(Long id, int exp){
+        playerRepository.updateExperience(id, exp);
+
+    }
 
 }

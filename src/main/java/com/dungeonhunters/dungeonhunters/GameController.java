@@ -8,10 +8,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.awt.event.KeyEvent;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 import java.util.concurrent.ThreadLocalRandom;
@@ -26,7 +27,9 @@ public class GameController implements CommandLineRunner {
     private final PlayerService playerService;
     private final EnemyService enemyService;
     private final InventoryService inventoryService;
+    private final CardService cardService;
     private final DeckService deckService;
+    private final AreaService areaService;
     Player player;
 
 
@@ -123,6 +126,7 @@ public class GameController implements CommandLineRunner {
                     .inventory(inventoryService.addInventory(new Inventory()))
                     .hp(100)
                     .stage(2)
+                    .hp(100)
                     .experience(100)
                     .build();
             playerService.addPlayer(player);
@@ -148,27 +152,46 @@ public class GameController implements CommandLineRunner {
                 choiceInt = scanner.nextInt();
                 switch (choiceInt) {
 
-                    case '1': {
+                    case 1: {
+                        cleanScreen();
                         System.out.println(BLUE + "\tTHE GAME HAS STARTED, GOOD LUCK!!");
-                        cleanScreen();
-                        cleanScreen();
-                        System.out.println("  ||||||||||||||||||||||||                   ||||||||||||||||||||||||");
-                        System.out.println("  ||                    ||                   ||                    ||");
-                        System.out.println("  ||      ()(()         ||                   ||    ((________))    ||");
-                        System.out.println("  ||    ((()()())       ||                   ||    /  v   v   |    ||");
-                        System.out.println("  ||    | O   O |       ||                   ||   /   o   o   |    ||");
-                        System.out.println("  ||   (| * u * |)      ||                   ||  *_______     |    ||");
-                        System.out.println("  ||    |_______|       ||                   ||   _|    __    |__  ||");
-                        System.out.println("  ||   ____| |____      ||                   ||  |    vvvvvv     | ||");
-                        System.out.println("  ||  |           |     ||                   ||  |     vvvv      | ||");
-                        System.out.println("  ||  |           |     ||                   ||  | |    vv     | | ||");
-                        System.out.println("  ||||||||||||||||||||||||                   ||||||||||||||||||||||||");
+                        Integer turn = 1;
+                        Integer energy = 3;
+                        List<Card> currentDeck;
+                        Area currentArea = selectArea();
+                        Enemy enemy = selectEnemy(player.getExperience());
+//                        while(player.getHp()>0 && enemy.getBase_life()>0){
+                            System.out.print("\tArea: " + currentArea.getName()+"\n\n");
+                            System.out.print("\t"+player.getName());
+                            System.out.print(" vs ");
+                            System.out.print(enemy.getName()+"\n\n");
+                            //System.out.println(BLUE + "\tTHE GAME HAS STARTED, GOOD LUCK!!");
+                            //cleanScreen();
+                            //System.out.println("  ||||||||||||||||||||||||                   ||||||||||||||||||||||||");
+                            //System.out.println("  ||                    ||                   ||                    ||");
+                            //System.out.println("  ||      ()(()         ||                   ||    ((________))    ||");
+                            //System.out.println("  ||    ((()()())       ||                   ||    /  v   v   |    ||");
+                            //System.out.println("  ||    | O   O |       ||                   ||   /   o   o   |    ||");
+                            //System.out.println("  ||   (| * u * |)      ||                   ||  *_______     |    ||");
+                            //System.out.println("  ||    |_______|       ||                   ||   _|    __    |__  ||");
+                            //System.out.println("  ||   ____| |____      ||                   ||  |    vvvvvv     | ||");
+                            //System.out.println("  ||  |           |     ||                   ||  |     vvvv      | ||");
+                            //System.out.println("  ||  |           |     ||                   ||  | |    vv     | | ||");
+                            //System.out.println("  ||||||||||||||||||||||||                   ||||||||||||||||||||||||");
+                            currentDeck = deckService.getAllCards(player.getDeck().getId());
+                            for(Card c: currentDeck){
+                                printCard(c, currentDeck.indexOf(c));
+                            }
+                            int cardIndex = scanner.nextInt();
+//                            switch (cardIndex)
 
-                        //boolean game = true;
-                        //while (game)
-                        //increaseExp(20, player);
+//                            useCard(currentDeck.get(cardIndex));
+                            turn++;
+//                        }
+
                         break;
                     }
+
                     case '2': {
                         System.out.println(inventoryService.getAllItemsFromPlayerInventory(player.getInventory().getId()));
                         break;
@@ -180,6 +203,7 @@ public class GameController implements CommandLineRunner {
                     case '4': {
                         System.out.println(BLUE +"UŻYTO BARDZO SKOMPLIKOWANY ALGORYTM ZAPISYWANIA GRY."+GREEN+" GRA ZOSTALA ZAPISANA");
                         break;
+
                     }
                     case '5': {
                         System.out.println(RED + "Żegnaj " +GREEN + player.getName() + RED + " :)");
@@ -191,19 +215,35 @@ public class GameController implements CommandLineRunner {
             }
         }
     }
-
-
-
-
-
-    public Enemy generateEnemy(int min_level){
+//    public void useCard(int index){
+//        deckService.deleteCardFromDeck(index);
+//    }
+    public void printCard(Card card, int index){
+        String cardText = cardView;
+        System.out.println("1");
+        String space = "";
+        cardText = cardText.replace("1", Integer.toString(card.getCost()));
+        space = (card.getDmg() > 9) ? "" : " ";
+        cardText = cardText.replace("2", space + Integer.toString(card.getDmg()));
+        space = (card.getDefense() > 9) ? "" : " ";
+        cardText = cardText.replace("3", space + Integer.toString(card.getDefense()));
+        cardText = cardText.replace("4", Integer.toString(index));
+        System.out.println(cardText);
+    }
+    public Area selectArea(){
+        List<Area> areas = areaService.getAllAreas();
+        Random random = new Random();
+        return areas.get(random.nextInt(areas.size()));
+    }
+    public Enemy selectEnemy(int min_level){
         List<Enemy> allEnemies = enemyService.getAllEnemies();
         List<Enemy> validEnemies = new ArrayList<>();
         for(Enemy enemy:allEnemies){
             if(enemy.getMin_level()<=min_level) validEnemies.add(enemy);
         }
-        int randomNum = ThreadLocalRandom.current().nextInt(0, validEnemies.size());
-        return validEnemies.get(randomNum);
+        if(validEnemies.size()==0) System.out.println("Brak przeciwników");;
+        Random random = new Random();
+        return validEnemies.get(random.nextInt(validEnemies.size()));
     }
 
     public void increaseExp(int exp, Player playerUpdate){
@@ -217,8 +257,7 @@ public class GameController implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        //dataBaseFiller.FillerDataBase();
-
         showMenu();
+
     }
 }
