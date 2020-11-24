@@ -8,7 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.awt.event.KeyEvent;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -45,7 +46,7 @@ public class GameController implements CommandLineRunner {
         }
     }
 
-    public void showMenu() {
+    public void showMenu() throws IOException {
       //  System.out.println(deckService.getDeckById(1L).getId());
 
 
@@ -107,8 +108,8 @@ public class GameController implements CommandLineRunner {
                         break;
                     }
                     case 4: {
-                        System.out.println("Weszlo do 3");
-                        x = false;
+                        System.out.println(RED + "Żegnaj " +GREEN + "ADMIN" + RED + " :)");
+                        System.exit(0);
                         break;
                     }
                     default: {
@@ -123,6 +124,7 @@ public class GameController implements CommandLineRunner {
                     .name(choiceString)
                     .deck(deckService.addDeck(new Deck()))
                     .inventory(inventoryService.addInventory(new Inventory()))
+                    .hp(100)
                     .stage(2)
                     .hp(100)
                     .experience(100)
@@ -143,7 +145,7 @@ public class GameController implements CommandLineRunner {
                                 "\t" + CYAN + "2." + BLACK + " Twoje inventory\n" +
                                 "\t" + CYAN + "3." + BLACK + " Twoj deck\n" +
                                 "\t" + CYAN + "4." + BLACK + " Zapisz gre\n" +
-                                "\t" + CYAN + "5." + BLACK + " Wczytaj gre");
+                                "\t" + CYAN + "5." + BLACK + " Zakoncz gre\n");
                 System.out.println(GREEN + "    -------------------------");
 
 
@@ -163,6 +165,19 @@ public class GameController implements CommandLineRunner {
                             System.out.print("\t"+player.getName());
                             System.out.print(" vs ");
                             System.out.print(enemy.getName()+"\n\n");
+                            //System.out.println(BLUE + "\tTHE GAME HAS STARTED, GOOD LUCK!!");
+                            //cleanScreen();
+                            //System.out.println("  ||||||||||||||||||||||||                   ||||||||||||||||||||||||");
+                            //System.out.println("  ||                    ||                   ||                    ||");
+                            //System.out.println("  ||      ()(()         ||                   ||    ((________))    ||");
+                            //System.out.println("  ||    ((()()())       ||                   ||    /  v   v   |    ||");
+                            //System.out.println("  ||    | O   O |       ||                   ||   /   o   o   |    ||");
+                            //System.out.println("  ||   (| * u * |)      ||                   ||  *_______     |    ||");
+                            //System.out.println("  ||    |_______|       ||                   ||   _|    __    |__  ||");
+                            //System.out.println("  ||   ____| |____      ||                   ||  |    vvvvvv     | ||");
+                            //System.out.println("  ||  |           |     ||                   ||  |     vvvv      | ||");
+                            //System.out.println("  ||  |           |     ||                   ||  | |    vv     | | ||");
+                            //System.out.println("  ||||||||||||||||||||||||                   ||||||||||||||||||||||||");
                             currentDeck = deckService.getAllCards(player.getDeck().getId());
                             for(Card c: currentDeck){
                                 printCard(c, currentDeck.indexOf(c));
@@ -176,12 +191,26 @@ public class GameController implements CommandLineRunner {
 
                         break;
                     }
-                    case 2: {
-                        System.out.println(playerService.getPlayerById(player.getId()));
+
+                    case '2': {
+                        System.out.println(inventoryService.getAllItemsFromPlayerInventory(player.getInventory().getId()));
+                        break;
                     }
-                    case 3:
-                    case 4:
-                    case 5:
+                    case '3': {
+                        System.out.println(deckService.getAllCards(player.getDeck().getId()));
+                        break;
+                    }
+                    case '4': {
+                        System.out.println(BLUE +"UŻYTO BARDZO SKOMPLIKOWANY ALGORYTM ZAPISYWANIA GRY."+GREEN+" GRA ZOSTALA ZAPISANA");
+                        break;
+
+                    }
+                    case '5': {
+                        System.out.println(RED + "Żegnaj " +GREEN + player.getName() + RED + " :)");
+                        System.exit(0);
+                        break;
+                    }
+
                 }
             }
         }

@@ -12,6 +12,7 @@ import javax.transaction.Transactional;
 
 @Repository
 public interface PlayerRepository extends JpaRepository<Player,Long> {
+
     @Transactional
     @Modifying(clearAutomatically = true)
     @Query("update Player u set u.experience = :experience where u.id = :id")
