@@ -24,7 +24,9 @@ public class BonusService {
         bonusRepository.delete(bonus);
     }
 
+
     public List<Bonus> getAllBonuses() { return bonusRepository.findAll(); }
+
 
     public Bonus getBonusById(Long id){return bonusRepository.findById(id).orElseThrow();}
 

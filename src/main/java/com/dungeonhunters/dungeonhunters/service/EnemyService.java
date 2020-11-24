@@ -15,13 +15,17 @@ public class EnemyService {
 
     private final EnemyRepository enemyRepository;
 
-    public void addEnemy( Enemy enemy){enemyRepository.save(enemy); }
+
+    public void addEnemy(Enemy enemy){enemyRepository.save(enemy); }
+
 
     public void deleteEnemy(Enemy enemy){
         enemyRepository.delete(enemy);
     }
 
+
     public List<Enemy> getAllEnemies()
+
     {
         return enemyRepository.findAll();
     }

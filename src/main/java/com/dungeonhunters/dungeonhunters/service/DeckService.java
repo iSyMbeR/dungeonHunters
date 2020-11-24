@@ -22,7 +22,9 @@ public class DeckService {
         deckRepository.delete(deck);
     }
 
+
     public List<Deck> getAllDecks() { return deckRepository.findAll(); }
+
 
     public Deck getDeckById(Long id){return deckRepository.findById(id).orElseThrow();}
 

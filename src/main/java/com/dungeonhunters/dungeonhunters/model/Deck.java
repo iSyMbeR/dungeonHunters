@@ -19,7 +19,4 @@ public class Deck implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToMany
-    @JoinColumn(name="deck_id")
-    private Set<Card> cards;
 }
