@@ -148,15 +148,28 @@ public class GameController implements CommandLineRunner {
                 choiceInt = scanner.nextInt();
                 switch (choiceInt) {
 
-                    case 'a': {
+                    case '1': {
                         System.out.println(BLUE + "\tTHE GAME HAS STARTED, GOOD LUCK!!");
                         cleanScreen();
+                        cleanScreen();
+                        System.out.println("  ||||||||||||||||||||||||                   ||||||||||||||||||||||||");
+                        System.out.println("  ||                    ||                   ||                    ||");
+                        System.out.println("  ||      ()(()         ||                   ||    ((________))    ||");
+                        System.out.println("  ||    ((()()())       ||                   ||    /  v   v   |    ||");
+                        System.out.println("  ||    | O   O |       ||                   ||   /   o   o   |    ||");
+                        System.out.println("  ||   (| * u * |)      ||                   ||  *_______     |    ||");
+                        System.out.println("  ||    |_______|       ||                   ||   _|    __    |__  ||");
+                        System.out.println("  ||   ____| |____      ||                   ||  |    vvvvvv     | ||");
+                        System.out.println("  ||  |           |     ||                   ||  |     vvvv      | ||");
+                        System.out.println("  ||  |           |     ||                   ||  | |    vv     | | ||");
+                        System.out.println("  ||||||||||||||||||||||||                   ||||||||||||||||||||||||");
+
                         //boolean game = true;
                         //while (game)
                         //increaseExp(20, player);
                         break;
                     }
-                    case 'b': {
+                    case '2': {
                         System.out.println(inventoryService.getAllItemsFromPlayerInventory(player.getInventory().getId()));
                         break;
                     }
