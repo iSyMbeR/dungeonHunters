@@ -1,9 +1,8 @@
 package com.dungeonhunters.dungeonhunters.model;
+
 import lombok.*;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -11,11 +10,13 @@ import java.util.UUID;
 @Entity
 @ToString
 @Builder
-public class Item implements Serializable {
+public class DeckCard {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     @OneToOne
-    private ItemBase itemBase;
+    private Deck deck;
+    @OneToOne
+    private Card card;
 }

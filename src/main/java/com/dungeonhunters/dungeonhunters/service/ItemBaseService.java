@@ -15,20 +15,20 @@ public class ItemBaseService {
 
     private final ItemBaseRepository itemRepository;
 
-    public void addItem(ItemBase itemBase){
+    public void addItemBase(ItemBase itemBase){
         itemRepository.save(itemBase);
     }
 
-    public void deleteItem(ItemBase itemBase){
+    public void deleteItemBase(ItemBase itemBase){
         itemRepository.delete(itemBase);
     }
 
-    public List<ItemBase> getItems()
+    public List<ItemBase> getItemBases()
     {
         return itemRepository.findAll();
     }
 
-    public ItemBase getItemById(Long id){return itemRepository.findById(id).orElseThrow();}
+    public ItemBase getItemBaseById(Long id){return itemRepository.findById(id).orElseThrow();}
 
     public int getSize(){
         return (int) itemRepository.count();

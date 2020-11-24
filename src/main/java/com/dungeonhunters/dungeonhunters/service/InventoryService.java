@@ -4,6 +4,7 @@ import com.dungeonhunters.dungeonhunters.Repository.InventoryRepository;
 
 import com.dungeonhunters.dungeonhunters.model.Inventory;
 import com.dungeonhunters.dungeonhunters.model.Item;
+import com.dungeonhunters.dungeonhunters.model.Player;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +17,8 @@ public class InventoryService {
 
     private final InventoryRepository inventoryRepository;
 
-    public void addInventory(Inventory inv){
-        inventoryRepository.save(inv);
+    public Inventory addInventory(Inventory inv){
+        return inventoryRepository.save(inv);
     }
 
     public void deleteInventory(Inventory inv){
@@ -29,9 +30,13 @@ public class InventoryService {
         return inventoryRepository.findAll();
     }
 
-    public Inventory getItemById(Long id){return inventoryRepository.findById(id).orElseThrow();}
+    public Inventory getInventoryById(Long id){return inventoryRepository.findById(id).orElseThrow();}
 
     public int getSize(){
         return (int) inventoryRepository.count();
+    }
+
+    public List<Item> getAllItemsFromPlayerInventory(Long id) {
+        return inventoryRepository.getAllItems(id);
     }
 }

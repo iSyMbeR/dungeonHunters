@@ -1,5 +1,5 @@
 package com.dungeonhunters.dungeonhunters.model;
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,7 +9,11 @@ import java.io.Serializable;
 import java.util.UUID;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@ToString
+@Builder
 public class Bonus implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,5 +21,5 @@ public class Bonus implements Serializable {
     private String name;
     private String description;
     private String type;
-    private Double value;
+    private int value;
 }

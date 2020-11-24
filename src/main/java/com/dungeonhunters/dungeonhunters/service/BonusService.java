@@ -16,17 +16,19 @@ public class BonusService {
 
     private final BonusRepository bonusRepository;
 
-    public void addCard(Bonus bonus){
+    public void addBonus(Bonus bonus){
         bonusRepository.save(bonus);
     }
 
-    public void deleteInventory(Bonus bonus){
+    public void deleteBonus(Bonus bonus){
         bonusRepository.delete(bonus);
     }
 
-    public List<Bonus> getAllInventory() { return bonusRepository.findAll(); }
 
-    public Bonus getItemById(Long id){return bonusRepository.findById(id).orElseThrow();}
+    public List<Bonus> getAllBonuses() { return bonusRepository.findAll(); }
+
+
+    public Bonus getBonusById(Long id){return bonusRepository.findById(id).orElseThrow();}
 
     public int getSize(){
         return (int) bonusRepository.count();
