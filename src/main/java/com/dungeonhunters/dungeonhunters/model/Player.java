@@ -16,8 +16,9 @@ public class Player implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
-    private Double stage;
-    private Double experience;
+    private int stage;
+    private int experience;
+    private int hp;
     @OneToOne
     private Deck deck;
     @OneToOne

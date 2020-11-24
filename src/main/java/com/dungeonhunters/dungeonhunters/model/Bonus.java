@@ -21,5 +21,5 @@ public class Bonus implements Serializable {
     private String name;
     private String description;
     private String type;
-    private Double value;
+    private int value;
 }

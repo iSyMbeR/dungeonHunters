@@ -67,12 +67,12 @@ insert into CARD (ID,name, type, cost, dmg, defense)
 values (11,'karta11', 'atak', 2, 4, 2);
 
 --DECK
-insert into DECK (ID) values (1);
-insert into DECK (ID) values (2);
-insert into DECK (ID) values (3);
-insert into DECK (ID) values (4);
-insert into DECK (ID) values (5);
-insert into DECK (ID) values (6);
+-- insert into DECK (ID) values (1);
+-- insert into DECK (ID) values (2);
+-- insert into DECK (ID) values (3);
+-- insert into DECK (ID) values (4);
+-- insert into DECK (ID) values (5);
+-- insert into DECK (ID) values (6);
 
 -- --DECK CARD
 -- insert into DECK_CARD (ID, CARD_ID, DECK_ID) values (1, 1,1);

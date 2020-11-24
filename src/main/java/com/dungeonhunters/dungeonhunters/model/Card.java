@@ -19,8 +19,8 @@ public class Card implements Serializable {
     private Long id;
     private String name;
     private String type;
-    private Double cost;
-    private Double dmg;
-    private Double defense;
+    private int cost;
+    private int dmg;
+    private int defense;
 
 }
