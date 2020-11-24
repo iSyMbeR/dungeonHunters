@@ -162,9 +162,9 @@ public class GameController implements CommandLineRunner {
                             System.out.print("\t"+player.getName());
                             System.out.print(" vs ");
                             System.out.print(enemy.getName()+"\n\n");
-                            fightView = updateView(player,enemy);
+                            fightView = updateView(player,enemy, turn);
                             System.out.println(fightView);
-                            currentDeck = deckService.getAllCards(player.getDeck().getId());
+                            currentDeck = deckCardService.getAllCardsFromDeck(player.getDeck().getId());
                             for(Card c: currentDeck){
                                 printCard(c, currentDeck.indexOf(c));
                             }
@@ -177,7 +177,7 @@ public class GameController implements CommandLineRunner {
                                     Card c = currentDeck.get(cardIndex);
                                     enemy.setBase_life(enemy.getBase_life() - c.getDmg());
                                     playerDefense+=c.getDefense();
-                                    useCard(currentDeck.indexOf(cardIndex));
+                                    deckCardService.deleteCardFromDeck(player.getDeck(),c);
                                 }
                             }
                             player.setHp(player.getHp() - enemy.getDmg());;
@@ -278,24 +278,12 @@ public class GameController implements CommandLineRunner {
                             }
                         }
                     }
-
-                    case 3: {
-                        System.out.println(BLUE + "UŻYTO BARDZO SKOMPLIKOWANY ALGORYTM ZAPISYWANIA GRY." + GREEN + " GRA ZOSTALA ZAPISANA");
-                        break;
-
-                    }
-                    case 4: {
-                        System.out.println(RED + "Żegnaj " + GREEN + player.getName() + RED + " :)");
-                        System.exit(0);
-                        break;
-                    }
-
                 }
             }
         }
     }
 
-    public String updateView(Player player, Enemy enemy){
+    public String updateView(Player player, Enemy enemy, int turn){
         String fightText = fight;
         int enMaxHp, enHp, plMaxHp, plHp;
         enMaxHp = enemyService.getEnemyById(enemy.getId()).getBase_life();
@@ -315,10 +303,9 @@ public class GameController implements CommandLineRunner {
         for(int i=0; i<(20-len)/2;i++) numericValue = numericValue + " ";
         if((20-len)%2==1) numericValue+=" ";
         fightText = fightText.replace("##enemy_health_bar##",numericValue);
+        fightText = fightText.replace("#T",(turn<10)? " "+turn:Integer.toString(turn));
+
         return fightText;
-    }
-    public void useCard(int index){
-        //delete from deck
     }
     public void printCard(Card card, int index){
 
