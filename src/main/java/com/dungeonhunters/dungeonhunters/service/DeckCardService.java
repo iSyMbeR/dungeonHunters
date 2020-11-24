@@ -1,6 +1,7 @@
 package com.dungeonhunters.dungeonhunters.service;
 
 import com.dungeonhunters.dungeonhunters.Repository.DeckCardRepository;
+import com.dungeonhunters.dungeonhunters.model.Card;
 import com.dungeonhunters.dungeonhunters.model.DeckCard;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,5 +36,8 @@ public class DeckCardService {
         deckCardRepository.addCardToDeck(idCard,idDeck);
     }
 
+    public List<Card> getAllCardsFromDeck (Long id) {
+        return deckCardRepository.getAllCardsFromDeck(id);
+    }
 
 }
