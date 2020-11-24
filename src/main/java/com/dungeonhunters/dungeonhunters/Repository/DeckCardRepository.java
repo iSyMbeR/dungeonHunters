@@ -2,6 +2,7 @@ package com.dungeonhunters.dungeonhunters.Repository;
 
 
 import com.dungeonhunters.dungeonhunters.model.Card;
+import com.dungeonhunters.dungeonhunters.model.Deck;
 import com.dungeonhunters.dungeonhunters.model.DeckCard;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -28,4 +29,10 @@ public interface DeckCardRepository extends JpaRepository<DeckCard,Long> {
     @Modifying(clearAutomatically = true)
     @Query("select c from Card c, Deck d where c.id=d.id and d.id=:id")
     List<Card> getAllCardsFromDeck(@Param("id") Long id);
+
+
+    @Transactional
+    @Modifying(clearAutomatically = true)
+    @Query("delete from DeckCard dc where dc.deck=:deck and dc.card=:card")
+    void deleteCardFromDeck(@Param("deck") Deck deck, @Param("card") Card card);
 }

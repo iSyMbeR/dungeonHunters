@@ -161,11 +161,12 @@ public class GameController implements CommandLineRunner {
                             System.out.print("\tArea: " + currentArea.getName() + "\n\n");
                             System.out.print("\t" + player.getName());
                             System.out.print(" vs ");
-                            System.out.print(enemy.getName() + "\n\n");
-                            fightView = updateView(player, enemy);
+
+                            System.out.print(enemy.getName()+"\n\n");
+                            fightView = updateView(player,enemy, turn);
                             System.out.println(fightView);
-                            currentDeck = deckService.getAllCards(player.getDeck().getId());
-                            for (Card c : currentDeck) {
+                            currentDeck = deckCardService.getAllCardsFromDeck(player.getDeck().getId());
+                            for(Card c: currentDeck){
                                 printCard(c, currentDeck.indexOf(c));
                             }
                             System.out.println("\t[0] Zakończ turę");
@@ -176,8 +177,9 @@ public class GameController implements CommandLineRunner {
                                 if (cardIndex <= currentDeck.size()) {
                                     Card c = currentDeck.get(cardIndex);
                                     enemy.setBase_life(enemy.getBase_life() - c.getDmg());
-                                    playerDefense += c.getDefense();
-                                    useCard(currentDeck.indexOf(cardIndex));
+
+                                    playerDefense+=c.getDefense();
+                                    deckCardService.deleteCardFromDeck(player.getDeck(),c);
                                 }
                             }
                             player.setHp(player.getHp() - enemy.getDmg());
@@ -268,6 +270,7 @@ public class GameController implements CommandLineRunner {
                             }
                         }
                     }
+
                     case 3: {
                         System.out.println(BLUE + "UŻYTO BARDZO SKOMPLIKOWANY ALGORYTM ZAPISYWANIA GRY." + GREEN + " GRA ZOSTALA ZAPISANA");
                         break;
@@ -278,16 +281,14 @@ public class GameController implements CommandLineRunner {
                         System.exit(0);
                         break;
                     }
-
                 }
-
-
             }
         }
     }
 
 
-    public String updateView(Player player, Enemy enemy) {
+    public String updateView(Player player, Enemy enemy, int turn){
+
         String fightText = fight;
         int enMaxHp, enHp, plMaxHp, plHp;
         enMaxHp = enemyService.getEnemyById(enemy.getId()).getBase_life();
@@ -300,21 +301,18 @@ public class GameController implements CommandLineRunner {
         for (int i = 0; i < (20 - len) / 2; i++) numericValue = numericValue + " ";
         if ((20 - len) % 2 == 1) numericValue = " " + numericValue;
         fightText = fightText.replace("#friendly_health_bar", numericValue);
-
+      
         numericValue = enMaxHp + "/" + enHp;
         len = numericValue.length();
-        for (int i = 0; i < (20 - len) / 2; i++) numericValue = " " + numericValue;
-        for (int i = 0; i < (20 - len) / 2; i++) numericValue = numericValue + " ";
-        if ((20 - len) % 2 == 1) numericValue += " ";
-        fightText = fightText.replace("##enemy_health_bar##", numericValue);
+        for(int i=0; i<(20-len)/2;i++) numericValue = " " + numericValue;
+        for(int i=0; i<(20-len)/2;i++) numericValue = numericValue + " ";
+        if((20-len)%2==1) numericValue+=" ";
+        fightText = fightText.replace("##enemy_health_bar##",numericValue);
+        fightText = fightText.replace("#T",(turn<10)? " "+turn:Integer.toString(turn));
+
         return fightText;
     }
-
-    public void useCard(int index) {
-        //delete from deck
-    }
-
-    public void printCard(Card card, int index) {
+    public void printCard(Card card, int index){
 
         String cardText = cardView;
         System.out.println("1");
