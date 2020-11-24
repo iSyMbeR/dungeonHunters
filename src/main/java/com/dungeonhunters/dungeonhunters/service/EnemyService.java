@@ -16,18 +16,18 @@ public class EnemyService {
 
     private final EnemyRepository enemyRepository;
 
-    public void addInventory( Enemy enemy){enemyRepository.save(enemy); }
+    public void addEnemy(Enemy enemy){enemyRepository.save(enemy); }
 
-    public void deleteInventory(Enemy enemy){
+    public void deleteEnemy(Enemy enemy){
         enemyRepository.delete(enemy);
     }
 
-    public List<Enemy> getAllInventory()
+    public List<Enemy> getAllEnemy()
     {
         return enemyRepository.findAll();
     }
 
-    public Enemy getItemById(Long id){return enemyRepository.findById(id).orElseThrow();}
+    public Enemy getEnemyById(Long id){return enemyRepository.findById(id).orElseThrow();}
 
     public int getSize(){
         return (int) enemyRepository.count();

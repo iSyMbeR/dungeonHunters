@@ -14,17 +14,17 @@ public class DeckService {
 
     private final DeckRepository deckRepository;
 
-    public void addCard(Deck deck){
+    public void addDeck(Deck deck){
         deckRepository.save(deck);
     }
 
-    public void deleteInventory(Deck deck){
+    public void deleteDeck(Deck deck){
         deckRepository.delete(deck);
     }
 
-    public List<Deck> getAllInventory() { return deckRepository.findAll(); }
+    public List<Deck> getAllDeck() { return deckRepository.findAll(); }
 
-    public Deck getItemById(Long id){return deckRepository.findById(id).orElseThrow();}
+    public Deck getDeckById(Long id){return deckRepository.findById(id).orElseThrow();}
 
     public int getSize(){
         return (int) deckRepository.count();
