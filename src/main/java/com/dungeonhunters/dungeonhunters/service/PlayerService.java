@@ -1,4 +1,4 @@
-package com.dungeonhunters.dungeonhunters;
+package com.dungeonhunters.dungeonhunters.service;
 
 import com.dungeonhunters.dungeonhunters.Repository.PlayerRepository;
 

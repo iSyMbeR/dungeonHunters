@@ -1,0 +1,37 @@
+package com.dungeonhunters.dungeonhunters.service;
+
+import com.dungeonhunters.dungeonhunters.Repository.InventoryRepository;
+
+import com.dungeonhunters.dungeonhunters.model.Inventory;
+import com.dungeonhunters.dungeonhunters.model.Item;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+
+@Service
+@RequiredArgsConstructor
+public class InventoryService {
+
+    private final InventoryRepository inventoryRepository;
+
+    public void addInventory(Inventory inv){
+        inventoryRepository.save(inv);
+    }
+
+    public void deleteInventory(Inventory inv){
+        inventoryRepository.delete(inv);
+    }
+
+    public List<Inventory> getAllInventory()
+    {
+        return inventoryRepository.findAll();
+    }
+
+    public Inventory getItemById(Long id){return inventoryRepository.findById(id).orElseThrow();}
+
+    public int getSize(){
+        return (int) inventoryRepository.count();
+    }
+}

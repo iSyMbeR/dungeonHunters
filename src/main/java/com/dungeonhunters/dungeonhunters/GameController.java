@@ -1,10 +1,8 @@
 package com.dungeonhunters.dungeonhunters;
 
 import com.dungeonhunters.dungeonhunters.model.Player;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import com.dungeonhunters.dungeonhunters.service.PlayerService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
