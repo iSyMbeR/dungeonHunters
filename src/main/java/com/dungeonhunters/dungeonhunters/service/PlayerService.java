@@ -37,4 +37,8 @@ public class PlayerService {
         return (int)playerRepository.count();
     }
 
+    public void updatePlayerExperience(Long id, Double experience){
+        playerRepository.updateExperience(id, experience);
+    }
+
 }
