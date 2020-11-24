@@ -42,7 +42,7 @@ public class PlayerService {
         return playerRepository.findById(id).orElseThrow();
     }
 
-    public void updateExperience(Long id, Double exp){
+    public void updateExperience(Long id, int exp){
         playerRepository.updateExperience(id, exp);
 
     }

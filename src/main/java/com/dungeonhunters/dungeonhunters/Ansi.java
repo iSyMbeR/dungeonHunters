@@ -82,6 +82,15 @@ public final class Ansi {
     public static final Ansi BgCyan = new Ansi(BACKGROUND_CYAN);
     public static final Ansi BgWhite = new Ansi(BACKGROUND_WHITE);
 
+    public static final String cardView =
+            ".----------.\n" +
+            "|4.-----.1 |\n" +
+            "|  ATK:2  |\n" +
+            "|  DEF:3  |\n" +
+            "| '------' |\n" +
+            "`----------'";
+
+
     final private String[] codes;
     final private String codes_str;
     public Ansi(String... codes) {
