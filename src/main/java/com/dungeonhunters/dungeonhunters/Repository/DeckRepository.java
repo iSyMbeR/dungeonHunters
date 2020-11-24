@@ -18,4 +18,6 @@ public interface DeckRepository extends JpaRepository<Deck,Long> {
     @Modifying(clearAutomatically = true)
     @Query("select c from Card c where c.id= :id")
     List<Card> getAllCards(@Param("id") Long id);
+
+
 }
