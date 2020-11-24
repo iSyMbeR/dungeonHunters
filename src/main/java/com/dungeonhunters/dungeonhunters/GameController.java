@@ -1,16 +1,9 @@
 package com.dungeonhunters.dungeonhunters;
 
 
-import com.dungeonhunters.dungeonhunters.model.Enemy;
+import com.dungeonhunters.dungeonhunters.model.*;
 
-import com.dungeonhunters.dungeonhunters.model.Card;
-import com.dungeonhunters.dungeonhunters.model.Deck;
-
-import com.dungeonhunters.dungeonhunters.model.Player;
-import com.dungeonhunters.dungeonhunters.service.CardService;
-import com.dungeonhunters.dungeonhunters.service.DeckService;
-import com.dungeonhunters.dungeonhunters.service.PlayerService;
-import com.dungeonhunters.dungeonhunters.service.EnemyService;
+import com.dungeonhunters.dungeonhunters.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -30,9 +23,9 @@ public class GameController implements CommandLineRunner {
 
     private final PlayerService playerService;
     private final EnemyService enemyService;
-
+    private final InventoryService inventoryService;
     private final DeckService deckService;
-   // private final DataBaseFiller dataBaseFiller;
+    Player player;
 
 
 
@@ -122,10 +115,15 @@ public class GameController implements CommandLineRunner {
             }
         } else {
             //dodawanie gracza do bazy trzeba potem dodac sprawdzanie czy nie jest juz w bazie
-            Player player = Player.builder()
+            player = Player.builder()
                     .name(choiceString)
+                    .deck(deckService.getDeckById(1L))
+                    .inventory(inventoryService.addInventory(new Inventory()))
+                    .stage(2D)
+                    .experience(100D)
                     .build();
             playerService.addPlayer(player);
+            increaseExp(20, player);
             while (x) {
                 cleanScreen();
                 System.out.println(BLUE + "\tHello " + HIGH_INTENSITY + GREEN + player.getName().toUpperCase() + LOW_INTENSITY +
@@ -137,7 +135,7 @@ public class GameController implements CommandLineRunner {
                 System.out.println(GREEN + "    -------------------------");
                 System.out.println(
                                 "\t" + CYAN + "1." + BLACK + " Zawalacz\n" +
-                                "\t" + CYAN + "2." + BLACK + " Twoje inventory" +
+                                "\t" + CYAN + "2." + BLACK + " Twoje inventory\n" +
                                 "\t" + CYAN + "3." + BLACK + " Twoj deck\n" +
                                 "\t" + CYAN + "4." + BLACK + " Zapisz gre\n" +
                                 "\t" + CYAN + "5." + BLACK + " Wczytaj gre");
@@ -164,6 +162,11 @@ public class GameController implements CommandLineRunner {
             }
         }
     }
+
+
+
+
+
     public Enemy generateEnemy(int min_level){
         List<Enemy> allEnemies = enemyService.getAllEnemies();
         List<Enemy> validEnemies = new ArrayList<>();
@@ -173,9 +176,13 @@ public class GameController implements CommandLineRunner {
         int randomNum = ThreadLocalRandom.current().nextInt(0, validEnemies.size());
         return validEnemies.get(randomNum);
     }
+
     public void increaseExp(int exp, Player player){
-        player.setExperience(player.getExperience()+exp);
+        playerService.updatePlayerExperience(player.getId(), player.getExperience()+exp);
     }
+
+
+
 
 
     @Override

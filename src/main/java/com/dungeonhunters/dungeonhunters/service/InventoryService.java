@@ -16,8 +16,8 @@ public class InventoryService {
 
     private final InventoryRepository inventoryRepository;
 
-    public void addInventory(Inventory inv){
-        inventoryRepository.save(inv);
+    public Inventory addInventory(Inventory inv){
+        return inventoryRepository.save(inv);
     }
 
     public void deleteInventory(Inventory inv){
@@ -29,7 +29,7 @@ public class InventoryService {
         return inventoryRepository.findAll();
     }
 
-    public Inventory getItemById(Long id){return inventoryRepository.findById(id).orElseThrow();}
+    public Inventory getInventoryById(Long id){return inventoryRepository.findById(id).orElseThrow();}
 
     public int getSize(){
         return (int) inventoryRepository.count();
