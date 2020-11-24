@@ -24,6 +24,7 @@ public class GameController implements CommandLineRunner {
     private final PlayerService playerService;
     private final EnemyService enemyService;
     private final InventoryService inventoryService;
+    private final CardService cardService;
     private final DeckService deckService;
     Player player;
 
@@ -148,13 +149,18 @@ public class GameController implements CommandLineRunner {
                     case 1: {
                         System.out.println(BLUE + "\tTHE GAME HAS STARTED, GOOD LUCK!!");
                         cleanScreen();
-                        //boolean game = true;
-                        //while (game)
-                        //increaseExp(20, player);
+                        Integer turn = 1;
+                        Enemy enemy = generateEnemy(player.getExperience());
+//                        while(player.getHealth()>0 && enemy.getBase_life()>0){
+                            System.out.println("Player vs Enemy");
+                            System.out.println("\n\n\n");
+                            deckService.getAllCards(player.getDeck().getId());
+//                        }
+
                         break;
                     }
                     case 2: {
-                        inventoryService.getAllInventory();
+                        System.out.println(playerService.getPlayerById(player.getId()));
                     }
                     case 3:
                     case 4:
@@ -163,12 +169,7 @@ public class GameController implements CommandLineRunner {
             }
         }
     }
-
-
-
-
-
-    public Enemy generateEnemy(int min_level){
+    public Enemy generateEnemy(Double min_level){
         List<Enemy> allEnemies = enemyService.getAllEnemies();
         List<Enemy> validEnemies = new ArrayList<>();
         for(Enemy enemy:allEnemies){
