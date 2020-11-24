@@ -10,12 +10,10 @@ import org.springframework.stereotype.Component;
 
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 
 
 import static com.dungeonhunters.dungeonhunters.Ansi.*;
@@ -30,8 +28,8 @@ public class GameController implements CommandLineRunner {
     private final CardService cardService;
     private final DeckService deckService;
     private final AreaService areaService;
+    private final DeckCardService deckCardService;
     Player player;
-
 
 
     static void cleanScreen() {
@@ -46,11 +44,8 @@ public class GameController implements CommandLineRunner {
         }
     }
 
-    public void showMenu() throws IOException {
-      //  System.out.println(deckService.getDeckById(1L).getId());
-
-
-
+    public void showMenu() throws IOException, InterruptedException {
+        //  System.out.println(deckService.getDeckById(1L).getId());
 
 
         Scanner scanner = new Scanner(System.in);
@@ -69,7 +64,7 @@ public class GameController implements CommandLineRunner {
                 System.out.println(BLACK);
                 System.out.println(GREEN + "-------------------------");
                 System.out.println(
-                                "\t" + CYAN + "1." + BLACK + " Add player\n" +
+                        "\t" + CYAN + "1." + BLACK + " Add player\n" +
                                 "\t" + CYAN + "2." + BLACK + " Remove player\n" +
                                 "\t" + CYAN + "3." + BLACK + " Show Player List\n" +
                                 "\t" + CYAN + "4." + BLACK + " Exit");
@@ -108,7 +103,7 @@ public class GameController implements CommandLineRunner {
                         break;
                     }
                     case 4: {
-                        System.out.println(RED + "Żegnaj " +GREEN + "ADMIN" + RED + " :)");
+                        System.out.println(RED + "Żegnaj " + GREEN + "ADMIN" + RED + " :)");
                         System.exit(0);
                         break;
                     }
@@ -134,18 +129,17 @@ public class GameController implements CommandLineRunner {
             while (x) {
                 cleanScreen();
                 System.out.println(BLUE + "\tHello " + HIGH_INTENSITY + GREEN + player.getName().toUpperCase() + LOW_INTENSITY +
-                        BLUE+"\tXP:"+ GREEN + player.getExperience() +
-                        BLUE+"\tITEMS:"+ GREEN + player.getDeck());
+                        BLUE + "\tXP:" + GREEN + player.getExperience() +
+                        BLUE + "\tITEMS:" + GREEN + player.getDeck());
 
 
                 System.out.print(BLACK);
                 System.out.println(GREEN + "    -------------------------");
                 System.out.println(
-                                "\t" + CYAN + "1." + BLACK + " Zawalacz\n" +
-                                "\t" + CYAN + "2." + BLACK + " Twoje inventory\n" +
-                                "\t" + CYAN + "3." + BLACK + " Twoj deck\n" +
-                                "\t" + CYAN + "4." + BLACK + " Zapisz gre\n" +
-                                "\t" + CYAN + "5." + BLACK + " Zakoncz gre\n");
+                        "\t" + CYAN + "1." + BLACK + " Zawalacz\n" +
+                                "\t" + CYAN + "2." + BLACK + " Panel Gracza\n" +
+                                "\t" + CYAN + "3." + BLACK + " Zapisz gre\n" +
+                                "\t" + CYAN + "4." + BLACK + " Zakoncz gre\n");
                 System.out.println(GREEN + "    -------------------------");
 
 
@@ -161,52 +155,122 @@ public class GameController implements CommandLineRunner {
                         Area currentArea = selectArea();
                         Enemy enemy = selectEnemy(player.getExperience());
 //                        while(player.getHp()>0 && enemy.getBase_life()>0){
-                            System.out.print("\tArea: " + currentArea.getName()+"\n\n");
-                            System.out.print("\t"+player.getName());
-                            System.out.print(" vs ");
-                            System.out.print(enemy.getName()+"\n\n");
-                            //System.out.println(BLUE + "\tTHE GAME HAS STARTED, GOOD LUCK!!");
-                            //cleanScreen();
-                            //System.out.println("  ||||||||||||||||||||||||                   ||||||||||||||||||||||||");
-                            //System.out.println("  ||                    ||                   ||                    ||");
-                            //System.out.println("  ||      ()(()         ||                   ||    ((________))    ||");
-                            //System.out.println("  ||    ((()()())       ||                   ||    /  v   v   |    ||");
-                            //System.out.println("  ||    | O   O |       ||                   ||   /   o   o   |    ||");
-                            //System.out.println("  ||   (| * u * |)      ||                   ||  *_______     |    ||");
-                            //System.out.println("  ||    |_______|       ||                   ||   _|    __    |__  ||");
-                            //System.out.println("  ||   ____| |____      ||                   ||  |    vvvvvv     | ||");
-                            //System.out.println("  ||  |           |     ||                   ||  |     vvvv      | ||");
-                            //System.out.println("  ||  |           |     ||                   ||  | |    vv     | | ||");
-                            //System.out.println("  ||||||||||||||||||||||||                   ||||||||||||||||||||||||");
-                            currentDeck = deckService.getAllCards(player.getDeck().getId());
-                            for(Card c: currentDeck){
-                                printCard(c, currentDeck.indexOf(c));
-                            }
-                            int cardIndex = scanner.nextInt();
+                        System.out.print("\tArea: " + currentArea.getName() + "\n\n");
+                        System.out.print("\t" + player.getName());
+                        System.out.print(" vs ");
+                        System.out.print(enemy.getName() + "\n\n");
+                        System.out.println(BLUE + "\tTHE GAME HAS STARTED, GOOD LUCK!!");
+                        cleanScreen();
+                        System.out.println("  ||||||||||||||||||||||||                   ||||||||||||||||||||||||");
+                        System.out.println("  ||                    ||                   ||                    ||");
+                        System.out.println("  ||      ()(()         ||                   ||    ((________))    ||");
+                        System.out.println("  ||    ((()()())       ||                   ||    /  v   v   |    ||");
+                        System.out.println("  ||    | O   O |       ||                   ||   /   o   o   |    ||");
+                        System.out.println("  ||   (| * u * |)      ||                   ||  *_______     |    ||");
+                        System.out.println("  ||    |_______|       ||                   ||   _|    __    |__  ||");
+                        System.out.println("  ||   ____| |____      ||                   ||  |    vvvvvv     | ||");
+                        System.out.println("  ||  |           |     ||                   ||  |     vvvv      | ||");
+                        System.out.println("  ||  |           |     ||                   ||  | |    vv     | | ||");
+                        System.out.println("  ||||||||||||||||||||||||                   ||||||||||||||||||||||||");
+                        currentDeck = deckService.getAllCards(player.getDeck().getId());
+                        for (Card c : currentDeck) {
+                            printCard(c, currentDeck.indexOf(c));
+                        }
+                        int cardIndex = scanner.nextInt();
 //                            switch (cardIndex)
 
 //                            useCard(currentDeck.get(cardIndex));
-                            turn++;
+                        turn++;
 //                        }
 
                         break;
                     }
 
-                    case '2': {
-                        System.out.println(inventoryService.getAllItemsFromPlayerInventory(player.getInventory().getId()));
-                        break;
+                    case 2: {
+                        boolean w = true;
+                        while (w) {
+                            cleanScreen();
+                            System.out.println(BLUE + gamePanel);
+                            System.out.println(
+                                    "\t" + CYAN + "1." + BLACK + " Pokaz inventory\n" +
+                                            "\t" + CYAN + "2." + BLACK + " Pokaz deck\n" +
+                                            "\t" + CYAN + "3." + BLACK + " Dodaj karte do decku\n" +
+                                            "\t" + CYAN + "4." + BLACK + " Dodaj item do inventory\n" +
+                                            "\t" + CYAN + "5." + BLACK + " Wróc");
+
+
+                            List<Card> allCardsFromBase = cardService.getAllCards();
+                            List<Card> allCardsPlayerFromDeck = deckService.getAllCards(player.getDeck().getId());
+
+                            choiceInt = scanner.nextInt();
+                            switch (choiceInt) {
+                                case 1: {
+                                    cleanScreen();
+                                    if (inventoryService.getAllItemsFromPlayerInventory(player.getInventory().getId()).isEmpty())
+                                        System.out.println(RED + "Twoje inventory jest puste powrót do panelu za 5 sec");
+                                    else
+                                        System.out.println(inventoryService.getAllItemsFromPlayerInventory(player.getInventory().getId()));
+
+                                    TimeUnit.SECONDS.sleep(5);
+                                    break;
+                                }
+                                case 2: {
+                                    cleanScreen();
+                                    if (deckService.getAllCards(player.getDeck().getId()).isEmpty())
+                                        System.out.println(RED + "Twoj deck jest pusty, powrót do panelu za 5 sec");
+                                    else
+                                        System.out.println(deckService.getAllCards(player.getDeck().getId()));
+
+                                    TimeUnit.SECONDS.sleep(5);
+                                    break;
+                                }
+                                case 3: {
+                                    System.out.println(BLUE + "\tLista dostępnych kart");
+
+                                    //usuwa z listy karty które aktualnie gracz posiada
+                                    for (Card c : allCardsPlayerFromDeck) {
+                                        if (allCardsFromBase.contains(c))
+                                            allCardsFromBase.remove(c);
+                                    }
+
+                                    int i = 1;
+                                    //wypisuje wszystkie karty z bazy
+                                    for (Card c : allCardsFromBase) {
+                                        System.out.println(CYAN + i + BLACK + ". " + "Name:" + c.getName() + "\t Dmg:" + c.getDmg() + "\t Defense:" + c.getDefense() + "\t Cose:" + c.getCost());
+                                        i++;
+                                    }
+
+                                    System.out.println("\n" + BLUE + "\tWybierz karte do swojego decku\n" + BLACK + "\tTwój aktualny deck:" + allCardsPlayerFromDeck);
+
+                                    choiceInt = scanner.nextInt();
+//                                    allCardsPlayerFromDeck.add(allCardsSet.get(choiceInt-1));
+//                                    System.out.println(allCardsSet.get(choiceInt-1));
+                                    deckCardService.addCardToDeck(allCardsFromBase.get(choiceInt-1).getId(), player.getDeck().getId());
+                                    System.out.println(deckCardService.getDeckCard());
+                                    System.out.println("Poprawnie dodano "+ allCardsFromBase.get(choiceInt -1).getName());
+                                    TimeUnit.SECONDS.sleep(2);
+                                    break;
+                                }
+                                case 4: {
+                                    break;
+                                }
+                                case 5: {
+                                    w = false;
+                                    break;
+                                }
+                                default:
+                                    throw new IllegalStateException("Unexpected value: " + choiceInt);
+                            }
+                        }
                     }
-                    case '3': {
-                        System.out.println(deckService.getAllCards(player.getDeck().getId()));
-                        break;
-                    }
-                    case '4': {
-                        System.out.println(BLUE +"UŻYTO BARDZO SKOMPLIKOWANY ALGORYTM ZAPISYWANIA GRY."+GREEN+" GRA ZOSTALA ZAPISANA");
+
+                    case 3: {
+                        System.out.println(BLUE + "UŻYTO BARDZO SKOMPLIKOWANY ALGORYTM ZAPISYWANIA GRY." + GREEN + " GRA ZOSTALA ZAPISANA");
                         break;
 
                     }
-                    case '5': {
-                        System.out.println(RED + "Żegnaj " +GREEN + player.getName() + RED + " :)");
+                    case 4: {
+                        System.out.println(RED + "Żegnaj " + GREEN + player.getName() + RED + " :)");
                         System.exit(0);
                         break;
                     }
@@ -215,10 +279,11 @@ public class GameController implements CommandLineRunner {
             }
         }
     }
-//    public void useCard(int index){
+
+    //    public void useCard(int index){
 //        deckService.deleteCardFromDeck(index);
 //    }
-    public void printCard(Card card, int index){
+    public void printCard(Card card, int index) {
         String cardText = cardView;
         System.out.println("1");
         String space = "";
@@ -230,29 +295,29 @@ public class GameController implements CommandLineRunner {
         cardText = cardText.replace("4", Integer.toString(index));
         System.out.println(cardText);
     }
-    public Area selectArea(){
+
+    public Area selectArea() {
         List<Area> areas = areaService.getAllAreas();
         Random random = new Random();
         return areas.get(random.nextInt(areas.size()));
     }
-    public Enemy selectEnemy(int min_level){
+
+    public Enemy selectEnemy(int min_level) {
         List<Enemy> allEnemies = enemyService.getAllEnemies();
         List<Enemy> validEnemies = new ArrayList<>();
-        for(Enemy enemy:allEnemies){
-            if(enemy.getMin_level()<=min_level) validEnemies.add(enemy);
+        for (Enemy enemy : allEnemies) {
+            if (enemy.getMin_level() <= min_level) validEnemies.add(enemy);
         }
-        if(validEnemies.size()==0) System.out.println("Brak przeciwników");;
+        if (validEnemies.size() == 0) System.out.println("Brak przeciwników");
+        ;
         Random random = new Random();
         return validEnemies.get(random.nextInt(validEnemies.size()));
     }
 
-    public void increaseExp(int exp, Player playerUpdate){
-        player = playerService.updatePlayerExperience(playerUpdate.getId(), playerUpdate.getExperience()+exp);
+    public void increaseExp(int exp, Player playerUpdate) {
+        player = playerService.updatePlayerExperience(playerUpdate.getId(), playerUpdate.getExperience() + exp);
 
     }
-
-
-
 
 
     @Override

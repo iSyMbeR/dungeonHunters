@@ -31,5 +31,9 @@ public class DeckCardService {
         return (int)deckCardRepository.count();
     }
 
+    public void addCardToDeck(Long idCard, Long idDeck){
+        deckCardRepository.addCardToDeck(idCard,idDeck);
+    }
+
 
 }
