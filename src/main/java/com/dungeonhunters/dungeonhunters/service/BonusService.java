@@ -16,7 +16,7 @@ public class BonusService {
 
     private final BonusRepository bonusRepository;
 
-    public void addCard(Bonus bonus){
+    public void addBonus(Bonus bonus){
         bonusRepository.save(bonus);
     }
 
@@ -24,7 +24,9 @@ public class BonusService {
         bonusRepository.delete(bonus);
     }
 
-    public List<Bonus> getAllBonus() { return bonusRepository.findAll(); }
+
+    public List<Bonus> getAllBonuses() { return bonusRepository.findAll(); }
+
 
     public Bonus getBonusById(Long id){return bonusRepository.findById(id).orElseThrow();}
 

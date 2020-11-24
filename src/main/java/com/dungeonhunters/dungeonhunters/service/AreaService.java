@@ -26,7 +26,9 @@ public class AreaService {
 
     public List<Area> getAllAreas() { return areaRepository.findAll(); }
 
-    public Area getAreaByid(Long id){return areaRepository.findById(id).orElseThrow();}
+
+    public Area getAreaById(Long id){return areaRepository.findById(id).orElseThrow();}
+
 
     public int getSize(){
         return (int) areaRepository.count();

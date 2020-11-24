@@ -1,11 +1,16 @@
 package com.dungeonhunters.dungeonhunters;
 
+
+import com.dungeonhunters.dungeonhunters.model.Enemy;
+
 import com.dungeonhunters.dungeonhunters.model.Card;
 import com.dungeonhunters.dungeonhunters.model.Deck;
+
 import com.dungeonhunters.dungeonhunters.model.Player;
 import com.dungeonhunters.dungeonhunters.service.CardService;
 import com.dungeonhunters.dungeonhunters.service.DeckService;
 import com.dungeonhunters.dungeonhunters.service.PlayerService;
+import com.dungeonhunters.dungeonhunters.service.EnemyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -13,7 +18,9 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.Set;
+
+import java.util.concurrent.ThreadLocalRandom;
+
 
 import static com.dungeonhunters.dungeonhunters.Ansi.*;
 
@@ -22,6 +29,8 @@ import static com.dungeonhunters.dungeonhunters.Ansi.*;
 public class GameController implements CommandLineRunner {
 
     private final PlayerService playerService;
+    private final EnemyService enemyService;
+
     private final DeckService deckService;
    // private final DataBaseFiller dataBaseFiller;
 
@@ -154,6 +163,18 @@ public class GameController implements CommandLineRunner {
                 }
             }
         }
+    }
+    public Enemy generateEnemy(int min_level){
+        List<Enemy> allEnemies = enemyService.getAllEnemies();
+        List<Enemy> validEnemies = new ArrayList<>();
+        for(Enemy enemy:allEnemies){
+            if(enemy.getMin_level()<=min_level) validEnemies.add(enemy);
+        }
+        int randomNum = ThreadLocalRandom.current().nextInt(0, validEnemies.size());
+        return validEnemies.get(randomNum);
+    }
+    public void increaseExp(int exp, Player player){
+        player.setExperience(player.getExperience()+exp);
     }
 
 

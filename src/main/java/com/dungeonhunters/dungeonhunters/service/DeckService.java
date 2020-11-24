@@ -22,11 +22,14 @@ public class DeckService {
         deckRepository.delete(deck);
     }
 
-    public List<Deck> getAllDeck() { return deckRepository.findAll(); }
+
+    public List<Deck> getAllDecks() { return deckRepository.findAll(); }
+
 
     public Deck getDeckById(Long id){return deckRepository.findById(id).orElseThrow();}
 
     public int getSize(){
         return (int) deckRepository.count();
     }
+
 }

@@ -3,7 +3,9 @@ package com.dungeonhunters.dungeonhunters.service;
 import com.dungeonhunters.dungeonhunters.Repository.PlayerRepository;
 
 import com.dungeonhunters.dungeonhunters.model.Player;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,4 +36,5 @@ public class PlayerService {
     public int getSize(){
         return (int)playerRepository.count();
     }
+
 }
