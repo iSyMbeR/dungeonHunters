@@ -19,13 +19,13 @@ public class CardService {
         cardRepository.save(card);
     }
 
-    public void deleteInventory(Card card){
+    public void deleteCard(Card card){
         cardRepository.delete(card);
     }
 
-    public List<Card> getAllInventory() { return cardRepository.findAll(); }
+    public List<Card> getAllCards() { return cardRepository.findAll(); }
 
-    public Card getItemById(Long id){return cardRepository.findById(id).orElseThrow();}
+    public Card getCardByid(Long id){return cardRepository.findById(id).orElseThrow();}
 
     public int getSize(){
         return (int) cardRepository.count();

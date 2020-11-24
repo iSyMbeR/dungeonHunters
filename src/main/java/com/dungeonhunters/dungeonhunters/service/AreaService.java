@@ -16,17 +16,17 @@ public class AreaService {
 
     private final AreaRepository areaRepository;
 
-    public void addCard(Area area){
+    public void addArea(Area area){
         areaRepository.save(area);
     }
 
-    public void deleteInventory(Area area){
+    public void deleteArea(Area area){
         areaRepository.delete(area);
     }
 
-    public List<Area> getAllInventory() { return areaRepository.findAll(); }
+    public List<Area> getAllAreas() { return areaRepository.findAll(); }
 
-    public Area getItemById(Long id){return areaRepository.findById(id).orElseThrow();}
+    public Area getAreaByid(Long id){return areaRepository.findById(id).orElseThrow();}
 
     public int getSize(){
         return (int) areaRepository.count();

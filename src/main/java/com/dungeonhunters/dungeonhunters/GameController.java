@@ -1,20 +1,30 @@
 package com.dungeonhunters.dungeonhunters;
 
+import com.dungeonhunters.dungeonhunters.model.Card;
+import com.dungeonhunters.dungeonhunters.model.Deck;
 import com.dungeonhunters.dungeonhunters.model.Player;
+import com.dungeonhunters.dungeonhunters.service.CardService;
+import com.dungeonhunters.dungeonhunters.service.DeckService;
 import com.dungeonhunters.dungeonhunters.service.PlayerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 
 import static com.dungeonhunters.dungeonhunters.Ansi.*;
 
 @Component
 @RequiredArgsConstructor
 public class GameController implements CommandLineRunner {
+
     private final PlayerService playerService;
+    private final DeckService deckService;
+   // private final DataBaseFiller dataBaseFiller;
+
 
 
     static void cleanScreen() {
@@ -30,6 +40,12 @@ public class GameController implements CommandLineRunner {
     }
 
     public void showMenu() {
+      //  System.out.println(deckService.getDeckById(1L).getId());
+
+
+
+
+
         Scanner scanner = new Scanner(System.in);
         int choiceInt;
         System.out.println("Podaj swoja nazwe");
@@ -41,19 +57,17 @@ public class GameController implements CommandLineRunner {
         if (choiceString.toUpperCase().equals("ADMIN")) {
 
             while (x) {
-                cleanScreen();
                 System.out.println(BLUE + "\tHello " + HIGH_INTENSITY + GREEN + "ADMIN" + LOW_INTENSITY);
                 System.out.print(BLUE + "\tU CAN DO MORE THAN OTHERS");
-                System.out.print(BLACK);
+                System.out.println(BLACK);
                 System.out.println(GREEN + "-------------------------");
                 System.out.println(
                                 "\t" + CYAN + "1." + BLACK + " Add player\n" +
                                 "\t" + CYAN + "2." + BLACK + " Remove player\n" +
-                                "\t" + CYAN + "3." + BLACK + " Exit\n" +
-                                "\t" + CYAN + "4." + BLACK + " Show Player List");
+                                "\t" + CYAN + "3." + BLACK + " Show Player List\n" +
+                                "\t" + CYAN + "4." + BLACK + " Exit");
                 System.out.println(GREEN + "-------------------------");
                 choiceInt = scanner.nextInt();
-
 
                 switch (choiceInt) {
                     case 1: {
@@ -67,7 +81,7 @@ public class GameController implements CommandLineRunner {
                         break;
                     }
                     case 2: {
-                        System.out.println("weszlo do 2");
+                        System.out.println("Podaj index gracza do usuniecia");
                         List<Player> players = playerService.getPlayers();
                         for (Player player : players) {
                             String s = player.getId() + " " + player.getName();
@@ -78,11 +92,6 @@ public class GameController implements CommandLineRunner {
                         break;
                     }
                     case 3: {
-                        System.out.println("Weszlo do 3");
-                        x = false;
-                        return;
-                    }
-                    case 4: {
                         System.out.println("weszlo do 4");
                         List<Player> players = playerService.getPlayers();
                         for (Player player : players) {
@@ -91,13 +100,16 @@ public class GameController implements CommandLineRunner {
                         }
                         break;
                     }
+                    case 4: {
+                        System.out.println("Weszlo do 3");
+                        x = false;
+                        break;
+                    }
                     default: {
                         System.out.println("jestesmy w defaulcie");
                         return;
                     }
                 }
-
-                return;
             }
         } else {
             //dodawanie gracza do bazy trzeba potem dodac sprawdzanie czy nie jest juz w bazie
@@ -116,10 +128,10 @@ public class GameController implements CommandLineRunner {
                 System.out.println(GREEN + "    -------------------------");
                 System.out.println(
                                 "\t" + CYAN + "1." + BLACK + " Zawalacz\n" +
-                                "\t" + CYAN + "2." + BLACK + " \n" +
+                                "\t" + CYAN + "2." + BLACK + " Twoje inventory" +
                                 "\t" + CYAN + "3." + BLACK + " Twoj deck\n" +
-                                "\t" + CYAN + "4." + BLACK + " x3\n" +
-                                "\t" + CYAN + "5." + BLACK + " x4");
+                                "\t" + CYAN + "4." + BLACK + " Zapisz gre\n" +
+                                "\t" + CYAN + "5." + BLACK + " Wczytaj gre");
                 System.out.println(GREEN + "    -------------------------");
 
 
@@ -129,12 +141,16 @@ public class GameController implements CommandLineRunner {
                     case 1: {
                         System.out.println(BLUE + "\tTHE GAME HAS STARTED, GOOD LUCK!!");
                         cleanScreen();
-                        cleanScreen();
-
                         //boolean game = true;
                         //while (game)
                         break;
                     }
+                    case 2: {
+                        System.out.println(playerService.getPlayerById(player.getId()));
+                    }
+                    case 3:
+                    case 4:
+                    case 5:
                 }
             }
         }
@@ -143,6 +159,8 @@ public class GameController implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        //dataBaseFiller.FillerDataBase();
+
         showMenu();
     }
 }
