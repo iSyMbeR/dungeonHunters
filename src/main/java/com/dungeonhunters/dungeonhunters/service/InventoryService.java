@@ -4,6 +4,7 @@ import com.dungeonhunters.dungeonhunters.Repository.InventoryRepository;
 
 import com.dungeonhunters.dungeonhunters.model.Inventory;
 import com.dungeonhunters.dungeonhunters.model.Item;
+import com.dungeonhunters.dungeonhunters.model.Player;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -33,5 +34,9 @@ public class InventoryService {
 
     public int getSize(){
         return (int) inventoryRepository.count();
+    }
+
+    public List<Item> getAllItemsFromPlayerInventory(Long id) {
+        return inventoryRepository.getAllItems(id);
     }
 }

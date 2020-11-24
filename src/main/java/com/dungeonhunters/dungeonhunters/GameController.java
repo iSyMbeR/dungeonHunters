@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -41,7 +43,7 @@ public class GameController implements CommandLineRunner {
         }
     }
 
-    public void showMenu() {
+    public void showMenu() throws IOException {
       //  System.out.println(deckService.getDeckById(1L).getId());
 
 
@@ -103,8 +105,8 @@ public class GameController implements CommandLineRunner {
                         break;
                     }
                     case 4: {
-                        System.out.println("Weszlo do 3");
-                        x = false;
+                        System.out.println(RED + "Żegnaj " +GREEN + "ADMIN" + RED + " :)");
+                        System.exit(0);
                         break;
                     }
                     default: {
@@ -119,6 +121,7 @@ public class GameController implements CommandLineRunner {
                     .name(choiceString)
                     .deck(deckService.addDeck(new Deck()))
                     .inventory(inventoryService.addInventory(new Inventory()))
+                    .hp(100)
                     .stage(2)
                     .experience(100)
                     .build();
@@ -138,14 +141,14 @@ public class GameController implements CommandLineRunner {
                                 "\t" + CYAN + "2." + BLACK + " Twoje inventory\n" +
                                 "\t" + CYAN + "3." + BLACK + " Twoj deck\n" +
                                 "\t" + CYAN + "4." + BLACK + " Zapisz gre\n" +
-                                "\t" + CYAN + "5." + BLACK + " Wczytaj gre");
+                                "\t" + CYAN + "5." + BLACK + " Zakoncz gre\n");
                 System.out.println(GREEN + "    -------------------------");
 
 
                 choiceInt = scanner.nextInt();
                 switch (choiceInt) {
 
-                    case 1: {
+                    case 'a': {
                         System.out.println(BLUE + "\tTHE GAME HAS STARTED, GOOD LUCK!!");
                         cleanScreen();
                         //boolean game = true;
@@ -153,12 +156,24 @@ public class GameController implements CommandLineRunner {
                         //increaseExp(20, player);
                         break;
                     }
-                    case 2: {
-                        inventoryService.getAllInventory();
+                    case 'b': {
+                        System.out.println(inventoryService.getAllItemsFromPlayerInventory(player.getInventory().getId()));
+                        break;
                     }
-                    case 3:
-                    case 4:
-                    case 5:
+                    case '3': {
+                        System.out.println(deckService.getAllCards(player.getDeck().getId()));
+                        break;
+                    }
+                    case '4': {
+                        System.out.println(BLUE +"UŻYTO BARDZO SKOMPLIKOWANY ALGORYTM ZAPISYWANIA GRY."+GREEN+" GRA ZOSTALA ZAPISANA");
+                        break;
+                    }
+                    case '5': {
+                        System.out.println(RED + "Żegnaj " +GREEN + player.getName() + RED + " :)");
+                        System.exit(0);
+                        break;
+                    }
+
                 }
             }
         }
