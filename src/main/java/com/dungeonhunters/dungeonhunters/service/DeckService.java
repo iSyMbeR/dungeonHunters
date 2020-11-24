@@ -1,6 +1,7 @@
 package com.dungeonhunters.dungeonhunters.service;
 
 import com.dungeonhunters.dungeonhunters.Repository.DeckRepository;
+import com.dungeonhunters.dungeonhunters.model.Card;
 import com.dungeonhunters.dungeonhunters.model.Deck;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,4 +33,7 @@ public class DeckService {
         return (int) deckRepository.count();
     }
 
+    public List<Card> getAllCards(Long id){
+        return deckRepository.getAllCards(id);
+    }
 }
