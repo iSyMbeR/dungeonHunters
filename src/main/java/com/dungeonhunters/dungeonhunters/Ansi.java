@@ -285,7 +285,7 @@ public final class Ansi {
                     "|   SILVER   | \n" +
                     "|____________| \n";
 
-
+    public static final String fight =
             "\t||||||||||||||||||||||||      TURN:#T      ||||||||||||||||||||||||\n"+
             "\t||                    ||                   ||                    ||\n"+
             "\t||       ()(()        ||                   ||    ((________))    ||\n"+

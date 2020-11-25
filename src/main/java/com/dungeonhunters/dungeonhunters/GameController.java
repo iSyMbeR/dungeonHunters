@@ -236,7 +236,7 @@ public class GameController implements CommandLineRunner {
                                 }
                                 case 3: {
                                     int addCartFromIndex = -1;
-                                    while(addCartFromIndex!=0){
+                                    while(true){
                                         System.out.println(BLUE + "\tLista dostępnych kart");
                                         List<Card> allCards = cardService.getAllCards();
                                         List<Card> allPlayerCards = player.getDeck().getCardSet();
@@ -248,6 +248,7 @@ public class GameController implements CommandLineRunner {
                                         System.out.println("\n" + BLUE + "\tWybierz karte do swojego decku\n" + BLACK + "\tTwój aktualny deck:" );
                                         printSet(player.getDeck().getCardSet());
                                         addCartFromIndex = scanner.nextInt();
+                                        if(addCartFromIndex==0) break;
                                         addCardToDeck(player.getDeck(),allCards.get(addCartFromIndex-1));
                                         System.out.println("Wybierz numer karty lub 0 aby wyjść");
                                     }
