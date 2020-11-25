@@ -1,6 +1,8 @@
 package com.dungeonhunters.dungeonhunters.model;
 
 import lombok.*;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -21,8 +23,12 @@ public class Deck implements Serializable {
 
 
 
-
-    @OneToMany(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable
     private Set<Card> cardSet;
+
+    public Set<Card> getCardSet() {
+        return cardSet;
+    }
 }
