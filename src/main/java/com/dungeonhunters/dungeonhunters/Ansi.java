@@ -90,6 +90,201 @@ public final class Ansi {
             "| '------' |\n" +
             "`----------'";
 
+    public static final String stiletto =
+            " ____________ \n" +
+            "|    (__)    | \n" +
+            "|     ||     | \n" +
+            "|  (______)  | \n" +
+            "|    |  |    | \n" +
+            "|    |  |    | \n" +
+            "|    |  |    | \n" +
+            "|     `/     | \n" +
+            "|____________| \n";
+
+    public static final String axe =
+                    " ____________ \n" +
+                    "|            | \n" +
+                    "|  ||____/`  | \n" +
+                    "|  ||      | | \n" +
+                    "|  ||____  | | \n" +
+                    "|  ||    `/  | \n" +
+                    "|  ||        | \n" +
+                    "|  ||        | \n" +
+                    "|____________| \n";
+    public static final String helmetWooden =
+                    " ____________ \n" +
+                    "|     xx     | \n" +
+                    "|   __xx__   | \n" +
+                    "| /        ` | \n" +
+                    "| | ()  () | | \n" +
+                    "| |        | | \n" +
+                    "| | |||||| | | \n" +
+                    "|    WOOD    | \n" +
+                    "|____________| \n";
+    public static final String boots =
+                    " ____________ \n" +
+                    "| ___        | \n" +
+                    "|| -o|       | \n" +
+                    "|| -o|       | \n" +
+                    "|| -o|______ | \n" +
+                    "||    ```   || \n" +
+                    "||ww--wwwwww|| \n" +
+                    "|            | \n" +
+                    "|____________| \n";
+    public static final String charm1 =
+                    " ____________ \n" +
+                    "|o          o| \n" +
+                    "| o        o | \n" +
+                    "|  o      o  | \n" +
+                    "|   o    o   | \n" +
+                    "|    $$$$    | \n" +
+                    "|  $$$$$$$$  | \n" +
+                    "|     $$     | \n" +
+                    "|____________| \n";
+    public static final String charm2 =
+                    " ____________ \n" +
+                    "|     ////// | \n" +
+                    "|   //////   | \n" +
+                    "| //////     | \n" +
+                    "|////////////| \n" +
+                    "|      ////  | \n" +
+                    "|    ////    | \n" +
+                    "|  ////      | \n" +
+                    "|_//_________| \n";
+    public static final String charm3 =
+                    " ____________ \n" +
+                    "|            | \n" +
+                    "|            | \n" +
+                    "|    (**)     | \n" +
+                    "|   o    o   | \n" +
+                    "|  o      o  | \n" +
+                    "|   o    o   | \n" +
+                    "|            | \n" +
+                    "|____________| \n";
+
+    public static final String swordWooden =
+                    " ____________ \n" +
+                    "|     ||     | \n" +
+                    "|     ||     | \n" +
+                    "|     ||     | \n" +
+                    "|     ||     | \n" +
+                    "|  (______)  | \n" +
+                    "|     ()     | \n" +
+                    "|    WOOD    | \n" +
+                    "|____________| \n";
+    public static final String swordSteel =
+                    " ____________ \n" +
+                    "|     ||     | \n" +
+                    "|     ||     | \n" +
+                    "|     ||     | \n" +
+                    "|     ||     | \n" +
+                    "|  (______)  | \n" +
+                    "|     ()     | \n" +
+                    "|    STEEL   | \n" +
+                    "|____________| \n";
+    public static final String swordSilver =
+                    " ____________ \n" +
+                    "|     ||     | \n" +
+                    "|     ||     | \n" +
+                    "|     ||     | \n" +
+                    "|     ||     | \n" +
+                    "|  (______)  | \n" +
+                    "|     ()     | \n" +
+                    "|   SILVER   | \n" +
+                    "|____________| \n";
+    public static final String helmetSteel =
+            " ____________ \n" +
+                    "|     xx     | \n" +
+                    "|   __xx__   | \n" +
+                    "| /        ` | \n" +
+                    "| | ()  () | | \n" +
+                    "| |        | | \n" +
+                    "| | |||||| | | \n" +
+                    "|   STEEL    | \n" +
+                    "|____________| \n";
+    public static final String helmetSilver =
+            " ____________ \n" +
+                    "|     xx     | \n" +
+                    "|   __xx__   | \n" +
+                    "| /        ` | \n" +
+                    "| | ()  () | | \n" +
+                    "| |        | | \n" +
+                    "| | |||||| | | \n" +
+                    "|   SILVER   | \n" +
+                    "|____________| \n";
+    public static final String shield =
+                    " ____________ \n" +
+                    "|   ______   | \n" +
+                    "| |      x.| | \n" +
+                    "| |     x..| | \n" +
+                    "| |    x...| | \n" +
+                    "| |   x....| | \n" +
+                    "|    x..../  | \n" +
+                    "|     ../    | \n" +
+                    "|____________| \n";
+    public static final String armorWooden =
+                    " ____________ \n" +
+                    "| __________ | \n" +
+                    "||          || \n" +
+                    "|| |      | || \n" +
+                    "||_|      |_|| \n" +
+                    "|  |______|  | \n" +
+                    "|            | \n" +
+                    "|    WOOD    | \n" +
+                    "|____________| \n";
+    public static final String armorSteel =
+                    " ____________ \n" +
+                    "| __________ | \n" +
+                    "||          || \n" +
+                    "|| |      | || \n" +
+                    "||_|      |_|| \n" +
+                    "|  |______|  | \n" +
+                    "|            | \n" +
+                    "|    STEEL   | \n" +
+                    "|____________| \n";
+    public static final String armorSilver =
+                    " ____________ \n" +
+                    "| __________ | \n" +
+                    "||          || \n" +
+                    "|| |      | || \n" +
+                    "||_|      |_|| \n" +
+                    "|  |______|  | \n" +
+                    "|            | \n" +
+                    "|   SILVER   | \n" +
+                    "|____________| \n";
+
+    public static final String pantsWooden =
+                    " ____________ \n" +
+                    "|  |--[]--|  | \n" +
+                    "|  |      |  |\n" +
+                    "|  |  ||  |  | \n" +
+                    "|  |()||()|  | \n" +
+                    "|  |__||__|  | \n" +
+                    "|            | \n" +
+                    "|    WOOD    | \n" +
+                    "|____________| \n";
+    public static final String pantsSteel =
+                    " ____________ \n" +
+                    "|  |--[]--|  | \n" +
+                    "|  |      |  |\n" +
+                    "|  |  ||  |  | \n" +
+                    "|  |()||()|  | \n" +
+                    "|  |__||__|  | \n" +
+                    "|            | \n" +
+                    "|    STEEL   | \n" +
+                    "|____________| \n";
+    public static final String pantsSilver =
+                    " ____________ \n" +
+                    "|  |--[]--|  | \n" +
+                    "|  |      |  |\n" +
+                    "|  |  ||  |  | \n" +
+                    "|  |()||()|  | \n" +
+                    "|  |__||__|  | \n" +
+                    "|            | \n" +
+                    "|   SILVER   | \n" +
+                    "|____________| \n";
+
+
 
     final private String[] codes;
     final private String codes_str;
