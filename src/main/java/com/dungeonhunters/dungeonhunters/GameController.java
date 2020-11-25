@@ -28,7 +28,7 @@ public class GameController implements CommandLineRunner {
     private final CardService cardService;
     private final DeckService deckService;
     private final AreaService areaService;
-    private final DeckCardService deckCardService;
+
     Player player;
 
 
@@ -165,22 +165,22 @@ public class GameController implements CommandLineRunner {
                             System.out.print(enemy.getName()+"\n\n");
                             fightView = updateView(player,enemy, turn);
                             System.out.println(fightView);
-                            currentDeck = deckCardService.getAllCardsFromDeck(player.getDeck().getId());
-                            for(Card c: currentDeck){
-                                printCard(c, currentDeck.indexOf(c));
-                            }
+                          //  currentDeck = deckCardService.getAllCardsFromDeck(player.getDeck().getId());
+//                            for(Card c: currentDeck){
+//                                printCard(c, currentDeck.indexOf(c));
+//                            }
                             System.out.println("\t[0] Zakończ turę");
                             int cardIndex = -1;
                             while (cardIndex != '0') {
                                 cardIndex = scanner.nextInt();
                                 if (cardIndex == 0) break;
-                                if (cardIndex <= currentDeck.size()) {
-                                    Card c = currentDeck.get(cardIndex);
-                                    enemy.setBase_life(enemy.getBase_life() - c.getDmg());
-
-                                    playerDefense+=c.getDefense();
-                                    deckCardService.deleteCardFromDeck(player.getDeck(),c);
-                                }
+//                                if (cardIndex <= currentDeck.size()) {
+//                                    Card c = currentDeck.get(cardIndex);
+//                                    enemy.setBase_life(enemy.getBase_life() - c.getDmg());
+//
+//                                    playerDefense+=c.getDefense();
+//                                  //  deckCardService.deleteCardFromDeck(player.getDeck(),c);
+//                                }
                             }
                             player.setHp(player.getHp() - enemy.getDmg());
                             ;
@@ -203,8 +203,8 @@ public class GameController implements CommandLineRunner {
                                             "\t" + CYAN + "5." + BLACK + " Wróc");
 
 
-                            List<Card> allCardsFromBase = cardService.getAllCards();
-                            List<Card> allCardsPlayerFromDeck = deckCardService.getAllCardsFromDeck(player.getDeck().getId());
+//                            List<Card> allCardsFromBase = cardService.getAllCards();
+//                            List<Card> allCardsPlayerFromDeck = deckCardService.getAllCardsFromDeck(player.getDeck().getId());
 
                             choiceInt = scanner.nextInt();
                             switch (choiceInt) {
@@ -219,41 +219,41 @@ public class GameController implements CommandLineRunner {
                                     break;
                                 }
                                 case 2: {
-                                    cleanScreen();
-                                    if (deckCardService.getAllCardsFromDeck(player.getDeck().getId()).isEmpty())
-                                        System.out.println(RED + "Twoj deck jest pusty, powrót do panelu za 5 sec");
-                                    else
-                                        System.out.println(deckCardService.getAllCardsFromDeck(player.getDeck().getId()));
-
-                                    TimeUnit.SECONDS.sleep(5);
+//                                    cleanScreen();
+//                                    if (deckCardService.getAllCardsFromDeck(player.getDeck().getId()).isEmpty())
+//                                        System.out.println(RED + "Twoj deck jest pusty, powrót do panelu za 5 sec");
+//                                    else
+//                                        System.out.println(deckCardService.getAllCardsFromDeck(player.getDeck().getId()));
+//
+//                                    TimeUnit.SECONDS.sleep(5);
                                     break;
                                 }
                                 case 3: {
                                     System.out.println(BLUE + "\tLista dostępnych kart");
 
                                     //usuwa z listy karty które aktualnie gracz posiada
-                                    for (Card c : allCardsPlayerFromDeck) {
-                                        if (allCardsFromBase.contains(c))
-                                            allCardsFromBase.remove(c);
-                                    }
-
-                                    int i = 1;
-                                    //wypisuje wszystkie karty z bazy, których gracz nie posiada
-                                    for (Card c : allCardsFromBase) {
-                                        System.out.println(CYAN + i + BLACK + ". " + "Name:" + c.getName() + "\t Dmg:" + c.getDmg() + "\t Defense:" + c.getDefense() + "\t Cose:" + c.getCost());
-                                        i++;
-                                    }
-
-                                    System.out.println("\n" + BLUE + "\tWybierz karte do swojego decku\n" + BLACK + "\tTwój aktualny deck:" + deckCardService.getAllCardsFromDeck(player.getDeck().getId()));
-
-                                    choiceInt = scanner.nextInt();
-//                                    allCardsPlayerFromDeck.add(allCardsSet.get(choiceInt-1));
-//                                    System.out.println(allCardsSet.get(choiceInt-1));
-                                    deckCardService.addCardToDeck(allCardsFromBase.get(choiceInt - 1).getId(), player.getDeck().getId());
-                                    System.out.println(deckCardService.getAllCardsFromDeck(player.getDeck().getId()));
-
-
-                                    System.out.println("Poprawnie dodano " + allCardsFromBase.get(choiceInt - 1).getName());
+//                                    for (Card c : allCardsPlayerFromDeck) {
+//                                        if (allCardsFromBase.contains(c))
+//                                            allCardsFromBase.remove(c);
+//                                    }
+//
+//                                    int i = 1;
+//                                    //wypisuje wszystkie karty z bazy, których gracz nie posiada
+//                                    for (Card c : allCardsFromBase) {
+//                                        System.out.println(CYAN + i + BLACK + ". " + "Name:" + c.getName() + "\t Dmg:" + c.getDmg() + "\t Defense:" + c.getDefense() + "\t Cose:" + c.getCost());
+//                                        i++;
+//                                    }
+//
+//                                    System.out.println("\n" + BLUE + "\tWybierz karte do swojego decku\n" + BLACK + "\tTwój aktualny deck:" + deckCardService.getAllCardsFromDeck(player.getDeck().getId()));
+//
+//                                    choiceInt = scanner.nextInt();
+////                                    allCardsPlayerFromDeck.add(allCardsSet.get(choiceInt-1));
+////                                    System.out.println(allCardsSet.get(choiceInt-1));
+//                                    deckCardService.addCardToDeck(allCardsFromBase.get(choiceInt - 1).getId(), player.getDeck().getId());
+//                                    System.out.println(deckCardService.getAllCardsFromDeck(player.getDeck().getId()));
+//
+//
+//                                    System.out.println("Poprawnie dodano " + allCardsFromBase.get(choiceInt - 1).getName());
 
                                     TimeUnit.SECONDS.sleep(2);
                                     break;
