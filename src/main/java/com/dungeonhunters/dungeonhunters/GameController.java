@@ -149,9 +149,10 @@ public class GameController implements CommandLineRunner {
                     case 1: {
                         cleanScreen();
                         System.out.println(BLUE + "\tTHE GAME HAS STARTED, GOOD LUCK!!");
-                        Integer turn = 1;
+                        int turn = 1;
                         Integer energy = 3;
-                        Integer playerDefense = 0;
+                        int playerDefense = 0;
+                        boolean victory=false;
                         Enemy enemy = selectEnemy(player.getExperience());
                         List<Card> currentDeck;
                         Area currentArea = selectArea();
@@ -161,32 +162,35 @@ public class GameController implements CommandLineRunner {
                             System.out.print("\tArea: " + currentArea.getName() + "\n\n");
                             System.out.print("\t" + player.getName());
                             System.out.print(" vs ");
-
                             System.out.print(enemy.getName()+"\n\n");
-                            fightView = updateView(player,enemy, turn);
-                            System.out.println(fightView);
-                          //  currentDeck = deckCardService.getAllCardsFromDeck(player.getDeck().getId());
-//                            for(Card c: currentDeck){
-//                                printCard(c, currentDeck.indexOf(c));
-//                            }
+                            currentDeck = (List<Card>) player.getDeck().getCardSet();
+                            System.out.println(currentDeck);
+                            for(Card c: currentDeck){
+                                printCard(c, currentDeck.indexOf(c));
+                            }
                             System.out.println("\t[0] Zakończ turę");
                             int cardIndex = -1;
                             while (cardIndex != '0') {
+                                fightView = updateView(player,enemy, turn);
+                                System.out.println(fightView);
                                 cardIndex = scanner.nextInt();
                                 if (cardIndex == 0) break;
-//                                if (cardIndex <= currentDeck.size()) {
-//                                    Card c = currentDeck.get(cardIndex);
-//                                    enemy.setBase_life(enemy.getBase_life() - c.getDmg());
-//
-//                                    playerDefense+=c.getDefense();
-//                                  //  deckCardService.deleteCardFromDeck(player.getDeck(),c);
-//                                }
+                                if (cardIndex <= currentDeck.size()) {
+                                    Card c = currentDeck.get(cardIndex);
+                                    enemy.setBase_life(enemy.getBase_life() - c.getDmg());
+                                    playerDefense+=c.getDefense();
+                                    deleteCardFromDeck(player.getDeck(),c);
+                                }
+                            }
+                            if(enemy.getBase_life()<=0){
+                                victory = true;
+                                break;
                             }
                             player.setHp(player.getHp() - enemy.getDmg());
-                            ;
+                            if (player.getHp()<=0) victory=false;
                             turn++;
                         }
-
+                        printAfterBattleScreen(victory);
                         break;
                     }
 
@@ -285,10 +289,38 @@ public class GameController implements CommandLineRunner {
             }
         }
     }
-
-
+    public void populateDatabase(){
+        Card card = Card.builder().name("karta 1").build();
+        Card card2 = Card.builder().name("karta 2").build();
+        Set<Card> cards = new HashSet<>();
+        cards.add(card);
+        cards.add(card2);
+        System.out.println(cards+"\n");
+        Deck deck = Deck.builder().cardSet(cards).build();
+        Player player = Player.builder().name("mati5").deck(deck).build();
+        cardService.addCard(card);
+        cardService.addCard(card2);
+        deckService.addDeck(deck);
+        playerService.addPlayer(player);
+        System.out.println("DONE!");
+        System.out.println(player.getDeck().getCardSet());
+    }
+    public void printAfterBattleScreen(boolean victory){
+        if(victory){
+            System.out.println("Wygrana!");
+        }else{
+            System.out.println("Przegrana!");
+        }
+        System.out.println("Nacisnij dowolny klaiwsz aby kontynuować...");
+        Scanner scanner = new Scanner(System.in);
+        scanner.next();
+    }
+    public void deleteCardFromDeck(Deck deck, Card card){
+        Set<Card>cardList = deck.getCardSet();
+        cardList.remove(card);
+        deckService.getDeckById(deck.getId()).setCardSet(cardList);
+    }
     public String updateView(Player player, Enemy enemy, int turn){
-
         String fightText = fight;
         int enMaxHp, enHp, plMaxHp, plHp;
         enMaxHp = enemyService.getEnemyById(enemy.getId()).getBase_life();
@@ -339,7 +371,6 @@ public class GameController implements CommandLineRunner {
             if (enemy.getMin_level() <= min_level) validEnemies.add(enemy);
         }
         if (validEnemies.size() == 0) System.out.println("Brak przeciwników");
-        ;
         Random random = new Random();
         return validEnemies.get(random.nextInt(validEnemies.size()));
     }
@@ -352,7 +383,8 @@ public class GameController implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        showMenu();
+//        showMenu();
+        populateDatabase();
 
     }
 }
