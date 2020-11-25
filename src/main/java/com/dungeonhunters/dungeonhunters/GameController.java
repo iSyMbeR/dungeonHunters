@@ -224,49 +224,36 @@ public class GameController implements CommandLineRunner {
                                     break;
                                 }
                                 case 2: {
-//                                    cleanScreen();
-//                                    if (deckCardService.getAllCardsFromDeck(player.getDeck().getId()).isEmpty())
-//                                        System.out.println(RED + "Twoj deck jest pusty, powrót do panelu za 5 sec");
-//                                    else
-//                                        System.out.println(deckCardService.getAllCardsFromDeck(player.getDeck().getId()));
-//
-//                                    TimeUnit.SECONDS.sleep(5);
-                                    break;
-                                }
-                                case 3: {
-                                    System.out.println(BLUE + "\tLista dostępnych kart");
-
-                                    //usuwa z listy karty które aktualnie gracz posiada
-//                                    for (Card c : allCardsPlayerFromDeck) {
-//                                        if (allCardsFromBase.contains(c))
-//                                            allCardsFromBase.remove(c);
-//                                    }
-//
-//                                    int i = 1;
-//                                    //wypisuje wszystkie karty z bazy, których gracz nie posiada
-//                                    for (Card c : allCardsFromBase) {
-//                                        System.out.println(CYAN + i + BLACK + ". " + "Name:" + c.getName() + "\t Dmg:" + c.getDmg() + "\t Defense:" + c.getDefense() + "\t Cose:" + c.getCost());
-//                                        i++;
-//                                    }
-//
-//                                    System.out.println("\n" + BLUE + "\tWybierz karte do swojego decku\n" + BLACK + "\tTwój aktualny deck:" + deckCardService.getAllCardsFromDeck(player.getDeck().getId()));
-//
-//                                    choiceInt = scanner.nextInt();
-////                                    allCardsPlayerFromDeck.add(allCardsSet.get(choiceInt-1));
-////                                    System.out.println(allCardsSet.get(choiceInt-1));
-//                                    deckCardService.addCardToDeck(allCardsFromBase.get(choiceInt - 1).getId(), player.getDeck().getId());
-//                                    System.out.println(deckCardService.getAllCardsFromDeck(player.getDeck().getId()));
-//
-//
-//                                    System.out.println("Poprawnie dodano " + allCardsFromBase.get(choiceInt - 1).getName());
-
+                                    cleanScreen();
+                                    if (player.getDeck().getCardSet().isEmpty())
+                                        System.out.println(RED + "Twoj deck jest pusty, powrót do panelu za 2 sec");
+                                    else{
+                                        List<Card> cards = player.getDeck().getCardSet();
+                                        printSet(cards);
+                                    }
                                     TimeUnit.SECONDS.sleep(2);
                                     break;
                                 }
-                                case 4: {
+                                case 3: {
+                                    int addCartFromIndex = -1;
+                                    while(addCartFromIndex!=0){
+                                        System.out.println(BLUE + "\tLista dostępnych kart");
+                                        List<Card> allCards = cardService.getAllCards();
+                                        List<Card> allPlayerCards = player.getDeck().getCardSet();
+                                        for (Card c : allPlayerCards) {
+                                            allCards.remove(c);
+                                        }
+                                        int i = 1;
+                                        printSet(allCards);
+                                        System.out.println("\n" + BLUE + "\tWybierz karte do swojego decku\n" + BLACK + "\tTwój aktualny deck:" );
+                                        printSet(player.getDeck().getCardSet());
+                                        addCartFromIndex = scanner.nextInt();
+                                        addCardToDeck(player.getDeck(),allCards.get(addCartFromIndex-1));
+                                        System.out.println("Wybierz numer karty lub 0 aby wyjść");
+                                    }
                                     break;
                                 }
-                                case 5: {
+                                case 4: {
                                     w = false;
                                     break;
                                 }
@@ -290,7 +277,13 @@ public class GameController implements CommandLineRunner {
             }
         }
     }
+    public void printSet(List<Card> cards){
+        int iter = 1;
+        for(Card c : cards ){
+            System.out.printf(CYAN + "%d."+ BLACK +" %-20s DMG: %-3d DEF: %-3d COST: %-3d\n",iter++,c.getName(),c.getDmg(),c.getDefense(),c.getCost());
 
+        }
+    }
     public Card createCard(String name, String type, int dmg, int cost, int def ){
         Card card = Card.builder()
                 .cost(cost)
@@ -301,6 +294,12 @@ public class GameController implements CommandLineRunner {
                 .build();
         cardService.addCard(card);
         return card;
+    }
+    public void addCardToDeck(Deck deck, Card card){
+        List<Card> set = deck.getCardSet();
+        set.add(card);
+        deck.setCardSet(set);
+        deckService.addDeck(deck);
     }
     public void addBasicCardsToDeck(Deck deck){
         List<Card> allCards = cardService.getAllCards();
