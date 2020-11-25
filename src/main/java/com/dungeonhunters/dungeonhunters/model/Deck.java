@@ -19,4 +19,10 @@ public class Deck implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+
+
+
+    @OneToMany(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
+    @JoinTable
+    private Set<Card> cardSet;
 }
