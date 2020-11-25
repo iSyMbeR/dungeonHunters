@@ -286,6 +286,7 @@ public final class Ansi {
                     "|____________| \n";
 
 
+
     public static final String fight =
             "\t\t\t\t||||||||||||||||||||||||      TURN:#T      ||||||||||||||||||||||||\n"+
             "\t\t\t\t||                    ||                   ||                    ||\n"+
