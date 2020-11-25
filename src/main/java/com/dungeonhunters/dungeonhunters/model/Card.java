@@ -23,4 +23,7 @@ public class Card implements Serializable {
     private int dmg;
     private int defense;
 
+//    @ManyToOne
+//    private Deck deck;
+
 }

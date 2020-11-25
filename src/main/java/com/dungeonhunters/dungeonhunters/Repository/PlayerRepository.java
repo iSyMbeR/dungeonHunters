@@ -18,5 +18,11 @@ public interface PlayerRepository extends JpaRepository<Player,Long> {
     @Query("update Player u set u.experience = :experience where u.id = :id")
     void updateExperience(@Param("id") Long id, @Param("experience") int experience);
 
+    @Transactional
+    @Modifying(clearAutomatically = true)
+    @Query("update Player u set u.hp = :hp where u.id = :id")
+    void setHp(@Param("id") Long id, @Param("hp") int hp);
+
+
 
 }

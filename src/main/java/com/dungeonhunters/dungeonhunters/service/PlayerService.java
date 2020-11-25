@@ -46,5 +46,8 @@ public class PlayerService {
         playerRepository.updateExperience(id, exp);
 
     }
+    public void setHp(Long id, int dmg){
+        playerRepository.setHp(id, dmg);
+    }
 
 }
