@@ -51,6 +51,8 @@ public class GameController implements CommandLineRunner {
 
         Scanner scanner = new Scanner(System.in);
         int choiceInt;
+        cleanScreen();
+        cleanScreen();
         System.out.println("Podaj swoja nazwe");
         String choiceString;
         boolean x = true;
@@ -129,8 +131,8 @@ public class GameController implements CommandLineRunner {
             while (x) {
                 cleanScreen();
                 System.out.println(BLUE + "\tHello " + HIGH_INTENSITY + GREEN + player.getName().toUpperCase() + LOW_INTENSITY +
-                        BLUE + "\tXP:" + GREEN + player.getExperience() +
-                        BLUE + "\tITEMS:" + GREEN + player.getDeck());
+                        BLUE + "\tXP:" + GREEN + player.getExperience());
+
 
 
                 System.out.print(BLACK);
@@ -148,7 +150,7 @@ public class GameController implements CommandLineRunner {
 
                     case 1: {
                         cleanScreen();
-                        System.out.println(BLUE + "\tTHE GAME HAS STARTED, GOOD LUCK!!");
+                        System.out.println(CYAN + "\t\t\t\t\t\t\t\t\tTHE GAME HAS STARTED, GOOD LUCK!!"+ BLUE);
                         int turn = 1;
                         Integer energy = 3;
                         int playerDefense = 0;
@@ -159,16 +161,19 @@ public class GameController implements CommandLineRunner {
 
                         String fightView;
                         while (player.getHp() > 0 && enemy.getBase_life() > 0) {
-                            System.out.print("\tArea: " + currentArea.getName() + "\n\n");
-                            System.out.print("\t" + player.getName());
-                            System.out.print(" vs ");
-                            System.out.print(enemy.getName()+"\n\n");
+
+                            System.out.print("\t\t\t\t\t\t\t\t\t\t\tArea: " +BLACK+ currentArea.getName() + "\n\n\n\n" );
+                            System.out.print(GREEN+ "\t\t\t\t\t\t\t\t\t\t\t" + player.getName());
+                            System.out.print(BLACK+" vs ");
+                            System.out.print(RED+enemy.getName());
+                            System.out.println(BLUE);
                             currentDeck = player.getDeck().getCardSet();
                             int index;
                             int cardIndex = -1;
                             while (cardIndex != '0') {
                                 fightView = updateView(player,enemy, turn);
                                 System.out.println(fightView);
+                                System.out.println(BLUE);
                                 index=1;
                                 for(Card c: currentDeck){
                                     printCard(c, index++);
@@ -204,8 +209,7 @@ public class GameController implements CommandLineRunner {
                                     "\t" + CYAN + "1." + BLACK + " Pokaz inventory\n" +
                                             "\t" + CYAN + "2." + BLACK + " Pokaz deck\n" +
                                             "\t" + CYAN + "3." + BLACK + " Dodaj karte do decku\n" +
-                                            "\t" + CYAN + "4." + BLACK + " Dodaj item do inventory\n" +
-                                            "\t" + CYAN + "5." + BLACK + " Wróc");
+                                            "\t" + CYAN + "4." + BLACK + " Wróc");
 
 
 //                            List<Card> allCardsFromBase = cardService.getAllCards();
@@ -369,6 +373,7 @@ public class GameController implements CommandLineRunner {
         deckService.getDeckById(deck.getId()).setCardSet(cardList);
     }
     public String updateView(Player player, Enemy enemy, int turn){
+        System.out.println(BLACK);
         String fightText = fight;
         int enMaxHp, enHp, plMaxHp, plHp;
         enMaxHp = enemyService.getEnemyById(enemy.getId()).getBase_life();
@@ -401,7 +406,9 @@ public class GameController implements CommandLineRunner {
         space = (card.getDefense() > 9) ? "" : " ";
         cardText = cardText.replace("3", space + Integer.toString(card.getDefense()));
         cardText = cardText.replace("4", Integer.toString(index));
-        System.out.print(cardText);
+        System.out.println(BLUE);
+        System.out.println(cardText);
+        System.out.println(RED);
     }
 
     public Area selectArea() {
