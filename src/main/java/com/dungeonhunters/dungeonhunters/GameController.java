@@ -9,6 +9,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.io.IOException;
 import java.util.*;
 
@@ -115,17 +116,16 @@ public class GameController implements CommandLineRunner {
             }
         } else {
             //dodawanie gracza do bazy trzeba potem dodac sprawdzanie czy nie jest juz w bazie
-            player = Player.builder()
-                    .name(choiceString)
-                    .deck(deckService.addDeck(new Deck()))
-                    .inventory(inventoryService.addInventory(new Inventory()))
-                    .hp(100)
-                    .stage(2)
-                    .hp(100)
-                    .experience(100)
-                    .build();
-            playerService.addPlayer(player);
 
+            player = createPlayer(
+                    choiceString,
+                    100,
+                    1,
+                    0,
+                    createDeck(new ArrayList<>()),
+                    createInventory(new HashSet<>())
+            );
+            addBasicCardsToDeck(player.getDeck());
             while (x) {
                 cleanScreen();
                 System.out.println(BLUE + "\tHello " + HIGH_INTENSITY + GREEN + player.getName().toUpperCase() + LOW_INTENSITY +
@@ -153,8 +153,8 @@ public class GameController implements CommandLineRunner {
                         Integer energy = 3;
                         int playerDefense = 0;
                         boolean victory=false;
-                        Enemy enemy = selectEnemy(player.getExperience());
-                        List<Card> currentDeck;
+                        Enemy enemy = selectEnemy();
+                        List<Card> currentDeck = new ArrayList<Card>();
                         Area currentArea = selectArea();
 
                         String fightView;
@@ -163,20 +163,21 @@ public class GameController implements CommandLineRunner {
                             System.out.print("\t" + player.getName());
                             System.out.print(" vs ");
                             System.out.print(enemy.getName()+"\n\n");
-                            currentDeck = (List<Card>) player.getDeck().getCardSet();
-                            System.out.println(currentDeck);
-                            for(Card c: currentDeck){
-                                printCard(c, currentDeck.indexOf(c));
-                            }
-                            System.out.println("\t[0] Zakończ turę");
+                            currentDeck = player.getDeck().getCardSet();
+                            int index;
                             int cardIndex = -1;
                             while (cardIndex != '0') {
                                 fightView = updateView(player,enemy, turn);
                                 System.out.println(fightView);
+                                index=1;
+                                for(Card c: currentDeck){
+                                    printCard(c, index++);
+                                }
+                                System.out.println("\t[0] Zakończ turę");
                                 cardIndex = scanner.nextInt();
                                 if (cardIndex == 0) break;
                                 if (cardIndex <= currentDeck.size()) {
-                                    Card c = currentDeck.get(cardIndex);
+                                    Card c = currentDeck.get(cardIndex-1);
                                     enemy.setBase_life(enemy.getBase_life() - c.getDmg());
                                     playerDefense+=c.getDefense();
                                     deleteCardFromDeck(player.getDeck(),c);
@@ -289,10 +290,58 @@ public class GameController implements CommandLineRunner {
             }
         }
     }
+
+    public Card createCard(String name, String type, int dmg, int cost, int def ){
+        Card card = Card.builder()
+                .cost(cost)
+                .defense(def)
+                .dmg(dmg)
+                .name(name)
+                .type(type)
+                .build();
+        cardService.addCard(card);
+        return card;
+    }
+    public void addBasicCardsToDeck(Deck deck){
+        List<Card> allCards = cardService.getAllCards();
+        List<Card> basicCards = new ArrayList<>();
+        for(Card c:allCards){
+            if(c.getType().equals("basic2")) basicCards.add(c);
+        }
+        deck.setCardSet(basicCards);
+        deckService.addDeck(deck);
+
+    }
+    public Deck createDeck(List<Card> cardSet){
+        Deck deck = Deck.builder()
+                .cardSet(cardSet)
+                .build();
+        deckService.addDeck(deck);
+        return deck;
+    }
+    public Player createPlayer(String name, int hp, int stage, int exp, Deck deck, Inventory inv){
+        Player player = Player.builder()
+                .name(name)
+                .hp(hp)
+                .stage(stage)
+                .experience(exp)
+                .deck(deck)
+                .inventory(inv)
+                .build();
+        playerService.addPlayer(player);
+        return player;
+    }
+    public Inventory createInventory(Set<Item> itemList){
+        Inventory inventory = Inventory.builder()
+                .itemList(itemList)
+                .build();
+        inventoryService.addInventory(inventory);
+        return inventory;
+    }
     public void populateDatabase(){
         Card card = Card.builder().name("karta 1").build();
         Card card2 = Card.builder().name("karta 2").build();
-        Set<Card> cards = new HashSet<>();
+        List<Card> cards = new ArrayList<Card>();
         cards.add(card);
         cards.add(card2);
         System.out.println(cards+"\n");
@@ -316,7 +365,7 @@ public class GameController implements CommandLineRunner {
         scanner.next();
     }
     public void deleteCardFromDeck(Deck deck, Card card){
-        Set<Card>cardList = deck.getCardSet();
+        List<Card>cardList = deck.getCardSet();
         cardList.remove(card);
         deckService.getDeckById(deck.getId()).setCardSet(cardList);
     }
@@ -345,9 +394,7 @@ public class GameController implements CommandLineRunner {
         return fightText;
     }
     public void printCard(Card card, int index){
-
         String cardText = cardView;
-        System.out.println("1");
         String space = "";
         cardText = cardText.replace("1", Integer.toString(card.getCost()));
         space = (card.getDmg() > 9) ? "" : " ";
@@ -355,7 +402,7 @@ public class GameController implements CommandLineRunner {
         space = (card.getDefense() > 9) ? "" : " ";
         cardText = cardText.replace("3", space + Integer.toString(card.getDefense()));
         cardText = cardText.replace("4", Integer.toString(index));
-        System.out.println(cardText);
+        System.out.print(cardText);
     }
 
     public Area selectArea() {
@@ -364,15 +411,11 @@ public class GameController implements CommandLineRunner {
         return areas.get(random.nextInt(areas.size()));
     }
 
-    public Enemy selectEnemy(int min_level) {
+    public Enemy selectEnemy() {
         List<Enemy> allEnemies = enemyService.getAllEnemies();
-        List<Enemy> validEnemies = new ArrayList<>();
-        for (Enemy enemy : allEnemies) {
-            if (enemy.getMin_level() <= min_level) validEnemies.add(enemy);
-        }
-        if (validEnemies.size() == 0) System.out.println("Brak przeciwników");
+        if (allEnemies.size() == 0) System.out.println("Brak przeciwników");
         Random random = new Random();
-        return validEnemies.get(random.nextInt(validEnemies.size()));
+        return allEnemies.get(random.nextInt(allEnemies.size()));
     }
 
     public void increaseExp(int exp, Player playerUpdate) {
@@ -383,8 +426,8 @@ public class GameController implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-//        showMenu();
-        populateDatabase();
+        showMenu();
+//        populateDatabase();
 
     }
 }

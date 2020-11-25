@@ -24,11 +24,12 @@ public class Deck implements Serializable {
 
 
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable
-    private Set<Card> cardSet;
+    private List<Card> cardSet;
 
-    public Set<Card> getCardSet() {
+    public List<Card> getCardSet() {
         return cardSet;
     }
+
 }
