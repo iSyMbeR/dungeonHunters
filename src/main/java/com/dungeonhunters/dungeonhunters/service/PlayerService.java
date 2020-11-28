@@ -50,4 +50,9 @@ public class PlayerService {
         playerRepository.setHp(id, dmg);
     }
 
+
+    public Long getPlayerIdByName(String name){
+        List<Long> arr = playerRepository.getPlayerIdByName(name);
+        return arr.get(0);
+    }
 }

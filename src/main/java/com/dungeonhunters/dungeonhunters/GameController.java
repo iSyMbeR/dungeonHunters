@@ -5,7 +5,9 @@ import com.dungeonhunters.dungeonhunters.model.*;
 
 import com.dungeonhunters.dungeonhunters.service.*;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
 
@@ -48,13 +50,13 @@ public class GameController implements CommandLineRunner {
     public void showMenu() throws IOException, InterruptedException {
         //  System.out.println(deckService.getDeckById(1L).getId());
 
-
         Scanner scanner = new Scanner(System.in);
         int choiceInt;
         cleanScreen();
         cleanScreen();
         System.out.println("Podaj swoja nazwe");
         String choiceString;
+
         boolean x = true;
 
 
@@ -119,15 +121,30 @@ public class GameController implements CommandLineRunner {
         } else {
             //dodawanie gracza do bazy trzeba potem dodac sprawdzanie czy nie jest juz w bazie
 
-            player = createPlayer(
-                    choiceString,
-                    100,
-                    1,
-                    0,
-                    createDeck(new ArrayList<>()),
-                    createInventory(new HashSet<>())
-            );
-            addBasicCardsToDeck(player.getDeck());
+            try {
+                player = createPlayer(
+                        choiceString,
+                        100,
+                        1,
+                        0,
+                        createDeck(new ArrayList<>()),
+                        createInventory(new HashSet<>())
+                );
+                addBasicCardsToDeck(player.getDeck());
+            } catch (DataIntegrityViolationException ee)
+            {
+                System.out.println("istnieje juz taki ziom");
+
+                player = loadPlayerGame(choiceString);
+            }
+
+//            if (playerService.checkDoesPlayerExistsInBase(choiceString))
+//            {
+//                System.out.println("Witamy Cie z powrotem");
+//                loadPlayerGame(choiceString);
+//            }
+
+
             while (x) {
                 cleanScreen();
                 System.out.println(BLUE + "\tHello " + HIGH_INTENSITY + GREEN + player.getName().toUpperCase() + LOW_INTENSITY +
@@ -274,7 +291,7 @@ public class GameController implements CommandLineRunner {
                     }
 
                     case 4: {
-                        System.out.println(RED + "Żegnaj " + GREEN + "ADMIN" + RED + " :)");
+                        System.out.println(RED + "Żegnaj " + GREEN + player.getName() + RED + " :)");
                         System.exit(0);
                         break;
                     }
@@ -381,14 +398,14 @@ public class GameController implements CommandLineRunner {
         enHp = enemy.getBase_life();
         plMaxHp = playerService.getPlayerById(player.getId()).getHp();
         plHp = player.getHp();
-        String numericValue = plMaxHp + "/" + plHp;
+        String numericValue = plHp + "/" + plMaxHp;
         Integer len = numericValue.length();
         for (int i = 0; i < (20 - len) / 2; i++) numericValue = " " + numericValue;
         for (int i = 0; i < (20 - len) / 2; i++) numericValue = numericValue + " ";
         if ((20 - len) % 2 == 1) numericValue = " " + numericValue;
         fightText = fightText.replace("#friendly_health_bar", numericValue);
       
-        numericValue = enMaxHp + "/" + enHp;
+        numericValue = enHp + "/" + enMaxHp ;
         len = numericValue.length();
         for(int i=0; i<(20-len)/2;i++) numericValue = " " + numericValue;
         for(int i=0; i<(20-len)/2;i++) numericValue = numericValue + " ";
@@ -429,7 +446,19 @@ public class GameController implements CommandLineRunner {
         player = playerService.updatePlayerExperience(playerUpdate.getId(), playerUpdate.getExperience() + exp);
 
     }
-
+    public Player loadPlayerGame(String name){
+        Long playerId = playerService.getPlayerIdByName(name);
+        Player player = Player.builder()
+                .id(playerId)
+                .name(name)
+                .hp(playerService.getPlayerById(playerId).getHp())
+                .stage(playerService.getPlayerById(playerId).getStage())
+                .experience(playerService.getPlayerById(playerId).getExperience())
+                .deck(playerService.getPlayerById(playerId).getDeck())
+                .inventory(playerService.getPlayerById(playerId).getInventory())
+                .build();
+        return player;
+    }
 
     @Override
     public void run(String... args) throws Exception {
