@@ -1,14 +1,19 @@
 package com.dungeonhunters.dungeonhunters;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.boot.SpringApplication;
+
+import com.dungeonhunters.dungeonhunters.controller.GameController;
+import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+
+import javax.swing.*;
 
 @SpringBootApplication
-	public class DungeonhuntersApplication {
+	public class DungeonhuntersApplication extends JFrame{
 		public static void main(String[] args) {
-			SpringApplication.run(DungeonhuntersApplication.class, args);
+			new SpringApplicationBuilder(DungeonhuntersApplication.class)
+					.headless(false)
+					.web(WebApplicationType.NONE)
+					.run(args);
 		}
-
-
-}
+	}
