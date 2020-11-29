@@ -132,7 +132,7 @@ public final class Ansi {
                     "||ww--wwwwww|| \n" +
                     "|            | \n" +
                     "|____________| \n";
-    public static final String charm1 =
+    public static final String charm1Amulet =
                     " ____________ \n" +
                     "|o          o| \n" +
                     "| o        o | \n" +
@@ -142,7 +142,7 @@ public final class Ansi {
                     "|  $$$$$$$$  | \n" +
                     "|     $$     | \n" +
                     "|____________| \n";
-    public static final String charm2 =
+    public static final String charm2Lightning =
                     " ____________ \n" +
                     "|     ////// | \n" +
                     "|   //////   | \n" +
