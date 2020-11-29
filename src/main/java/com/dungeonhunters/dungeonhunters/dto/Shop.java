@@ -33,7 +33,8 @@ public class Shop {
         List<Card> allCardList = cardService.getAllCards();
         if (allCardList.size() > 0) {
             Random r = new Random();
-            for (int i = 0; i < 3; i++) {
+            List<Card> duplicates = new ArrayList<>();
+            for (int i = 0; i < 4; i++) {
                 Card card = allCardList.get(r.nextInt(allCardList.size()));
                 if (!player.getDeck().getCardSet().contains(card)) {
                     ShopItemDto item = ShopItemDto.builder()
@@ -42,8 +43,10 @@ public class Shop {
                             .id(card.getId())
                             .price(0) //r.nextInt((100-80)+1)+80
                             .build();
-                    shopItems.add(item);
-                    if(!shopItems.contains(item)) shopItems.add(item);
+                    if(!duplicates.contains(card)){
+                        shopItems.add(item);
+                        duplicates.add(card);
+                    }
                 }
             }
         }
@@ -55,9 +58,10 @@ public class Shop {
     public void buyItem(Player player, int selected) {
         if(player.getGold()>=shopItems.get(selected).getPrice()){
             if(shopItems.get(selected).getType() == ItemType.CARD){
-                List<Card> cardList =  player.getDeck().getCardSet();
-                cardList.add(cardService.getCardById(shopItems.get(selected).getId()));
-                Deck deck = player.getDeck();
+                Deck deck = deckService.getDeckById(player.getDeck().getId());
+                List<Card> set = deck.getCardSet();
+                set.add(cardService.getCardById(shopItems.get(selected).getId()));
+                deck.setCardSet(set);
                 deckService.addDeck(deck);
                 shopItems.remove(selected);
             }
