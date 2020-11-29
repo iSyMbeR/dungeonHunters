@@ -214,5 +214,4 @@ public class GameController extends JFrame {
         return allEnemies.get(random.nextInt(allEnemies.size()));
     }
 
-
 }

@@ -1,6 +1,6 @@
 --AREA
 insert into AREA (ID, NAME)
-values (1, 'Bagno ukraińców');
+values (1, 'Plebania');
 insert into AREA (ID, NAME)
 values (2, 'Szkolna 17');
 insert into AREA (ID, NAME)
@@ -13,27 +13,47 @@ values (5, 'Hogwart');
 
 --BONUS
 insert into BONUS (ID, DESCRIPTION, NAME, TYPE, VALUE)
-values (1, 'Chcesz uderzyć mocniej? Nie ma problemu', 'bonus1', 'atak', 5);
+values (1, 'Chcesz uderzyć mocniej? Nie ma problemu', 'Rzuć żelazkiem', 'Atak', 5);
 insert into BONUS (ID, DESCRIPTION, NAME, TYPE, VALUE)
-values (2, 'Chcesz się lepiej bronić? Nie ma problemu', 'bonus2', 'obrona', 5);
+values (2, 'Chcesz się lepiej bronić? Nie ma problemu', 'Broń się krzesłem', 'Obrona', 5);
 insert into BONUS (ID, DESCRIPTION, NAME, TYPE, VALUE)
-values (3, 'Jak komus z tego uderzysz to go wlasny kot nie pozna', 'bonus3', 'atak', 10);
+values (3, 'Jak komus z tego uderzysz to go wlasny kot nie pozna', 'Rzut teściową', 'Atak', 10);
 insert into BONUS (ID, DESCRIPTION, NAME, TYPE, VALUE)
-values (4, 'Bron się krzesłem', 'bonus4', 'obrona', 10);
+values (4, 'Klep jak najman', 'Mistrz europy', 'Atak', 15);
+
 
 
 --ENEMY
-insert into ENEMY (ID, NAME, BASE_LIFE, DMG, MIN_LEVEL)
-values (1, 'Malfoj', 50, 2, 1);
-insert into ENEMY (ID, NAME, BASE_LIFE, DMG, MIN_LEVEL)
-values (2, 'Ron', 55, 3, 2);
-insert into ENEMY (ID, NAME, BASE_LIFE, DMG, MIN_LEVEL)
-values (3, 'Zgredek', 60, 4, 3);
-insert into ENEMY (ID, NAME, BASE_LIFE, DMG, MIN_LEVEL)
-values (4, 'Hagrid', 65, 5, 4);
-insert into ENEMY (ID, NAME, BASE_LIFE, DMG, MIN_LEVEL)
-values (5, 'Gryf', 70, 6, 5);
+insert into ENEMY (ID, NAME,HP, DMG, EXPERIENCE_DROP, GOLD_DROP, STAGE, DEFENSE)
+values (1, 'Malfoj', 20, 2, 100, 5, 1, 1);
+insert into ENEMY (ID, NAME,HP, DMG, EXPERIENCE_DROP, GOLD_DROP, STAGE, DEFENSE)
+values (2, 'Ron', 30, 3, 150, 6, 2,2);
+insert into ENEMY (ID, NAME,HP, DMG, EXPERIENCE_DROP, GOLD_DROP, STAGE, DEFENSE)
+values (3, 'Zgredek', 40, 4, 200, 7, 3,3);
+insert into ENEMY (ID, NAME,HP, DMG, EXPERIENCE_DROP, GOLD_DROP, STAGE, DEFENSE)
+values (4, 'Hagrid', 50, 5, 250, 8, 4,4);
+insert into ENEMY (ID, NAME,HP, DMG, EXPERIENCE_DROP, GOLD_DROP, STAGE, DEFENSE)
+values (5, 'Gryf', 60, 6, 300, 9, 5,5);
 
+insert into ENEMY (ID, NAME,HP, DMG, EXPERIENCE_DROP, GOLD_DROP, STAGE, DEFENSE)
+values (6, 'Passat 1.8 tdi', 70, 7, 350, 10, 6,6);
+insert into ENEMY (ID, NAME,HP, DMG, EXPERIENCE_DROP, GOLD_DROP, STAGE, DEFENSE)
+values (7, 'Golf III gaz', 80, 8, 400, 11, 7,7);
+insert into ENEMY (ID, NAME,HP, DMG, EXPERIENCE_DROP, GOLD_DROP, STAGE, DEFENSE)
+values (8, 'Stonoga', 90, 9, 450, 12, 8,8);
+insert into ENEMY (ID, NAME,HP, DMG, EXPERIENCE_DROP, GOLD_DROP, STAGE, DEFENSE)
+values (9, 'Najman', 100, 10, 500, 13, 9,9);
+insert into ENEMY (ID, NAME,HP, DMG, EXPERIENCE_DROP, GOLD_DROP, STAGE, DEFENSE)
+values (10, 'Korwin Klejn', 110, 11, 550, 14, 10,10);
+
+insert into ENEMY (ID, NAME,HP, DMG, EXPERIENCE_DROP, GOLD_DROP, STAGE, DEFENSE)
+values (11, 'Demon', 120, 12, 600, 15, 11, 11);
+insert into ENEMY (ID, NAME,HP, DMG, EXPERIENCE_DROP, GOLD_DROP, STAGE, DEFENSE)
+values (12, 'Orshabaal', 130, 13, 650, 16, 12, 12);
+insert into ENEMY (ID, NAME,HP, DMG, EXPERIENCE_DROP, GOLD_DROP, STAGE, DEFENSE)
+values (13, 'Tesciowa', 140, 14, 700, 17, 13, 13);
+insert into ENEMY (ID, NAME,HP, DMG, EXPERIENCE_DROP, GOLD_DROP, STAGE, DEFENSE)
+values (14, 'Była dziewczyna', 150, 15, 750, 18, 14, 14);
 -- ITEM_BASE
 
 insert into ITEM_BASE (ID, DMG, RARITY) values (1, 10, 50);
@@ -56,51 +76,57 @@ insert into ITEM_BASE (ID, DMG, RARITY) values (17, 32, 6);
 insert into ITEM_BASE (ID, DMG, RARITY) values (18, 34, 5);
 insert into ITEM_BASE (ID, DMG, RARITY) values (19, 36, 4);
 insert into ITEM_BASE (ID, DMG, RARITY) values (20, 38, 3);
+
+
+
 -- CARDS{
 insert into CARD (ID,name, type, cost, dmg, defense)
-values (1,'Bash', 'Attack', 2, 8, 0);
+values (1,'Dotyk Proboszcza', 'Attack', 2, 8, 0);
 insert into CARD (ID,name, type, cost, dmg, defense)
-values (2,'Defend', 'Defense', 1, 0, 5);
+values (2,'Kołdra', 'Defense', 1, 0, 5);
 insert into CARD (ID,name, type, cost, dmg, defense)
-values (3,'Strike', 'Attack', 1, 6, 0);
+values (3,'Mela na twarz', 'Attack', 1, 6, 0);
 insert into CARD (ID,name, type, cost, dmg, defense)
-values (4,'Anger', 'Attack', 0, 6, 0);
+values (4,'Złoty usmiech', 'Attack', 0, 6, 0);
 insert into CARD (ID,name, type, cost, dmg, defense)
-values (5,'Armaments', 'Defense', 1, 0, 5);
+values (5,'Postaw taczkę', 'Defense', 1, 0, 5);
 insert into CARD (ID,name, type, cost, dmg, defense)
-values (6,'Body Slam', 'Attack', 1, 5, 0);
+values (6,'Rozsyp gwoździe', 'Attack', 1, 5, 0);
 insert into CARD (ID,name, type, cost, dmg, defense)
-values (7,'Cleave', 'Attack', 2, 8, 0);
+values (7,'Rzut dziewczyną', 'Attack', 2, 8, 0);
 insert into CARD (ID, name,type, cost, dmg, defense)
-values (8,'Clothesline', 'Attack', 3, 12, 0);
+values (8,'4 dniowe slipy', 'Attack', 3, 12, 0);
 insert into CARD (ID,name, type, cost, dmg, defense)
-values (9,'Flex', 'Defense', 0, 0, 2);
+values (9,'Ała nie bij', 'Defense', 0, 0, 2);
 insert into CARD (ID,name, type, cost, dmg, defense)
-values (10,'Havoc', 'Defense', 2, 0, 8);
+values (10,'Formacja zółw', 'Defense', 2, 0, 8);
 insert into CARD (ID,name, type, cost, dmg, defense)
-values (11,'Headbutt', 'Attack', 1, 9, 0);
+values (11,'Beknięcie', 'Attack', 1, 9, 0);
 insert into CARD (ID,name, type, cost, dmg, defense)
-values (12,'Heavy Blade', 'Attack', 3, 14, 0);
+values (12,'Pierdnięcie', 'Attack', 3, 14, 0);
 insert into CARD (ID, name,type, cost, dmg, defense)
-values (13,'Iron Wave', 'Attack', 1, 5, 7);
+values (13,'Grzmot', 'Attack', 1, 5, 7);
 insert into CARD (ID,name, type, cost, dmg, defense)
 values (14,'Perfected Strike', 'Attack', 2, 6, 2);
 insert into CARD (ID,name, type, cost, dmg, defense)
-values (15,'Pommel Strike', 'Attack', 1, 9, 0);
+values (15,'Lwię ', 'Attack', 1, 9, 0);
 insert into CARD (ID,name, type, cost, dmg, defense)
-values (16,'Shrug it Off', 'Defense', 2, 0, 9);
+values (16,'Krowie muu', 'Defense', 2, 0, 9);
 insert into CARD (ID, name,type, cost, dmg, defense)
-values (17,'Sword Boomerang', 'Attack', 1, 3, 0);
+values (17,'Boomerang', 'Attack', 1, 3, 0);
 insert into CARD (ID, name,type, cost, dmg, defense)
-values (18,'Thunderclap', 'Attack', 1, 6, 0);
+values (18,'Pchniecie kulą', 'Attack', 1, 6, 0);
 insert into CARD (ID,name, type, cost, dmg, defense)
-values (19,'True Grit', 'Defense', 4, 0, 20);
+values (19,'Odklepanie najmana', 'Defense', 4, 0, 20);
 insert into CARD (ID,name, type, cost, dmg, defense)
-values (20,'Twin Strike', 'Attack', 1, 10, 0);
+values (20,'Rzut kozą', 'Attack', 1, 10, 0);
 insert into CARD (ID,name, type, cost, dmg, defense)
-values (21,'Wild Strike', 'Attack', 4, 17, 0);
+values (21,'Kobiecy liść', 'Attack', 4, 17, 0);
 insert into CARD (ID,name, type, cost, dmg, defense)
-values (22,'Blood for Blood', 'Attack', 6, 20, 0);
+values (22,'Śpiew Stonogi', 'Attack', 6, 20, 0);
+
+
+
 
 insert into ITEM (ID, NAME,ITEM_BASE_ID)
 values (1, 'Stiletto',1);
