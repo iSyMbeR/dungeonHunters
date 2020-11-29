@@ -3,9 +3,7 @@ package com.dungeonhunters.dungeonhunters.service;
 import com.dungeonhunters.dungeonhunters.Repository.PlayerRepository;
 
 import com.dungeonhunters.dungeonhunters.model.Player;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,8 +16,8 @@ public class PlayerService {
 
     private final PlayerRepository playerRepository;
 
-    public void addPlayer(Player player){
-        playerRepository.save(player);
+    public Player addPlayer(Player player){
+        return playerRepository.save(player);
     }
 
     public void deletePlayer(Player player){

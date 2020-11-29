@@ -50,7 +50,7 @@ public class MenuFrame extends JFrame {
             panel.add(l);
             iter++;
         }
-        panel.setMinimumSize(new Dimension(100, 200));
+        //panel.setMinimumSize(new Dimension(100, 200));
         panel.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -61,18 +61,15 @@ public class MenuFrame extends JFrame {
                         gameController.clearScreen();
                         showPlayerCreation();
                     } else {
-                        gameController.setCurrentPlayer(players.get(selected - 1));
-                        gameController.goToProfileMenu();
+                        gameController.setCurrentPlayer(players.get(selected - 2));
+                        gameController.switchToProfileController();
                     }
                 }
                 refreshColor();
             }
-
-
         });
         panel.setFocusable(true);
-        panel.requestFocusInWindow();
-        this.setContentPane(panel);
+        gameController.setMainContent(panel);
     }
 
     public void setGameController(GameController gameController) {
@@ -129,20 +126,16 @@ public class MenuFrame extends JFrame {
                 player = players.get(iter);
             } else {
                 player = gameController.createPlayer(
-                        name,
-                        100,
-                        1,
-                        0,
-                        gameController.createDeck(new ArrayList<Card>()),
-                        gameController.createInventory(new HashSet<Item>())
+                        name
                 );
             }
             gameController.setCurrentPlayer(player);
-            gameController.goToProfileMenu();
+            gameController.switchToProfileController();
         });
         panel.add(l);
         panel.add(tf);
-        gameController.setContent(panel);
+        gameController.setMainContent(panel);
+        tf.requestFocusInWindow();
 
     }
 }

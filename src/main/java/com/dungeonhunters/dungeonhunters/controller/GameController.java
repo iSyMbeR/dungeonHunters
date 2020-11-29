@@ -24,8 +24,7 @@ public class GameController extends JFrame {
     public final CardService cardService;
     public final DeckService deckService;
     public final AreaService areaService;
-    Player player;
-
+    public Player player;
     public JPanel panel;
     public final MenuFrame menuController;
     public final ProfileController profileController;
@@ -49,27 +48,26 @@ public class GameController extends JFrame {
         this.profileController = profileController;
         this.panel = new JPanel();
         this.setSize(new Dimension(500, 500));
-        goToMainMenu();
+        switchToMenuController();
+
     }
 
-    private void goToMainMenu() {
+    private void switchToMenuController() {
         menuController.setGameController(this);
         menuController.createView();
-        this.setContentPane(menuController.panel);
-        this.setVisible(true);
+        setMainContent(menuController.panel);
     }
 
-    public void goToProfileMenu() {
+    public void switchToProfileController() {
         profileController.setGameController(this);
         profileController.setPlayer(player);
         profileController.createView();
-        this.setContentPane(profileController.panel);
-        this.setVisible(true);
+        setMainContent(profileController.panel);
     }
 
-    public void setContent(JPanel content) {
+    public void setMainContent(JPanel content) {
         this.setContentPane(content);
-        this.setVisible(true);
+        setVisible(true);
     }
 
     public void setCurrentPlayer(Player player) {
@@ -120,33 +118,30 @@ public class GameController extends JFrame {
 
     }
 
-    public Deck createDeck(List<Card> cardSet) {
+    public Deck createDeck() {
         Deck deck = Deck.builder()
-                .cardSet(cardSet)
+                .cardSet(new ArrayList<>())
                 .build();
-        deckService.addDeck(deck);
-        return deck;
+        return deckService.addDeck(deck);
     }
 
-    public Player createPlayer(String name, int hp, int stage, int exp, Deck deck, Inventory inv) {
+    public Player createPlayer(String name) {
         Player player = Player.builder()
                 .name(name)
-                .hp(hp)
-                .stage(stage)
-                .experience(exp)
-                .deck(deck)
-                .inventory(inv)
+                .hp(100)
+                .stage(1)
+                .experience(0)
+                .deck(createDeck())
+                .inventory(createInventory())
+                .gold(0)
                 .build();
-        playerService.addPlayer(player);
-        return player;
+        return playerService.addPlayer(player);
     }
 
-    public Inventory createInventory(Set<Item> itemList) {
+    public Inventory createInventory() {
         Inventory inventory = Inventory.builder()
-                .itemList(itemList)
                 .build();
-        inventoryService.addInventory(inventory);
-        return inventory;
+        return inventoryService.addInventory(inventory);
     }
 
     public void populateDatabase() {
