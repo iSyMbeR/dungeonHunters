@@ -193,9 +193,9 @@ public class ProfileController extends JFrame {
         container.setLayout(new GridLayout(0,3));
         JPanel options = new JPanel();
         JLabel exit = new JLabel("Back");
-
+        JLabel name ;
+        JLabel dmg ;
         List<Item> listOfItemsFromBase =itemService.getItems();
-        JLabel exit2 = new JLabel("Back");
         container.add(new JLabel(" "));
         container.add(new JLabel("List of all items to get"));
         container.add(new JLabel(" "));
@@ -204,11 +204,15 @@ public class ProfileController extends JFrame {
         container.add(new JLabel(" "));
         container.add(new JLabel("DMG"));
         for(Item c : listOfItemsFromBase){
-            container.add(new JLabel(c.getName()));
+            name = new JLabel(c.getName());
+            dmg  = new JLabel(""+c.getItemBase().getDmg());
+            name.setForeground(Color.BLUE);
+            dmg.setForeground(Color.RED);
+            container.add(name);
             container.add(new JLabel(" "));
-            container.add(new JLabel(""+c.getItemBase().getDmg()));
+            container.add(dmg);
         }
-        options.add(exit2);
+        options.add(exit);
         createControls(options,new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
