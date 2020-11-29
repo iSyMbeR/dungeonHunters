@@ -50,6 +50,7 @@ public class GameController extends JFrame {
         this.profileController = profileController;
         this.fightController = fightController;
         this.panel = new JPanel();
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setSize(new Dimension(500, 500));
         switchToMenuController();
 
@@ -58,20 +59,17 @@ public class GameController extends JFrame {
     private void switchToMenuController() {
         menuController.setGameController(this);
         menuController.createView();
-        setMainContent(menuController.panel);
     }
 
     public void switchToProfileController() {
         profileController.setGameController(this);
         profileController.setPlayer(player);
         profileController.createView();
-        setMainContent(profileController.panel);
     }
     public void switchToFightController() {
         fightController.setGameController(this);
         fightController.setPlayer(player);
         fightController.createView();
-        setMainContent(profileController.panel);
     }
     public void setMainContent(JPanel content) {
         this.setContentPane(content);

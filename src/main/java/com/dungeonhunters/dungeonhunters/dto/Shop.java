@@ -18,14 +18,12 @@ import java.util.Set;
 @Component
 public class Shop {
     private final CardService cardService;
-    private final ItemService itemService;
-    public List<ShopItemDto> shopItems;
     private final DeckService deckService;
+    public List<ShopItemDto> shopItems;
 
-    Shop(CardService cardService, ItemService itemService, DeckService deckService){
+    Shop(CardService cardService, DeckService deckService){
         this.cardService = cardService;
         this.shopItems = new ArrayList<>();
-        this.itemService = itemService;
         this.deckService = deckService;
     }
     public void refreshItems(Player player) {
