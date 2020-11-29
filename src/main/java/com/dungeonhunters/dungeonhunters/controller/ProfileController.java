@@ -42,11 +42,13 @@ public class ProfileController extends JFrame {
         infoPanel.add(name);
         infoPanel.add(exp);
         infoPanel.add(hp);
+        JLabel fightLabel = new JLabel("Wejdź do lochu");
         JLabel inventoryLabel = new JLabel("Pokaż ekwipunek");
         JLabel deckLabel = new JLabel("Pokaż karty");
         JLabel addCardLabel = new JLabel("Sklep");
         JLabel exitLabel = new JLabel("Wyjdź");
         JPanel selectPanel = new JPanel();
+        selectPanel.add(fightLabel);
         selectPanel.add(inventoryLabel);
         selectPanel.add(deckLabel);
         selectPanel.add(addCardLabel);
@@ -55,10 +57,11 @@ public class ProfileController extends JFrame {
         createControls(selectPanel, new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(selected == 1) createPlayerInventoryView();
-                if(selected == 2) createDeckView();
-                if(selected == 3) createShopView();
-                if(selected == 4) exitGame();
+                if(selected == 1) gameController.switchToFightController();
+                if(selected == 2) createPlayerInventoryView();
+                if(selected == 3) createDeckView();
+                if(selected == 4) createShopView();
+                if(selected == 5) exitGame();
             }
         });
         panel.setLayout(new GridLayout(2,1));

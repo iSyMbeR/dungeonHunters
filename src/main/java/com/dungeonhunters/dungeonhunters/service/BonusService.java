@@ -3,7 +3,6 @@ package com.dungeonhunters.dungeonhunters.service;
 import com.dungeonhunters.dungeonhunters.Repository.BonusRepository;
 
 import com.dungeonhunters.dungeonhunters.model.Bonus;
-import com.dungeonhunters.dungeonhunters.model.Card;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

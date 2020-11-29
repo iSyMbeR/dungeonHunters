@@ -28,6 +28,7 @@ public class GameController extends JFrame {
     public JPanel panel;
     public final MenuFrame menuController;
     public final ProfileController profileController;
+    public final FightController fightController;
 
     GameController(PlayerService playerService,
                    EnemyService enemyService,
@@ -36,7 +37,8 @@ public class GameController extends JFrame {
                    DeckService deckService,
                    AreaService areaService,
                    MenuFrame menuController,
-                   ProfileController profileController) {
+                   ProfileController profileController,
+                   FightController fightController) {
         super("Dungeon Hunters");
         this.playerService = playerService;
         this.enemyService = enemyService;
@@ -46,6 +48,7 @@ public class GameController extends JFrame {
         this.areaService = areaService;
         this.menuController = menuController;
         this.profileController = profileController;
+        this.fightController = fightController;
         this.panel = new JPanel();
         this.setSize(new Dimension(500, 500));
         switchToMenuController();
@@ -64,7 +67,12 @@ public class GameController extends JFrame {
         profileController.createView();
         setMainContent(profileController.panel);
     }
-
+    public void switchToFightController() {
+        fightController.setGameController(this);
+        fightController.setPlayer(player);
+        fightController.createView();
+        setMainContent(profileController.panel);
+    }
     public void setMainContent(JPanel content) {
         this.setContentPane(content);
         setVisible(true);
@@ -178,31 +186,6 @@ public class GameController extends JFrame {
         deckService.getDeckById(deck.getId()).setCardSet(cardList);
     }
 
-    public String updateView(Player player, Enemy enemy, int turn) {
-        System.out.println(BLACK);
-        String fightText = fight;
-        int enMaxHp, enHp, plMaxHp, plHp;
-        enMaxHp = enemyService.getEnemyById(enemy.getId()).getBase_life();
-        enHp = enemy.getBase_life();
-        plMaxHp = playerService.getPlayerById(player.getId()).getHp();
-        plHp = player.getHp();
-        String numericValue = plHp + "/" + plMaxHp;
-        Integer len = numericValue.length();
-        for (int i = 0; i < (20 - len) / 2; i++) numericValue = " " + numericValue;
-        for (int i = 0; i < (20 - len) / 2; i++) numericValue = numericValue + " ";
-        if ((20 - len) % 2 == 1) numericValue = " " + numericValue;
-        fightText = fightText.replace("#friendly_health_bar", numericValue);
-
-        numericValue = enHp + "/" + enMaxHp;
-        len = numericValue.length();
-        for (int i = 0; i < (20 - len) / 2; i++) numericValue = " " + numericValue;
-        for (int i = 0; i < (20 - len) / 2; i++) numericValue = numericValue + " ";
-        if ((20 - len) % 2 == 1) numericValue += " ";
-        fightText = fightText.replace("##enemy_health_bar##", numericValue);
-        fightText = fightText.replace("#T", (turn < 10) ? " " + turn : Integer.toString(turn));
-
-        return fightText;
-    }
 
     public void printCard(Card card, int index) {
         String cardText = cardView;
@@ -230,5 +213,6 @@ public class GameController extends JFrame {
         Random random = new Random();
         return allEnemies.get(random.nextInt(allEnemies.size()));
     }
+
 
 }

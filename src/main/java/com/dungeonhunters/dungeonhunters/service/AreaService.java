@@ -3,7 +3,6 @@ package com.dungeonhunters.dungeonhunters.service;
 import com.dungeonhunters.dungeonhunters.Repository.AreaRepository;
 
 import com.dungeonhunters.dungeonhunters.model.Area;
-import com.dungeonhunters.dungeonhunters.model.Card;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
