@@ -181,8 +181,6 @@ public class ProfileController extends JFrame {
         options.setFocusable(true);
         gameController.setMainContent(container);
         options.requestFocusInWindow();
-
-
     }
 
 

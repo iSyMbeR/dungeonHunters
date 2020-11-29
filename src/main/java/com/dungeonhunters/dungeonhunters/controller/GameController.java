@@ -182,8 +182,8 @@ public class GameController extends JFrame {
         System.out.println(BLACK);
         String fightText = fight;
         int enMaxHp, enHp, plMaxHp, plHp;
-        enMaxHp = enemyService.getEnemyById(enemy.getId()).getBase_life();
-        enHp = enemy.getBase_life();
+        enMaxHp = enemyService.getEnemyById(enemy.getId()).getHp();
+        enHp = enemy.getHp();
         plMaxHp = playerService.getPlayerById(player.getId()).getHp();
         plHp = player.getHp();
         String numericValue = plHp + "/" + plMaxHp;
