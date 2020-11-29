@@ -51,7 +51,8 @@ public class GameController extends JFrame {
         this.fightController = fightController;
         this.panel = new JPanel();
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.setSize(new Dimension(500, 500));
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        this.setUndecorated(true);
         switchToMenuController();
 
     }
