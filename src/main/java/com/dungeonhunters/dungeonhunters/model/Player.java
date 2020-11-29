@@ -20,6 +20,7 @@ public class Player implements Serializable {
     private int experience;
     private int hp;
     private int gold;
+    private int currentHp;
     @OneToOne
     private Deck deck;
     @OneToOne
