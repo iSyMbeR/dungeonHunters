@@ -3,15 +3,18 @@ package com.dungeonhunters.dungeonhunters.controller;
 import com.dungeonhunters.dungeonhunters.dto.Shop;
 import com.dungeonhunters.dungeonhunters.dto.ShopItemDto;
 import com.dungeonhunters.dungeonhunters.model.Card;
+import com.dungeonhunters.dungeonhunters.model.Item;
 import com.dungeonhunters.dungeonhunters.model.Player;
 import com.dungeonhunters.dungeonhunters.service.CardService;
 import com.dungeonhunters.dungeonhunters.service.DeckService;
+import com.dungeonhunters.dungeonhunters.service.ItemService;
 import org.springframework.stereotype.Controller;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class ProfileController extends JFrame {
@@ -22,10 +25,12 @@ public class ProfileController extends JFrame {
     private final Shop shop;
     private final DeckService deckService;
     private final CardService cardService;
+    private final ItemService itemService;
 
-    ProfileController(DeckService deckService, CardService cardService, Shop shop){
+    ProfileController(DeckService deckService, CardService cardService, Shop shop,ItemService itemService){
         this.deckService = deckService;
         this.cardService = cardService;
+        this.itemService = itemService;
         this.shop = shop;
     }
     public void createView(){
@@ -50,7 +55,7 @@ public class ProfileController extends JFrame {
         createControls(selectPanel, new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(selected == 1) createInventoryView();
+                if(selected == 1) createPlayerInventoryView();
                 if(selected == 2) createDeckView();
                 if(selected == 3) createShopView();
                 if(selected == 4) exitGame();
@@ -101,6 +106,7 @@ public class ProfileController extends JFrame {
     }
 
     private void createShopView() {
+        shop.refreshItems(player);
         JPanel container = new JPanel();
         container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
         JPanel options = new JPanel();
@@ -127,10 +133,98 @@ public class ProfileController extends JFrame {
         options.setFocusable(true);
         gameController.setMainContent(container);
         options.requestFocusInWindow();
+
     }
 
-    private void createInventoryView() {
+    private void createPlayerInventoryView() {
+        JPanel container = new JPanel();
+        container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
+        container.setLayout(new GridLayout(0,3));
+        JPanel options = new JPanel();
+
+
+        Set<Item> playerInventoryItemsList = player.getInventory().getItemList();
+        container.add(new JLabel(" "));
+        container.add(new JLabel("Your list of items"));
+        container.add(new JLabel(" "));
+
+        if (playerInventoryItemsList.isEmpty()) container.add(new JLabel("U've 0 items"));
+        else {
+            container.add(new JLabel("NAZWA"));
+            container.add(new JLabel(" "));
+            container.add(new JLabel("DMG"));
+            for (Item c : playerInventoryItemsList) {
+                container.add(new JLabel(c.getName()));
+                container.add(new JLabel(" "));
+                container.add(new JLabel("" + c.getItemBase().getDmg()));
+            }
+        }
+        JLabel exit = new JLabel("Back");
+        JLabel allItems = new JLabel("Show all items");
+        options.add(allItems);
+        options.add(exit);
+        createControls(options,new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(selected == 1) {
+                    createAllItemsView();
+                }
+                else if (selected == 2){
+                    createView();
+                }else{
+                    createPlayerInventoryView();
+                }
+            }
+        });
+        options.setLayout(new BoxLayout(options,BoxLayout.Y_AXIS));
+        container.add(options);
+        options.setFocusable(true);
+        gameController.setMainContent(container);
+        options.requestFocusInWindow();
+
+
+    }
+
+
+    private void createAllItemsView() {
         shop.refreshItems(player);
+        JPanel container = new JPanel();
+        container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
+        container.setLayout(new GridLayout(0,3));
+        JPanel options = new JPanel();
+        JLabel exit = new JLabel("Back");
+
+        List<Item> listOfItemsFromBase =itemService.getItems();
+        JLabel exit2 = new JLabel("Back");
+        container.add(new JLabel(" "));
+        container.add(new JLabel("List of all items to get"));
+        container.add(new JLabel(" "));
+
+        container.add(new JLabel("NAZWA"));
+        container.add(new JLabel(" "));
+        container.add(new JLabel("DMG"));
+        for(Item c : listOfItemsFromBase){
+            container.add(new JLabel(c.getName()));
+            container.add(new JLabel(" "));
+            container.add(new JLabel(""+c.getItemBase().getDmg()));
+        }
+        options.add(exit2);
+        createControls(options,new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(selected == options.getComponentCount()) {
+                    createPlayerInventoryView();
+                }else{
+                    createAllItemsView();
+                }
+            }
+        });
+        options.setLayout(new BoxLayout(options,BoxLayout.Y_AXIS));
+        container.add(options);
+        options.setFocusable(true);
+        gameController.setMainContent(container);
+        options.requestFocusInWindow();
+
     }
 
     public void refreshColor(JPanel p) {
