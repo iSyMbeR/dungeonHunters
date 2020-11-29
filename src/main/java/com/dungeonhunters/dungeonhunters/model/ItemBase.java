@@ -17,7 +17,5 @@ public class ItemBase implements Serializable {
     private Long id;
     private int dmg;
     private int rarity;
-    @OneToOne
-    private Area area;
 
 }
