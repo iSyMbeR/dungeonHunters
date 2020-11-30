@@ -17,22 +17,23 @@ public class InventoryService {
 
     private final InventoryRepository inventoryRepository;
 
-    public Inventory addInventory(Inventory inv){
+    public Inventory addInventory(Inventory inv) {
         return inventoryRepository.save(inv);
     }
 
-    public void deleteInventory(Inventory inv){
+    public void deleteInventory(Inventory inv) {
         inventoryRepository.delete(inv);
     }
 
-    public List<Inventory> getAllInventory()
-    {
+    public List<Inventory> getAllInventory() {
         return inventoryRepository.findAll();
     }
 
-    public Inventory getInventoryById(Long id){return inventoryRepository.findById(id).orElseThrow();}
+    public Inventory getInventoryById(Long id) {
+        return inventoryRepository.findById(id).orElseThrow();
+    }
 
-    public int getSize(){
+    public int getSize() {
         return (int) inventoryRepository.count();
     }
 
