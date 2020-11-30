@@ -1,9 +1,7 @@
 package com.dungeonhunters.dungeonhunters.controller;
 
-import com.dungeonhunters.dungeonhunters.Ansi;
 import com.dungeonhunters.dungeonhunters.dto.Fight;
 import com.dungeonhunters.dungeonhunters.model.Card;
-import com.dungeonhunters.dungeonhunters.model.Enemy;
 import com.dungeonhunters.dungeonhunters.model.Player;
 import com.dungeonhunters.dungeonhunters.service.DeckService;
 import com.dungeonhunters.dungeonhunters.service.EnemyService;
@@ -17,13 +15,15 @@ import java.awt.event.ActionEvent;
 @Controller
 public class FightController extends JFrame {
     public GameController gameController;
-    public Player player;
     public final EnemyService enemyService;
     private final DeckService deckService;
     public final Fight fight;
     public int selected = 1;
+    public JPanel container;
     public JPanel optionsPanel;
     public JPanel cardPanel;
+    public JPanel playerPanel;
+    public JPanel enemyPanel;
 
     FightController(EnemyService enemyService, DeckService deckService, Fight fight){
         this.enemyService = enemyService;
@@ -33,29 +33,25 @@ public class FightController extends JFrame {
 
     public void createView() {
         generateEnemy();
-        JPanel container = new JPanel();
-        container.setLayout(new GridLayout(2,2));
+        fight.nextTurn();
 
-        JPanel playerPanel = new JPanel();
-        JLabel playerLabel = new JLabel("Player");
-        playerPanel.add(playerLabel);
-
-        JPanel enemyPanel = new JPanel();
-        JLabel enemyLabel = new JLabel("Enemy");
-        enemyPanel.add(enemyLabel);
+        getPlayerPanel();
+        getEnemyPanel();
 
         optionsPanel = new JPanel();
         optionsPanel.setLayout(new BoxLayout(optionsPanel,BoxLayout.Y_AXIS));
         JLabel attackOption = new JLabel("Attack");
         JLabel defendOption = new JLabel("Defend");
         JLabel useCardOption = new JLabel("Use card");
+        JLabel endTurnOption = new JLabel("End turn");
         optionsPanel.add(attackOption);
         optionsPanel.add(defendOption);
         optionsPanel.add(useCardOption);
+        optionsPanel.add(endTurnOption);
 
         cardPanel = new JPanel();
         cardPanel.setLayout(new BoxLayout(cardPanel,BoxLayout.Y_AXIS));
-        List<Card> cardList = deckService.getDeckById(player.getDeck().getId()).getCardSet();
+        List<Card> cardList = deckService.getDeckById(fight.player.getDeck().getId()).getCardSet();
         for(Card c : cardList){
             JLabel name = new JLabel(c.getName()+" dmg: "+c.getDmg()+" def: "+c.getDefense());
             cardPanel.add(name);
@@ -65,37 +61,137 @@ public class FightController extends JFrame {
         createControls(cardPanel, new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(selected!=cardPanel.getComponentCount())fight.useCard(cardList.get(selected-1));
+                if(selected!=cardPanel.getComponentCount())useCard(cardList.get(selected-1));
                 switchControlToOptionsMenu();
             }
         });
-        container.add(playerPanel);
-        container.add(enemyPanel);
-        container.add(optionsPanel);
-        container.add(cardPanel);
         createControls(optionsPanel, new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(selected == 1) attack();
                 if(selected == 2) defend();
                 if(selected == 3) switchControlToCardMenu();
+                if(selected == 4) endTurn();
             }
         });
         optionsPanel.setFocusable(true);
-        gameController.setMainContent(container);
-        optionsPanel.requestFocusInWindow();
+        buildMainContainer();
     }
 
+    public void getPlayerPanel() {
+        playerPanel = new JPanel();
+        JLabel playerName = new JLabel(fight.player.getName());
+        JLabel playerStats = new JLabel(
+                "HP: "+fight.player.getCurrentHp()+"/"+fight.player.getHp()+" DMG: "+
+                        fight.player.getDmg()+" DEF: "+fight.player.getDef()
+        );
+        playerPanel.add(playerName);
+        playerPanel.add(playerStats);
+    }
+
+    private void checkToEndBattle(int battleStatus) {
+        if(battleStatus == - 1 ) endGame();
+        if(battleStatus == 1 ) winBattle();
+    }
+
+    private void winBattle() {
+        fight.generateLootAndUpdatePlayer();
+        showLootScreen();
+    }
+
+    private void endGame() {
+        fight.looseBattleAndUpdatePlayer();
+        showFailureScreen();
+    }
+
+    private void showLootScreen() {
+        JPanel cont = new JPanel();
+        JPanel loot = new JPanel();
+        JPanel exit = getBattleExitOptions(1);
+        cont.add(loot);
+        cont.add(exit);
+        gameController.setMainContent(cont);
+        exit.requestFocusInWindow();
+    }
+
+    private void showFailureScreen() {
+        JPanel cont = new JPanel();
+        JPanel lostMessagePanel = new JPanel();
+        JLabel lostMessage = new JLabel("You lost. Your character has been deleted");
+        lostMessagePanel.add(lostMessage);
+        JPanel exit = getBattleExitOptions(0);
+        cont.add(lostMessagePanel);
+        cont.add(exit);
+        gameController.setMainContent(cont);
+        exit.requestFocusInWindow();
+    }
+    private JPanel getBattleExitOptions(int battleOutcome){
+        JPanel p = new JPanel();
+        JLabel exit = new JLabel("exit");
+        p.add(exit);
+        createControls(p, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(battleOutcome == 1) gameController.switchToProfileController();
+                if(battleOutcome == 0) gameController.switchToMenuController();
+            }
+        });
+        return p;
+    }
     private void generateEnemy() {
         fight.createEnemy();
     }
 
+    private void useCard(Card card) {
+        fight.useCard(card);
+        refreshPlayerPanel();
+        refreshEnemyPanel();
+        checkToEndBattle(fight.checkEndBattleConditions());
+    }
+
     public void attack(){
         fight.playerAttack();
+        refreshPlayerPanel();
+        refreshEnemyPanel();
+        checkToEndBattle(fight.checkEndBattleConditions());
     }
     public void defend(){
         fight.playerDefend();
     }
+    public void endTurn(){
+        fight.nextTurn();
+        refreshPlayerPanel();
+        refreshEnemyPanel();
+        checkToEndBattle(fight.checkEndBattleConditions());
+    }
+    public void refreshPlayerPanel(){
+        getPlayerPanel();
+        buildMainContainer();
+    }
+    public void buildMainContainer(){
+        container = new JPanel();
+        container.setLayout(new GridLayout(2,2));
+        container.add(playerPanel);
+        container.add(enemyPanel);
+        container.add(optionsPanel);
+        container.add(cardPanel);
+        gameController.setMainContent(container);
+        optionsPanel.requestFocusInWindow();
+    }
+    public void refreshEnemyPanel(){
+        getEnemyPanel();
+        buildMainContainer();
+    }
+
+    public void getEnemyPanel() {
+        enemyPanel = new JPanel();
+        JLabel enemyName = new JLabel(fight.enemy.getName());
+        JLabel enemyLife = new JLabel("HP: "+fight.enemy.getHp()+"/"+fight.enemyMaxHp+" DMG: "+
+                fight.enemy.getDmg()+" DEF: "+fight.enemy.getDefense());
+        enemyPanel.add(enemyName);
+        enemyPanel.add(enemyLife);
+    }
+
     public void switchControlToCardMenu(){
         selected = 1;
         refreshColor(cardPanel);
@@ -112,7 +208,7 @@ public class FightController extends JFrame {
     }
 
     public void setPlayer(Player player) {
-        this.player = player;
+        this.fight.setPlayer(player);
     }
     public void refreshColor(JPanel p) {
         Component[] components = optionsPanel.getComponents();

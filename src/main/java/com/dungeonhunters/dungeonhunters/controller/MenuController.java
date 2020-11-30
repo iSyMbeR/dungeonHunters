@@ -16,19 +16,19 @@ import java.awt.event.WindowEvent;
 import java.util.List;
 
 @Controller
-public class MenuFrame extends JFrame {
+public class MenuController extends JFrame {
     public JPanel panel;
     public GameController gameController;
     public final PlayerService playerService;
     public int selected = 1;
 
     @Autowired
-    MenuFrame(PlayerService playerService) {
+    MenuController(PlayerService playerService) {
         this.playerService = playerService;
-        this.panel = new JPanel();
     }
 
     public void createView() {
+        panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 0, 0));
         List<Player> players = playerService.getPlayers();
@@ -68,6 +68,7 @@ public class MenuFrame extends JFrame {
         });
         panel.setFocusable(true);
         gameController.setMainContent(panel);
+        panel.requestFocusInWindow();
     }
 
     public void setGameController(GameController gameController) {

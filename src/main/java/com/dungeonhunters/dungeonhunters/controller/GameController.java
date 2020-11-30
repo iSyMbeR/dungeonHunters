@@ -26,7 +26,7 @@ public class GameController extends JFrame {
     public final AreaService areaService;
     public Player player;
     public JPanel panel;
-    public final MenuFrame menuController;
+    public final MenuController menuController;
     public final ProfileController profileController;
     public final FightController fightController;
 
@@ -36,7 +36,7 @@ public class GameController extends JFrame {
                    CardService cardService,
                    DeckService deckService,
                    AreaService areaService,
-                   MenuFrame menuController,
+                   MenuController menuController,
                    ProfileController profileController,
                    FightController fightController) {
         super("Dungeon Hunters");
@@ -51,25 +51,26 @@ public class GameController extends JFrame {
         this.fightController = fightController;
         this.panel = new JPanel();
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        this.setUndecorated(true);
+        this.setSize(new Dimension(800,800));
+//        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+//        this.setUndecorated(true);
         switchToMenuController();
 
     }
 
-    private void switchToMenuController() {
+    public void switchToMenuController() {
         menuController.setGameController(this);
         menuController.createView();
     }
 
     public void switchToProfileController() {
         profileController.setGameController(this);
-        profileController.setPlayer(player);
+        profileController.setPlayer(playerService.getPlayerById(player.getId()));
         profileController.createView();
     }
     public void switchToFightController() {
         fightController.setGameController(this);
-        fightController.setPlayer(player);
+        fightController.setPlayer(playerService.getPlayerById(player.getId()));
         fightController.createView();
     }
     public void setMainContent(JPanel content) {
@@ -136,11 +137,14 @@ public class GameController extends JFrame {
         Player player = Player.builder()
                 .name(name)
                 .hp(100)
+                .currentHp(100)
                 .stage(1)
                 .experience(0)
                 .deck(createDeck())
                 .inventory(createInventory())
                 .gold(0)
+                .dmg(10)
+                .def(0)
                 .build();
         return playerService.addPlayer(player);
     }

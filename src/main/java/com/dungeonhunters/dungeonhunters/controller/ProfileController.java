@@ -43,19 +43,26 @@ public class ProfileController extends JFrame {
     public void createView(){
         panel = new JPanel();
         JPanel infoPanel = new JPanel();
-        infoPanel.setBackground(Color.GRAY);
+//        infoPanel.setBackground(Color.GRAY);
         JLabel name = new JLabel(player.getName());
-        name.setForeground(Color.BLUE);
+//        name.setForeground(Color.BLUE);
         JLabel exp = new JLabel("Exp: "+player.getExperience());
-        exp.setForeground(Color.GREEN);
-        JLabel hp = new JLabel("HP: " + player.getHp());
+        exp.setForeground(Color.MAGENTA);
+        JLabel stage = new JLabel("Stage: "+player.getStage());
+        stage.setForeground(Color.BLUE);
+        JLabel hp = new JLabel("HP: " + player.getCurrentHp()+"/"+player.getHp());
         hp.setForeground(Color.RED);
         JLabel gold = new JLabel("GOLD: " + player.getGold());
         gold.setForeground(Color.ORANGE);
+        JLabel dmg = new JLabel("DMG: " + player.getDmg());
+        JLabel def = new JLabel("DEF: " + player.getDef());
         infoPanel.add(name);
         infoPanel.add(exp);
+        infoPanel.add(stage);
         infoPanel.add(hp);
         infoPanel.add(gold);
+        infoPanel.add(dmg);
+        infoPanel.add(def);
 
         JLabel fightLabel = new JLabel("Wejdź do lochu");
         JLabel inventoryLabel = new JLabel("Pokaż ekwipunek");
@@ -64,7 +71,7 @@ public class ProfileController extends JFrame {
         JLabel exitLabel = new JLabel("Wyjdź");
         JPanel selectPanel = new JPanel();
 
-        selectPanel.setBackground(Color.GRAY);
+        //selectPanel.setBackground(Color.GRAY);
         selectPanel.add(fightLabel);
         selectPanel.add(inventoryLabel);
         selectPanel.add(deckLabel);
@@ -78,7 +85,7 @@ public class ProfileController extends JFrame {
                 if(selected == 1) {
                     // mati we zobacz czemu tego widoku nie chce
                     // wczytywac tylko sama muzaczka idzie bo mnie zaraz chui sttrzeli
-                    createPerformanceBeforeFight();
+                    //createPerformanceBeforeFight();
                     gameController.switchToFightController();
                 }
                 if(selected == 2) createPlayerInventoryView();
