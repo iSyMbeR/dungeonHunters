@@ -1,5 +1,6 @@
 package com.dungeonhunters.dungeonhunters.controller;
 
+import com.dungeonhunters.dungeonhunters.Ansi;
 import com.dungeonhunters.dungeonhunters.dto.Fight;
 import com.dungeonhunters.dungeonhunters.model.Card;
 import com.dungeonhunters.dungeonhunters.model.Player;
@@ -24,6 +25,8 @@ public class FightController extends JFrame {
     public JPanel cardPanel;
     public JPanel playerPanel;
     public JPanel enemyPanel;
+    public JPanel logPanel;
+    public JPanel turnPanel;
 
     FightController(EnemyService enemyService, DeckService deckService, Fight fight){
         this.enemyService = enemyService;
@@ -34,7 +37,8 @@ public class FightController extends JFrame {
     public void createView() {
         generateEnemy();
         fight.nextTurn();
-
+        logPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        getTurnPanel();
         getPlayerPanel();
         getEnemyPanel();
 
@@ -154,52 +158,58 @@ public class FightController extends JFrame {
     }
 
     private void useCard(Card card) {
-        fight.useCard(card);
-        refreshPlayerPanel();
-        refreshEnemyPanel();
-        refreshCardPanel();
-        checkToEndBattle(fight.checkEndBattleConditions());
-    }
-
-    private void refreshCardPanel() {
+        String message = fight.useCard(card);
+        logPanel.add(new JLabel(message));
+        getPlayerPanel();
+        getEnemyPanel();
         getCardPanel();
         buildMainContainer();
+        checkToEndBattle(fight.checkEndBattleConditions());
     }
 
     public void attack(){
-        fight.playerAttack();
-        refreshPlayerPanel();
-        refreshEnemyPanel();
+        String message = fight.playerAttack();
+        logPanel.add(new JLabel(message));
+        getEnemyPanel();
+        getPlayerPanel();
+        buildMainContainer();
         checkToEndBattle(fight.checkEndBattleConditions());
     }
     public void defend(){
-        fight.playerDefend();
+        String message = fight.playerDefend();
+        logPanel.add(new JLabel(message));
+        buildMainContainer();
     }
     public void endTurn(){
-        fight.nextTurn();
-        refreshPlayerPanel();
-        refreshEnemyPanel();
-        checkToEndBattle(fight.checkEndBattleConditions());
-    }
-    public void refreshPlayerPanel(){
+        String message;
+        message = fight.enemyTurn();
+        logPanel.add(new JLabel(message));
+        message = fight.nextTurn();
+        logPanel.add(new JLabel(message));
+        getTurnPanel();
         getPlayerPanel();
+        getEnemyPanel();
         buildMainContainer();
+        checkToEndBattle(fight.checkEndBattleConditions());
     }
     public void buildMainContainer(){
         container = new JPanel();
-        container.setLayout(new GridLayout(2,2));
+        container.setLayout(new GridLayout(2,3));
         container.add(playerPanel);
+        container.add(turnPanel);
         container.add(enemyPanel);
         container.add(optionsPanel);
+        container.add(logPanel);
         container.add(cardPanel);
         gameController.setMainContent(container);
         optionsPanel.requestFocusInWindow();
     }
-    public void refreshEnemyPanel(){
-        getEnemyPanel();
-        buildMainContainer();
-    }
 
+    public void getTurnPanel(){
+        turnPanel = new JPanel();
+        JLabel turnLabel = new JLabel("Turn: "+fight.turn);
+        turnPanel.add(turnLabel);
+    }
     public void getEnemyPanel() {
         enemyPanel = new JPanel();
         JLabel enemyName = new JLabel(fight.enemy.getName());

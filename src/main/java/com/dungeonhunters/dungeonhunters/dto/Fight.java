@@ -3,7 +3,6 @@ package com.dungeonhunters.dungeonhunters.dto;
 import com.dungeonhunters.dungeonhunters.factory.AbstractCardActionFactory;
 import com.dungeonhunters.dungeonhunters.factory.CardActionStrategyFactory;
 import com.dungeonhunters.dungeonhunters.model.Card;
-import com.dungeonhunters.dungeonhunters.model.Deck;
 import com.dungeonhunters.dungeonhunters.model.Enemy;
 import com.dungeonhunters.dungeonhunters.model.Player;
 import com.dungeonhunters.dungeonhunters.service.DeckService;
@@ -20,8 +19,8 @@ import java.util.*;
 public class Fight {
     public Player player;
     public Enemy enemy;
-    public Map<Card, Integer> playerDebuffs;
-    public Map<Card, Integer> enemyDebuffs;
+    public Map<Card, Integer> playerStatus;
+    public Map<Card, Integer> enemyStatus;
     public int actionsLeft = 0;
     public int turn = 0;
     public int enemyMaxHp = 0;
@@ -41,8 +40,8 @@ public class Fight {
         this.enemyService = enemyService;
         this.playerService = playerService;
         this.deckService = deckService;
-        this.playerDebuffs = new HashMap<>();
-        this.enemyDebuffs = new HashMap<>();
+        this.playerStatus = new HashMap<>();
+        this.enemyStatus = new HashMap<>();
     }
 
     public void createEnemy() {
@@ -57,7 +56,7 @@ public class Fight {
         }
     }
 
-    public void enemyTurn(){
+    public String enemyTurn(){
         if(playerBlocked){
             if(player.getDef()<enemy.getDmg()){
                 player.setCurrentHp(player.getCurrentHp() - enemy.getDmg() + player.getDef());
@@ -65,25 +64,31 @@ public class Fight {
             playerBlocked=false;
         }else{
             player.setCurrentHp(player.getCurrentHp() - enemy.getDmg());
+            return player.getName()+" received " +enemy.getDmg()+"damage from "+enemy.getName()+" attack.";
         }
+        return null;
     }
 
-    public void useCard(Card card) {
+    public String useCard(Card card) {
         if(actionsLeft>0){
             actionsLeft--;
             Optional<AbstractCardActionFactory> abstractCardActionFactory = cardActionFactory.get(card.getType());
-            abstractCardActionFactory.ifPresent(a -> a.use(card, player, enemy, playerDebuffs, enemyDebuffs));
+            abstractCardActionFactory.ifPresent(a -> a.use(card, player, enemy, playerStatus, enemyStatus));
             player.getDeck().getCardSet().remove(card);
             deckService.addDeck(player.getDeck());
+            return "Card: "+card.getName()+" used, "+actionsLeft+" actions left.";
         }
+        return "Action limit reached, 0 actions left.";
     }
 
-    public void playerAttack() {
+    public String playerAttack() {
         if(actionsLeft>0){
             int totalDmgDealt = player.getDmg();
             enemy.setHp(enemy.getHp() - totalDmgDealt);
             actionsLeft--;
+            return player.getName()+" deal "+totalDmgDealt+" to "+enemy.getName()+", "+actionsLeft+" actions left.";
         }
+        return "Action limit reached, 0 actions left.";
     }
 
     public int checkEndBattleConditions(){
@@ -91,28 +96,27 @@ public class Fight {
         if(enemy.getHp()<=0) return 1;
         return 0;
     }
-    public void playerDefend() {
+    public String playerDefend() {
         if(actionsLeft>0 && !playerBlocked){
             playerBlocked=true;
             actionsLeft--;
+            return player.getName()+" is defending himself, "+actionsLeft+" actions left.";
         }
+        return "Action limit reached, 0 actions left.";
     }
 
-    public void nextTurn(){
-        if( enemyMaxHp == 0 ){
-            enemyMaxHp=enemy.getHp();
-        }else{
-            enemyTurn();
-        }
+    public String nextTurn(){
+        if( enemyMaxHp == 0 )enemyMaxHp=enemy.getHp();
         turn++;
         actionsLeft=2;
+        return "Turn "+(turn - 1)+" ended, started "+turn+" turn, "+actionsLeft+" actions left.";
     }
 
     public void generateLootAndUpdatePlayer() {
         int goldLoot = enemy.getGoldDrop();
         int expGained = enemy.getExperienceDrop();
-        loot.add("You dropped "+goldLoot+" gold");
-        loot.add("You gained "+expGained+" experience");
+        loot.add("You dropped "+goldLoot+" gold.");
+        loot.add("You gained "+expGained+" experience.");
         if(player.getExperience() + expGained >= 100){
             player.setExperience(player.getExperience() + expGained);
             if (player.getExperience()>=100){
