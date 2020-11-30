@@ -49,6 +49,21 @@ public class FightController extends JFrame {
         optionsPanel.add(useCardOption);
         optionsPanel.add(endTurnOption);
 
+        getCardPanel();
+        createControls(optionsPanel, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(selected == 1) attack();
+                if(selected == 2) defend();
+                if(selected == 3) switchControlToCardMenu();
+                if(selected == 4) endTurn();
+            }
+        });
+        optionsPanel.setFocusable(true);
+        buildMainContainer();
+    }
+
+    public void getCardPanel() {
         cardPanel = new JPanel();
         cardPanel.setLayout(new BoxLayout(cardPanel,BoxLayout.Y_AXIS));
         List<Card> cardList = deckService.getDeckById(fight.player.getDeck().getId()).getCardSet();
@@ -65,17 +80,6 @@ public class FightController extends JFrame {
                 switchControlToOptionsMenu();
             }
         });
-        createControls(optionsPanel, new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(selected == 1) attack();
-                if(selected == 2) defend();
-                if(selected == 3) switchControlToCardMenu();
-                if(selected == 4) endTurn();
-            }
-        });
-        optionsPanel.setFocusable(true);
-        buildMainContainer();
     }
 
     public void getPlayerPanel() {
@@ -106,12 +110,19 @@ public class FightController extends JFrame {
 
     private void showLootScreen() {
         JPanel cont = new JPanel();
+        cont.setLayout(new BoxLayout(cont,BoxLayout.Y_AXIS));
         JPanel loot = new JPanel();
         JPanel exit = getBattleExitOptions(1);
+        for(String lootItem : fight.loot){
+            JLabel lootItemLabel = new JLabel(lootItem);
+            loot.add(lootItemLabel);
+        }
+        loot.setLayout(new BoxLayout(loot,BoxLayout.Y_AXIS));
         cont.add(loot);
         cont.add(exit);
         gameController.setMainContent(cont);
         exit.requestFocusInWindow();
+        fight.clearBattle();
     }
 
     private void showFailureScreen() {
@@ -146,7 +157,13 @@ public class FightController extends JFrame {
         fight.useCard(card);
         refreshPlayerPanel();
         refreshEnemyPanel();
+        refreshCardPanel();
         checkToEndBattle(fight.checkEndBattleConditions());
+    }
+
+    private void refreshCardPanel() {
+        getCardPanel();
+        buildMainContainer();
     }
 
     public void attack(){

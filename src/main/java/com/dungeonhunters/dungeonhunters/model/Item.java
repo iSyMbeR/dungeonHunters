@@ -19,8 +19,6 @@ public class Item implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-
-
     @OneToOne
     private ItemBase itemBase;
 

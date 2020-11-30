@@ -96,7 +96,7 @@ public class GameController extends JFrame {
         }
     }
 
-    public Card createCard(String name, String type, int dmg, int cost, int def) {
+    public Card createCard(String name, CardType type, int dmg, int cost, int def) {
         Card card = Card.builder()
                 .cost(cost)
                 .defense(def)

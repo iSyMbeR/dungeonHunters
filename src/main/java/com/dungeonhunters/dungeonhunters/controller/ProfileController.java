@@ -49,7 +49,7 @@ public class ProfileController extends JFrame {
     public void createView() {
         if (!putted) {
             for (Item c : player.getInventory().getItemList()) {
-                equippedItems.put(c.getName(), ItemEquipType.NIE);
+                equippedItems.put(c.getItemBase().getName(), ItemEquipType.NIE);
             }
             putted = true;
         }
@@ -233,11 +233,11 @@ public class ProfileController extends JFrame {
             container.add(tmp);
             tab = new String[playerInventoryItemsList.size()];
             for (Item c : playerInventoryItemsList) {
-                tab[count] = c.getName();
+                tab[count] = c.getItemBase().getName();
 
-                options.add(new JLabel(c.getName()));
+                options.add(new JLabel(c.getItemBase().getName()));
                 itemDmgList.add(new JLabel("" + c.getItemBase().getDmg()));
-                tmp = new JLabel(String.valueOf(equippedItems.get(c.getName())));
+                tmp = new JLabel(String.valueOf(equippedItems.get(c.getItemBase().getName())));
                 if (equippedItems.get(tab[count]) == ItemEquipType.TAK) {
                     tmp.setForeground(Color.GREEN);
                 }
@@ -319,7 +319,7 @@ public class ProfileController extends JFrame {
 
         for (Item c : listOfItemsFromBase) {
             container.add(new JLabel(" "));
-            name = new JLabel(c.getName());
+            name = new JLabel(c.getItemBase().getName());
             dmg = new JLabel("" + c.getItemBase().getDmg());
             container.add(new JLabel(" "));
             container.add(new JLabel(" "));
