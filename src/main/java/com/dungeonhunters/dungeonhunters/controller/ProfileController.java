@@ -1,5 +1,6 @@
 package com.dungeonhunters.dungeonhunters.controller;
 
+import com.dungeonhunters.dungeonhunters.dto.ItemEquipType;
 import com.dungeonhunters.dungeonhunters.dto.Shop;
 import com.dungeonhunters.dungeonhunters.dto.ShopItemDto;
 import com.dungeonhunters.dungeonhunters.model.Card;
@@ -175,46 +176,68 @@ public class ProfileController extends JFrame {
 
     private void createPlayerInventoryView() {
         JPanel container = new JPanel();
-        container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
-        container.setLayout(new GridLayout(0,3));
+        container.setLayout(new GridLayout(3,3));
+        //container.add(new JLabel(" "));
+        container.setBackground(Color.GRAY);
+        container.add(new JLabel(""));
+        container.add(new JLabel("Lista twoich przedmiotów"));
+        container.add(new JLabel(""));
         JPanel options = new JPanel();
-
+        options.setBackground(Color.GRAY);
+        JPanel itemDmgList = new JPanel();
+        itemDmgList.setBackground(Color.GRAY);
+        JPanel equip = new JPanel();
+        equip.setBackground(Color.GRAY);
+        JLabel tmp;
+        options.setLayout(new BoxLayout(options, BoxLayout.Y_AXIS));
+        itemDmgList.setLayout(new BoxLayout(itemDmgList, BoxLayout.Y_AXIS));
+        equip.setLayout(new BoxLayout(equip, BoxLayout.Y_AXIS));
+        int count =0;
 
         Set<Item> playerInventoryItemsList = player.getInventory().getItemList();
-        container.add(new JLabel(" "));
-        container.add(new JLabel("Your list of items"));
-        container.add(new JLabel(" "));
-
-        if (playerInventoryItemsList.isEmpty()) container.add(new JLabel("U've 0 items"));
+        if (playerInventoryItemsList.isEmpty()) container.add(new JLabel("Nic nie posiadasz :(")).setForeground(Color.pink);
         else {
-            container.add(new JLabel("NAZWA"));
-            container.add(new JLabel(" "));
-            container.add(new JLabel("DMG"));
+            tmp = new JLabel("NAZWA");
+            tmp.setForeground(Color.BLUE);
+            container.add(tmp);
+
+            tmp = new JLabel("DMG");
+            tmp.setForeground(Color.MAGENTA);
+            container.add(tmp);
+
+            tmp = new JLabel("ZALOŻONY");
+            tmp.setForeground(Color.CYAN);
+            container.add(tmp);
+
             for (Item c : playerInventoryItemsList) {
-                container.add(new JLabel(c.getName()));
-                container.add(new JLabel(" "));
-                container.add(new JLabel("" + c.getItemBase().getDmg()));
+                count++;
+                options.add(new JLabel(c.getName()));
+                itemDmgList.add(new JLabel("" + c.getItemBase().getDmg()));
+                equip.add(new JLabel(String.valueOf(ItemEquipType.NIE)));
             }
         }
-        JLabel exit = new JLabel("Back");
-        JLabel allItems = new JLabel("Show all items");
-        options.add(allItems);
-        options.add(exit);
+        final int counter = count;
+        JLabel changePage = new JLabel();
+
+        options.add(new JLabel("Wszystkie przedmioty"));
+        options.add(new JLabel("Wroc"));
+        changePage.add(new JLabel());
+        changePage.setLayout(new BoxLayout(changePage, BoxLayout.Y_AXIS));
         createControls(options,new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(selected == 1) {
+                if(selected == (counter + 1)) {
                     createAllItemsView();
-                }
-                else if (selected == 2){
+                }else if (selected== counter+2){
                     createView();
-                }else{
-                    createPlayerInventoryView();
                 }
             }
         });
-        options.setLayout(new BoxLayout(options,BoxLayout.Y_AXIS));
+
+
         container.add(options);
+        container.add(itemDmgList);
+        container.add(equip);
         options.setFocusable(true);
         gameController.setMainContent(container);
         options.requestFocusInWindow();
