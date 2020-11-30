@@ -27,7 +27,7 @@ public class ProfileController extends JFrame {
     public final PlayerService playerService;
     public GameController gameController;
     public Player player;
-    private Map<String, ItemEquipType> equippedItems = new HashMap<>();
+    public static Map<String, ItemEquipType> equippedItems = new HashMap<>();
     private boolean putted = false;
     private String tabNames[];
     private int tabDmg[];

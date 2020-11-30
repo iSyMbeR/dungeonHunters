@@ -16,7 +16,7 @@ public class AttackCardActionFactory implements AbstractCardActionFactory {
                     Enemy enemy,
                     Map<Card, Integer> playerDebuffs,
                     Map<Card, Integer> enemyDebuffs) {
-        enemy.setHp(enemy.getHp() - card.getDmg());
+        enemy.setHp(enemy.getHp() - card.getValue());
     }
 
     @Override
