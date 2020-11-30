@@ -107,7 +107,7 @@ values (12,'Pierdnięcie', 'Attack', 3, 14, 0);
 insert into CARD (ID, name,type, cost, dmg, defense)
 values (13,'Grzmot', 'Attack', 1, 5, 7);
 insert into CARD (ID,name, type, cost, dmg, defense)
-values (14,'Perfected Strike', 'Attack', 2, 6, 2);
+values (14,'Strajk', 'Attack', 2, 6, 2);
 insert into CARD (ID,name, type, cost, dmg, defense)
 values (15,'Lwię', 'Attack', 1, 9, 0);
 insert into CARD (ID,name, type, cost, dmg, defense)
@@ -170,5 +170,17 @@ insert into ITEM (ID, NAME,ITEM_BASE_ID)
 values (20, 'Silver pants',20);
 
 
-insert into ITEM_BONUS (ITEM_ID, BONUS_ID)
-values (20, 'Silver pants',20);
+insert into INVENTORY_ITEM_LIST (INVENTORY_ID, ITEM_LIST_ID)
+values (2, 1);
+insert into INVENTORY_ITEM_LIST (INVENTORY_ID, ITEM_LIST_ID)
+values (2, 2);
+insert into INVENTORY_ITEM_LIST (INVENTORY_ID, ITEM_LIST_ID)
+values (2, 3);
+insert into INVENTORY_ITEM_LIST (INVENTORY_ID, ITEM_LIST_ID)
+values (2, 4);
+insert into INVENTORY_ITEM_LIST (INVENTORY_ID, ITEM_LIST_ID)
+values (2, 5);
+insert into INVENTORY_ITEM_LIST (INVENTORY_ID, ITEM_LIST_ID)
+values (2, 6);
+insert into INVENTORY_ITEM_LIST (INVENTORY_ID, ITEM_LIST_ID)
+values (2, 7);
