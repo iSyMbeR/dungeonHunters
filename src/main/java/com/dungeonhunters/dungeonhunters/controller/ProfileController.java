@@ -3,46 +3,53 @@ package com.dungeonhunters.dungeonhunters.controller;
 import com.dungeonhunters.dungeonhunters.dto.ItemEquipType;
 import com.dungeonhunters.dungeonhunters.dto.Shop;
 import com.dungeonhunters.dungeonhunters.dto.ShopItemDto;
-import com.dungeonhunters.dungeonhunters.model.Card;
-import com.dungeonhunters.dungeonhunters.model.Item;
-import com.dungeonhunters.dungeonhunters.model.Player;
-import com.dungeonhunters.dungeonhunters.service.CardService;
-import com.dungeonhunters.dungeonhunters.service.DeckService;
-import com.dungeonhunters.dungeonhunters.service.ItemService;
+import com.dungeonhunters.dungeonhunters.model.*;
+import com.dungeonhunters.dungeonhunters.service.*;
+import lombok.Data;
 import org.springframework.stereotype.Controller;
+import org.tritonus.share.ArraySet;
 
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static com.dungeonhunters.dungeonhunters.controller.MusicController.getMusic;
 
 @Controller
+
 public class ProfileController extends JFrame {
     public JPanel panel;
-
+    public final PlayerService playerService;
     public GameController gameController;
     public Player player;
-    MusicController musicController;
     private Map<String, ItemEquipType> equippedItems = new HashMap<>();
     private boolean putted = false;
-    private String tab[];
+    private String tabNames[];
+    private int tabDmg[];
+    private int activeItems;
     public int selected = 1;
     private final Shop shop;
     private final DeckService deckService;
     private final CardService cardService;
     private final ItemService itemService;
+    private final BonusService bonusService;
+    private final ItemBaseService itemBaseService;
+    private final InventoryService inventoryService;
 
-    ProfileController(DeckService deckService, CardService cardService, Shop shop, ItemService itemService) {
+
+    ProfileController(InventoryService inventoryService, ItemBaseService itemBaseService, BonusService bonusService, DeckService deckService, CardService cardService, Shop shop, ItemService itemService, PlayerService playerService) {
         this.deckService = deckService;
         this.cardService = cardService;
         this.itemService = itemService;
+        this.playerService = playerService;
+        this.bonusService = bonusService;
+        this.itemBaseService = itemBaseService;
+        this.inventoryService = inventoryService;
         this.shop = shop;
     }
 
@@ -59,11 +66,11 @@ public class ProfileController extends JFrame {
         JLabel name = new JLabel(player.getName());
 
 //        name.setForeground(Color.BLUE);
-        JLabel exp = new JLabel("Exp: "+player.getExperience());
+        JLabel exp = new JLabel("Exp: " + player.getExperience());
         exp.setForeground(Color.MAGENTA);
-        JLabel stage = new JLabel("Stage: "+player.getStage());
+        JLabel stage = new JLabel("Stage: " + player.getStage());
         stage.setForeground(Color.BLUE);
-        JLabel hp = new JLabel("HP: " + player.getCurrentHp()+"/"+player.getHp());
+        JLabel hp = new JLabel("HP: " + player.getCurrentHp() + "/" + player.getHp());
 
         hp.setForeground(Color.RED);
         JLabel gold = new JLabel("GOLD: " + player.getGold());
@@ -197,6 +204,7 @@ public class ProfileController extends JFrame {
     }
 
     private void createPlayerInventoryView() {
+        //generateRandomItem();
         JPanel container = new JPanel();
         container.setLayout(new GridLayout(3, 3));
         //container.add(new JLabel(" "));
@@ -231,14 +239,17 @@ public class ProfileController extends JFrame {
             tmp = new JLabel("ZALOŻONY");
             tmp.setForeground(Color.CYAN);
             container.add(tmp);
-            tab = new String[playerInventoryItemsList.size()];
+            tabNames = new String[playerInventoryItemsList.size()];
+            tabDmg = new int[playerInventoryItemsList.size()];
             for (Item c : playerInventoryItemsList) {
-                tab[count] = c.getItemBase().getName();
 
+                tabNames[count] = c.getItemBase().getName();
+                tabDmg[count] = c.getItemBase().getDmg();
                 options.add(new JLabel(c.getItemBase().getName()));
                 itemDmgList.add(new JLabel("" + c.getItemBase().getDmg()));
                 tmp = new JLabel(String.valueOf(equippedItems.get(c.getItemBase().getName())));
-                if (equippedItems.get(tab[count]) == ItemEquipType.TAK) {
+                if (equippedItems.get(tabNames[count]) == ItemEquipType.TAK) {
+
                     tmp.setForeground(Color.GREEN);
                 }
                 equip.add(tmp);
@@ -256,10 +267,17 @@ public class ProfileController extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (selected <= counter) {
-                    if (equippedItems.get(tab[selected - 1]) == ItemEquipType.NIE){
-                        equippedItems.put(tab[selected - 1], ItemEquipType.TAK);
+                    if (equippedItems.get(tabNames[selected - 1]) == ItemEquipType.NIE && activeItems <= 3) {
+                        equippedItems.put(tabNames[selected - 1], ItemEquipType.TAK);
+                        activeItems++;
+                        player.setDmg(player.getDmg() + tabDmg[selected - 1]);
+                        playerService.addPlayer(player);
+                    } else {
+                        equippedItems.put(tabNames[selected - 1], ItemEquipType.NIE);
+                        activeItems--;
+                        player.setDmg(player.getDmg() - tabDmg[selected - 1]);
+                        playerService.addPlayer(player);
                     }
-                    else equippedItems.put(tab[selected - 1], ItemEquipType.NIE);
                     createPlayerInventoryView();
                 } else if (selected == (counter + 1)) {
                     createAllItemsView();
@@ -278,15 +296,41 @@ public class ProfileController extends JFrame {
         options.requestFocusInWindow();
     }
 
-//    private String equipItem(String itemName){
-//        equippedItems.put(itemName,ItemEquipType.TAK);
-//        return "Tak";
-//    }
-//    private String unEquipItem(String itemName){
-//        equippedItems.remove(itemName);
-//        return "Nie";
-//    }
 
+    public void generateRandomItem() {
+        Set<Item> playerListItem = player.getInventory().getItemList();
+        int generatedLongItemBase = 1 + (int) (Math.random() * (itemBaseService.getSize()) - 1);
+        int generatedLongBonus = 1 + (int) (Math.random() * (bonusService.getSize()) - 1);
+
+        List<ItemBase> itemBaseList = itemBaseService.getItemBases();
+        List<Bonus> bonusListFromBase = bonusService.getAllBonuses();
+        List<Bonus> bonusList = new ArrayList<>();
+        bonusList.add(bonusListFromBase.get(generatedLongBonus - 1));
+
+        Item item = Item.builder()
+                .itemBase(itemBaseList.get(generatedLongItemBase - 1))
+                .bonus(bonusList)
+                .build();
+
+        boolean exist = false;
+        for (Item i : playerListItem) {
+            if (i.getItemBase().getName().equals(item.getItemBase().getName())) {
+                System.out.println("Niestety wylosowałes item, który już posiadasz " + item.getItemBase().getName());
+                exist = true;
+            }
+        }
+        if(!exist) {
+            playerListItem.add(item);
+
+            player.getInventory().setItemList(playerListItem);
+            player.setInventory(player.getInventory());
+            // nie trybi zapisanie inventory
+            //inventoryService.addInventory(player.getInventory());
+            itemService.addItem(item);
+            playerService.addPlayer(player);
+            equippedItems.put(item.getItemBase().getName(), ItemEquipType.NIE);
+        }
+    }
 
     private void createAllItemsView() {
         shop.refreshItems(player);
@@ -299,7 +343,7 @@ public class ProfileController extends JFrame {
         JLabel exit = new JLabel("Back");
         JLabel name;
         JLabel dmg;
-        List<Item> listOfItemsFromBase = itemService.getItems();
+        List<ItemBase> listOfItemsFromBase = itemBaseService.getItemBases();
         container.add(new JLabel(" "));
         container.add(new JLabel(" "));
         container.add(new JLabel("List of all items to get"));
@@ -317,10 +361,12 @@ public class ProfileController extends JFrame {
         container.add(tmp);
 
 
-        for (Item c : listOfItemsFromBase) {
+        for (ItemBase c : listOfItemsFromBase) {
             container.add(new JLabel(" "));
-            name = new JLabel(c.getItemBase().getName());
-            dmg = new JLabel("" + c.getItemBase().getDmg());
+
+            name = new JLabel(c.getName());
+            dmg = new JLabel("" + c.getDmg());
+
             container.add(new JLabel(" "));
             container.add(new JLabel(" "));
             container.add(name);

@@ -1,4 +1,5 @@
 package com.dungeonhunters.dungeonhunters.model;
+
 import lombok.*;
 
 import javax.persistence.*;

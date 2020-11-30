@@ -16,9 +16,6 @@ import static javax.sound.sampled.AudioFormat.Encoding.PCM_SIGNED;
 
 public class MusicController {
 
-    public static void main(String[] args) {
-        getMusic("start");
-    }
     public static void getMusic(String name){
         final MusicController player = new MusicController();
         switch (name){

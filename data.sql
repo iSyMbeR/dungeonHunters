@@ -56,131 +56,131 @@ insert into ENEMY (ID, NAME,HP, DMG, EXPERIENCE_DROP, GOLD_DROP, STAGE, DEFENSE)
 values (14, 'Była dziewczyna', 150, 15, 750, 18, 14, 14);
 -- ITEM_BASE
 
-insert into ITEM_BASE (ID, DMG, RARITY) values (1, 10, 50);
-insert into ITEM_BASE (ID, DMG, RARITY) values (2, 12, 45);
-insert into ITEM_BASE (ID, DMG, RARITY) values (3, 14, 40);
-insert into ITEM_BASE (ID, DMG, RARITY) values (4, 16, 35);
-insert into ITEM_BASE (ID, DMG, RARITY) values (5, 18, 30);
-insert into ITEM_BASE (ID, DMG, RARITY) values (6, 10, 50);
-insert into ITEM_BASE (ID, DMG, RARITY) values (7, 12, 45);
-insert into ITEM_BASE (ID, DMG, RARITY) values (8, 14, 40);
-insert into ITEM_BASE (ID, DMG, RARITY) values (9, 16, 35);
-insert into ITEM_BASE (ID, DMG, RARITY) values (10, 18, 30);
-insert into ITEM_BASE (ID, DMG, RARITY) values (11, 20, 25);
-insert into ITEM_BASE (ID, DMG, RARITY) values (12, 22, 20);
-insert into ITEM_BASE (ID, DMG, RARITY) values (13, 24, 15);
-insert into ITEM_BASE (ID, DMG, RARITY) values (14, 26, 10);
-insert into ITEM_BASE (ID, DMG, RARITY) values (15, 28, 8);
-insert into ITEM_BASE (ID, DMG, RARITY) values (16, 30, 7);
-insert into ITEM_BASE (ID, DMG, RARITY) values (17, 32, 6);
-insert into ITEM_BASE (ID, DMG, RARITY) values (18, 34, 5);
-insert into ITEM_BASE (ID, DMG, RARITY) values (19, 36, 4);
-insert into ITEM_BASE (ID, DMG, RARITY) values (20, 38, 3);
+-- insert into ITEM_BASE (ID, DMG, RARITY) values (1, 10, 50);
+-- insert into ITEM_BASE (ID, DMG, RARITY) values (2, 12, 45);
+-- insert into ITEM_BASE (ID, DMG, RARITY) values (3, 14, 40);
+-- insert into ITEM_BASE (ID, DMG, RARITY) values (4, 16, 35);
+-- insert into ITEM_BASE (ID, DMG, RARITY) values (5, 18, 30);
+-- insert into ITEM_BASE (ID, DMG, RARITY) values (6, 10, 50);
+-- insert into ITEM_BASE (ID, DMG, RARITY) values (7, 12, 45);
+-- insert into ITEM_BASE (ID, DMG, RARITY) values (8, 14, 40);
+-- insert into ITEM_BASE (ID, DMG, RARITY) values (9, 16, 35);
+-- insert into ITEM_BASE (ID, DMG, RARITY) values (10, 18, 30);
+-- insert into ITEM_BASE (ID, DMG, RARITY) values (11, 20, 25);
+-- insert into ITEM_BASE (ID, DMG, RARITY) values (12, 22, 20);
+-- insert into ITEM_BASE (ID, DMG, RARITY) values (13, 24, 15);
+-- insert into ITEM_BASE (ID, DMG, RARITY) values (14, 26, 10);
+-- insert into ITEM_BASE (ID, DMG, RARITY) values (15, 28, 8);
+-- insert into ITEM_BASE (ID, DMG, RARITY) values (16, 30, 7);
+-- insert into ITEM_BASE (ID, DMG, RARITY) values (17, 32, 6);
+-- insert into ITEM_BASE (ID, DMG, RARITY) values (18, 34, 5);
+-- insert into ITEM_BASE (ID, DMG, RARITY) values (19, 36, 4);
+-- insert into ITEM_BASE (ID, DMG, RARITY) values (20, 38, 3);
 
 
 
 -- CARDS{
-insert into CARD (ID,name, type, cost, dmg, defense)
-values (1,'Dotyk Proboszcza', 'Attack', 2, 8, 0);
-insert into CARD (ID,name, type, cost, dmg, defense)
-values (2,'Kołdra', 'Defense', 1, 0, 5);
-insert into CARD (ID,name, type, cost, dmg, defense)
-values (3,'Mela na twarz', 'Attack', 1, 6, 0);
-insert into CARD (ID,name, type, cost, dmg, defense)
-values (4,'Złoty usmiech', 'Attack', 0, 6, 0);
-insert into CARD (ID,name, type, cost, dmg, defense)
-values (5,'Taczka', 'Defense', 1, 0, 5);
-insert into CARD (ID,name, type, cost, dmg, defense)
-values (6,'Gwoździe', 'Attack', 1, 5, 0);
-insert into CARD (ID,name, type, cost, dmg, defense)
-values (7,'Rzut dziewczyną', 'Attack', 2, 8, 0);
-insert into CARD (ID, name,type, cost, dmg, defense)
-values (8,'4 dniowe slipy', 'Attack', 3, 12, 0);
-insert into CARD (ID,name, type, cost, dmg, defense)
-values (9,'Ała nie bij', 'Defense', 0, 0, 2);
-insert into CARD (ID,name, type, cost, dmg, defense)
-values (10,'Formacja zółw', 'Defense', 2, 0, 8);
-insert into CARD (ID,name, type, cost, dmg, defense)
-values (11,'Beknięcie', 'Attack', 1, 9, 0);
-insert into CARD (ID,name, type, cost, dmg, defense)
-values (12,'Pierdnięcie', 'Attack', 3, 14, 0);
-insert into CARD (ID, name,type, cost, dmg, defense)
-values (13,'Grzmot', 'Attack', 1, 5, 7);
-insert into CARD (ID,name, type, cost, dmg, defense)
-values (14,'Strajk', 'Attack', 2, 6, 2);
-insert into CARD (ID,name, type, cost, dmg, defense)
-values (15,'Lwię', 'Attack', 1, 9, 0);
-insert into CARD (ID,name, type, cost, dmg, defense)
-values (16,'Krowie muu', 'Defense', 2, 0, 9);
-insert into CARD (ID, name,type, cost, dmg, defense)
-values (17,'Boomerang', 'Attack', 1, 3, 0);
-insert into CARD (ID, name,type, cost, dmg, defense)
-values (18,'Pchniecie kulą', 'Attack', 1, 6, 0);
-insert into CARD (ID,name, type, cost, dmg, defense)
-values (19,'Odklepanie najmana', 'Defense', 4, 0, 20);
-insert into CARD (ID,name, type, cost, dmg, defense)
-values (20,'Rzut kozą', 'Attack', 1, 10, 0);
-insert into CARD (ID,name, type, cost, dmg, defense)
-values (21,'Kobiecy liść', 'Attack', 4, 17, 0);
-insert into CARD (ID,name, type, cost, dmg, defense)
-values (22,'Śpiew Stonogi', 'Attack', 6, 20, 0);
+insert into CARD (ID,name, type, cost, value)
+values (1,'Dotyk Proboszcza', 'Attack', 3, 29);
+insert into CARD (ID,name, type, cost, value)
+values (2,'Kołdra', 'Block', 1, 1);
+insert into CARD (ID,name, type, cost, value)
+values (3,'Mela na twarz', 'Attack', 2, 25);
+insert into CARD (ID,name, type, cost, value)
+values (4,'Złoty usmiech', 'ReducedDmg', 0, 15);
+insert into CARD (ID,name, type, cost, value)
+values (5,'Taczka', 'Block', 1, 1);
+insert into CARD (ID,name, type, cost, value)
+values (6,'Gwoździe', 'Miss', 1, 2);
+insert into CARD (ID,name, type, cost, value)
+values (7,'Rzut dziewczyną', 'Attack', 2, 25);
+insert into CARD (ID, name,type, cost, value)
+values (8,'4 dniowe slipy', 'Sleep', 3, 2);
+insert into CARD (ID,name, type, cost, value)
+values (9,'Ała nie bij', 'Miss', 1, 1);
+insert into CARD (ID,name, type, cost, value)
+values (10,'Formacja zółw', 'Block', 2, 1);
+insert into CARD (ID,name, type, cost, value)
+values (11,'Beknięcie', 'Sleep', 1, 2);
+insert into CARD (ID,name, type, cost, value)
+values (12,'Pierdnięcie', 'Sleep', 3, 4);
+insert into CARD (ID, name,type, cost, value)
+values (13,'Grzmot', 'Attack', 1, 25);
+insert into CARD (ID,name, type, cost, value)
+values (14,'Strajk', 'ReducedDmg', 2, 20);
+insert into CARD (ID,name, type, cost, value)
+values (15,'Lwię', 'Attack', 2, 35);
+insert into CARD (ID,name, type, cost, value)
+values (16,'Krowie muu', 'ReducedDmg', 2, 13);
+insert into CARD (ID, name,type, cost, value)
+values (17,'Usmiech bombelka', 'ReducedDmg', 3, 25);
+insert into CARD (ID, name,type, cost, value)
+values (18,'Pchniecie kulą', 'Attack', 3, 30);
+insert into CARD (ID,name, type, cost, value)
+values (19,'Odklepanie najmana', 'Sleep', 3, 3);
+insert into CARD (ID,name, type, cost, value)
+values (20,'Rzut kozą', 'Attack', 1, 45);
+insert into CARD (ID,name, type, cost, value)
+values (21,'Kobiecy liść', 'Sleep', 4, 4);
+insert into CARD (ID,name, type, cost, value)
+values (22,'Śpiew Stonogi', 'Attack', 6, 50);
 
 
 
+insert into ITEM_BASE (ID, NAME, DMG, RARITY)
+values (1, 'Stiletto',1, 50);
+insert into ITEM_BASE (ID,name, dmg, rarity)
+values (2, 'Axe',2, 50);
+insert into ITEM_BASE (ID,name, dmg, rarity)
+values (3, 'Wooden helmet',3, 50);
+insert into ITEM_BASE (ID,name, dmg, rarity)
+values (4, 'Boots',4, 50);
+insert into ITEM_BASE (ID,name, dmg, rarity)
+values (5, 'Amulet charm',5, 50);
+insert into ITEM_BASE (ID,name, dmg, rarity)
+values (6, 'Lightning charm',6, 50);
+insert into ITEM_BASE (ID,name, dmg, rarity)
+values (7, 'None charm',7, 50);
+insert into ITEM_BASE (ID,name, dmg, rarity)
+values (8, 'Wooden sword',8, 50);
+insert into ITEM_BASE (ID,name, dmg, rarity)
+values (9, 'Steel sword',9, 50);
+insert into ITEM_BASE (ID,name, dmg, rarity)
+values (10, 'Silver sword',10, 50);
+insert into ITEM_BASE (ID,name, dmg, rarity)
+values (11, 'Steel helmet',11, 50);
+insert into ITEM_BASE (ID,name, dmg, rarity)
+values (12, 'Silver helmet',12, 50);
+insert into ITEM_BASE (ID,name, dmg, rarity)
+values (13, 'Dragon shield',13, 50);
+insert into ITEM_BASE (ID,name, dmg, rarity)
+values (14, 'Wooden armor',14, 50);
+insert into ITEM_BASE (ID,name, dmg, rarity)
+values (15, 'Steel armor',15, 50);
+insert into ITEM_BASE (ID,name, dmg, rarity)
+values (16, 'Silver armor',16, 50);
+insert into ITEM_BASE (ID,name, dmg, rarity)
+values (17, 'Wooden armor',17, 50);
+insert into ITEM_BASE (ID, name, dmg, rarity)
+values (18, 'Wooden pants',18, 50);
+insert into ITEM_BASE (ID,name, dmg, rarity)
+values (19, 'Steel pants',19, 50);
+insert into ITEM_BASE (ID,name, dmg, rarity)
+values (20,'Silver pants',20, 50);
 
-insert into ITEM (ID, NAME,ITEM_BASE_ID)
-values (1, 'Stiletto',1);
-insert into ITEM (ID, NAME,ITEM_BASE_ID)
-values (2, 'Axe',2);
-insert into ITEM (ID, NAME,ITEM_BASE_ID)
-values (3, 'Wooden helmet',3);
-insert into ITEM (ID, NAME,ITEM_BASE_ID)
-values (4, 'Boots',4);
-insert into ITEM (ID, NAME,ITEM_BASE_ID)
-values (5, 'Amulet charm',5);
-insert into ITEM (ID, NAME,ITEM_BASE_ID)
-values (6, 'Lightning charm',6);
-insert into ITEM (ID, NAME,ITEM_BASE_ID)
-values (7, 'None charm',7);
-insert into ITEM (ID, NAME,ITEM_BASE_ID)
-values (8, 'Wooden sword',8);
-insert into ITEM (ID, NAME,ITEM_BASE_ID)
-values (9, 'Steel sword',9);
-insert into ITEM (ID, NAME,ITEM_BASE_ID)
-values (10, 'Silver sword',10);
-insert into ITEM (ID, NAME,ITEM_BASE_ID)
-values (11, 'Steel helmet',11);
-insert into ITEM (ID, NAME,ITEM_BASE_ID)
-values (12, 'Silver helmet',12);
-insert into ITEM (ID, NAME,ITEM_BASE_ID)
-values (13, 'Dragon shield',13);
-insert into ITEM (ID, NAME,ITEM_BASE_ID)
-values (14, 'Wooden armor',14);
-insert into ITEM (ID, NAME,ITEM_BASE_ID)
-values (15, 'Steel armor',15);
-insert into ITEM (ID, NAME,ITEM_BASE_ID)
-values (16, 'Silver armor',16);
-insert into ITEM (ID, NAME,ITEM_BASE_ID)
-values (17, 'Wooden armor',17);
-insert into ITEM (ID, NAME,ITEM_BASE_ID)
-values (18, 'Wooden pants',18);
-insert into ITEM (ID, NAME,ITEM_BASE_ID)
-values (19, 'Steel pants',19);
-insert into ITEM (ID, NAME,ITEM_BASE_ID)
-values (20, 'Silver pants',20);
 
 
-insert into INVENTORY_ITEM_LIST (INVENTORY_ID, ITEM_LIST_ID)
-values (2, 1);
-insert into INVENTORY_ITEM_LIST (INVENTORY_ID, ITEM_LIST_ID)
-values (2, 2);
-insert into INVENTORY_ITEM_LIST (INVENTORY_ID, ITEM_LIST_ID)
-values (2, 3);
-insert into INVENTORY_ITEM_LIST (INVENTORY_ID, ITEM_LIST_ID)
-values (2, 4);
-insert into INVENTORY_ITEM_LIST (INVENTORY_ID, ITEM_LIST_ID)
-values (2, 5);
-insert into INVENTORY_ITEM_LIST (INVENTORY_ID, ITEM_LIST_ID)
-values (2, 6);
-insert into INVENTORY_ITEM_LIST (INVENTORY_ID, ITEM_LIST_ID)
-values (2, 7);
+-- insert into INVENTORY_ITEM_LIST (INVENTORY_ID, ITEM_LIST_ID)
+-- values (2, 8);
+-- insert into INVENTORY_ITEM_LIST (INVENTORY_ID, ITEM_LIST_ID)
+-- values (2, 9);
+-- insert into INVENTORY_ITEM_LIST (INVENTORY_ID, ITEM_LIST_ID)
+-- values (2, 10);
+-- insert into INVENTORY_ITEM_LIST (INVENTORY_ID, ITEM_LIST_ID)
+-- values (2, 11);
+-- insert into INVENTORY_ITEM_LIST (INVENTORY_ID, ITEM_LIST_ID)
+-- values (2, 12);
+-- insert into INVENTORY_ITEM_LIST (INVENTORY_ID, ITEM_LIST_ID)
+-- values (2, 13);
+-- insert into INVENTORY_ITEM_LIST (INVENTORY_ID, ITEM_LIST_ID)
+-- values (2, 14);

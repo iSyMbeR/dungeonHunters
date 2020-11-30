@@ -20,8 +20,8 @@ public class Card implements Serializable {
     @Enumerated(EnumType.STRING)
     private CardType type;
     private int cost;
-    private int dmg;
-    private int defense;
+    private int value;
+
 
 //    @ManyToOne
 //    private Deck deck;

@@ -22,7 +22,7 @@ public class Inventory implements Serializable {
     private Long id;
 
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable
     private Set<Item> itemList;
 }

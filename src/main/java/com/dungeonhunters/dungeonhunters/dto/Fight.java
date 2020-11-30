@@ -127,6 +127,8 @@ public class Fight {
         player.setGold(player.getGold()+goldLoot);
         playerService.addPlayer(player);
 
+        //clearBattle();
+
     }
 
     public void clearBattle() {

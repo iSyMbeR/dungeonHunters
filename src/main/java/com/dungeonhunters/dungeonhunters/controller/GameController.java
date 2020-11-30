@@ -88,25 +88,26 @@ public class GameController extends JFrame {
         repaint();
     }
 
-    public void printSet(List<Card> cards) {
-        int iter = 1;
-        for (Card c : cards) {
-            System.out.printf(CYAN + "%d." + BLACK + " %-20s DMG: %-3d DEF: %-3d COST: %-3d\n", iter++, c.getName(), c.getDmg(), c.getDefense(), c.getCost());
 
-        }
-    }
+//    public void printSet(List<Card> cards) {
+//        int iter = 1;
+//        for (Card c : cards) {
+//            System.out.printf(CYAN + "%d." + BLACK + " %-20s DMG: %-3d DEF: %-3d COST: %-3d\n", iter++, c.getName(), c.getDmg(), c.getDefense(), c.getCost());
+//
+//        }
+//    }
 
-    public Card createCard(String name, CardType type, int dmg, int cost, int def) {
-        Card card = Card.builder()
-                .cost(cost)
-                .defense(def)
-                .dmg(dmg)
-                .name(name)
-                .type(type)
-                .build();
-        cardService.addCard(card);
-        return card;
-    }
+//    public Card createCard(String name, String type, int dmg, int cost, int def) {
+//        Card card = Card.builder()
+//                .cost(cost)
+//                .defense(def)
+//                .dmg(dmg)
+//                .name(name)
+//                .type(type)
+//                .build();
+//        cardService.addCard(card);
+//        return card;
+//    }
 
     public void addCardToDeck(Deck deck, Card card) {
         List<Card> set = deck.getCardSet();
@@ -190,19 +191,19 @@ public class GameController extends JFrame {
     }
 
 
-    public void printCard(Card card, int index) {
-        String cardText = cardView;
-        String space = "";
-        cardText = cardText.replace("1", Integer.toString(card.getCost()));
-        space = (card.getDmg() > 9) ? "" : " ";
-        cardText = cardText.replace("2", space + Integer.toString(card.getDmg()));
-        space = (card.getDefense() > 9) ? "" : " ";
-        cardText = cardText.replace("3", space + Integer.toString(card.getDefense()));
-        cardText = cardText.replace("4", Integer.toString(index));
-        System.out.println(BLUE);
-        System.out.println(cardText);
-        System.out.println(RED);
-    }
+//    public void printCard(Card card, int index) {
+//        String cardText = cardView;
+//        String space = "";
+//        cardText = cardText.replace("1", Integer.toString(card.getCost()));
+//        space = (card.getDmg() > 9) ? "" : " ";
+//        cardText = cardText.replace("2", space + Integer.toString(card.getDmg()));
+//        space = (card.getDefense() > 9) ? "" : " ";
+//        cardText = cardText.replace("3", space + Integer.toString(card.getDefense()));
+//        cardText = cardText.replace("4", Integer.toString(index));
+//        System.out.println(BLUE);
+//        System.out.println(cardText);
+//        System.out.println(RED);
+//    }
 
     public Area selectArea() {
         List<Area> areas = areaService.getAllAreas();

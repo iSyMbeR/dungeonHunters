@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Set;
 
 
 @Repository
@@ -20,6 +21,5 @@ public interface InventoryRepository extends JpaRepository<Inventory,Long> {
     @Modifying
     @Query("select i from Item i where i.id= :id")
     List<Item> getAllItems(@Param("id") Long id);
-
 
 }
