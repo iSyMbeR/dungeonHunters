@@ -1,4 +1,5 @@
 package com.dungeonhunters.dungeonhunters.model;
+
 import lombok.*;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -18,8 +19,6 @@ public class Item implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-    private String name;
 
     @OneToOne
     private ItemBase itemBase;

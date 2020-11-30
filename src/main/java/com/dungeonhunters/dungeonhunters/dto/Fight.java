@@ -105,7 +105,6 @@ public class Fight {
         player.setGold(player.getGold()+goldLoot);
         playerService.addPlayer(player);
         clearBattle();
-
     }
 
     private void clearBattle() {

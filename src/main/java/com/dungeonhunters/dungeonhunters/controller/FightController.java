@@ -52,10 +52,10 @@ public class FightController extends JFrame {
         cardPanel = new JPanel();
         cardPanel.setLayout(new BoxLayout(cardPanel,BoxLayout.Y_AXIS));
         List<Card> cardList = deckService.getDeckById(fight.player.getDeck().getId()).getCardSet();
-        for(Card c : cardList){
-            JLabel name = new JLabel(c.getName()+" dmg: "+c.getDmg()+" def: "+c.getDefense());
-            cardPanel.add(name);
-        }
+//        for(Card c : cardList){
+//            JLabel name = new JLabel(c.getName()+" dmg: "+c.getDmg()+" def: "+c.getDefense());
+//            cardPanel.add(name);
+//        }
         cardPanel.add(new JLabel("I choose nothing"));
         cardPanel.setFocusable(true);
         createControls(cardPanel, new AbstractAction() {

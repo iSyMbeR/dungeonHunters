@@ -19,8 +19,8 @@ public class Card implements Serializable {
     private String name;
     private String type;
     private int cost;
-    private int dmg;
-    private int defense;
+    private int value;
+
 
 //    @ManyToOne
 //    private Deck deck;

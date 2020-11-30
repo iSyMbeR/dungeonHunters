@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 
 @Service
@@ -38,4 +39,5 @@ public class InventoryService {
     public List<Item> getAllItemsFromPlayerInventory(Long id) {
         return inventoryRepository.getAllItems(id);
     }
+
 }
