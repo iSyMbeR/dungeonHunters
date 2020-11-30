@@ -15,6 +15,7 @@ public class ItemBase implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private String name;
     private int dmg;
     private int rarity;
 

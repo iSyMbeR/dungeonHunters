@@ -10,6 +10,7 @@ import lombok.Data;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -33,7 +34,11 @@ public class Fight {
         if (enemy == null){
             Random r = new Random();
             List<Enemy> allEnemies = enemyService.getAllEnemies();
-            this.enemy = allEnemies.get(r.nextInt(allEnemies.size()));
+            List<Enemy> validEnemies = new ArrayList<>();
+            for(Enemy e : allEnemies){
+                if(e.getStage() <= player.getStage()) validEnemies.add(e);
+            }
+            this.enemy = validEnemies.get(r.nextInt(validEnemies.size()));
         }
     }
 
