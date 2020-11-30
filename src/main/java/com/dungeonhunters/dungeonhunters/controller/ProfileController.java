@@ -10,17 +10,23 @@ import com.dungeonhunters.dungeonhunters.service.DeckService;
 import com.dungeonhunters.dungeonhunters.service.ItemService;
 import org.springframework.stereotype.Controller;
 
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+
 import java.util.List;
 import java.util.Set;
+
+import static com.dungeonhunters.dungeonhunters.controller.MusicController.getMusic;
 
 @Controller
 public class ProfileController extends JFrame {
     public JPanel panel;
+
     public GameController gameController;
     public Player player;
+    MusicController musicController;
     public int selected = 1;
     private final Shop shop;
     private final DeckService deckService;
@@ -36,28 +42,44 @@ public class ProfileController extends JFrame {
     public void createView(){
         panel = new JPanel();
         JPanel infoPanel = new JPanel();
+        infoPanel.setBackground(Color.GRAY);
         JLabel name = new JLabel(player.getName());
+        name.setForeground(Color.BLUE);
         JLabel exp = new JLabel("Exp: "+player.getExperience());
+        exp.setForeground(Color.GREEN);
         JLabel hp = new JLabel("HP: " + player.getHp());
+        hp.setForeground(Color.RED);
+        JLabel gold = new JLabel("GOLD: " + player.getGold());
+        gold.setForeground(Color.ORANGE);
         infoPanel.add(name);
         infoPanel.add(exp);
         infoPanel.add(hp);
+        infoPanel.add(gold);
+
         JLabel fightLabel = new JLabel("Wejdź do lochu");
         JLabel inventoryLabel = new JLabel("Pokaż ekwipunek");
         JLabel deckLabel = new JLabel("Pokaż karty");
         JLabel addCardLabel = new JLabel("Sklep");
         JLabel exitLabel = new JLabel("Wyjdź");
         JPanel selectPanel = new JPanel();
+
+        selectPanel.setBackground(Color.GRAY);
         selectPanel.add(fightLabel);
         selectPanel.add(inventoryLabel);
         selectPanel.add(deckLabel);
         selectPanel.add(addCardLabel);
         selectPanel.add(exitLabel);
         selectPanel.setLayout(new BoxLayout(selectPanel, BoxLayout.Y_AXIS));
+
         createControls(selectPanel, new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(selected == 1) gameController.switchToFightController();
+                if(selected == 1) {
+                    // mati we zobacz czemu tego widoku nie chce
+                    // wczytywac tylko sama muzaczka idzie bo mnie zaraz chui sttrzeli
+                    createPerformanceBeforeFight();
+                    gameController.switchToFightController();
+                }
                 if(selected == 2) createPlayerInventoryView();
                 if(selected == 3) createDeckView();
                 if(selected == 4) createShopView();
@@ -76,6 +98,18 @@ public class ProfileController extends JFrame {
         System.exit(0);
     }
 
+    private void createPerformanceBeforeFight(){
+        JPanel container = new JPanel();
+        container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
+        container.setLayout(new GridLayout(0,3));
+        JLabel gamer = new JLabel(player.getName());
+        JLabel opponent = new JLabel("enemy");
+        container.add(gamer);
+        container.add(new JLabel(""));
+        container.add(opponent);
+        gameController.setMainContent(container);
+        getMusic("start");
+    }
     private void createDeckView() {
         JPanel container = new JPanel();
         container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));

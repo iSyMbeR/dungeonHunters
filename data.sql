@@ -89,9 +89,9 @@ values (3,'Mela na twarz', 'Attack', 1, 6, 0);
 insert into CARD (ID,name, type, cost, dmg, defense)
 values (4,'Złoty usmiech', 'Attack', 0, 6, 0);
 insert into CARD (ID,name, type, cost, dmg, defense)
-values (5,'Postaw taczkę', 'Defense', 1, 0, 5);
+values (5,'Taczka', 'Defense', 1, 0, 5);
 insert into CARD (ID,name, type, cost, dmg, defense)
-values (6,'Rozsyp gwoździe', 'Attack', 1, 5, 0);
+values (6,'Gwoździe', 'Attack', 1, 5, 0);
 insert into CARD (ID,name, type, cost, dmg, defense)
 values (7,'Rzut dziewczyną', 'Attack', 2, 8, 0);
 insert into CARD (ID, name,type, cost, dmg, defense)
@@ -109,7 +109,7 @@ values (13,'Grzmot', 'Attack', 1, 5, 7);
 insert into CARD (ID,name, type, cost, dmg, defense)
 values (14,'Perfected Strike', 'Attack', 2, 6, 2);
 insert into CARD (ID,name, type, cost, dmg, defense)
-values (15,'Lwię ', 'Attack', 1, 9, 0);
+values (15,'Lwię', 'Attack', 1, 9, 0);
 insert into CARD (ID,name, type, cost, dmg, defense)
 values (16,'Krowie muu', 'Defense', 2, 0, 9);
 insert into CARD (ID, name,type, cost, dmg, defense)
@@ -167,4 +167,8 @@ values (18, 'Wooden pants',18);
 insert into ITEM (ID, NAME,ITEM_BASE_ID)
 values (19, 'Steel pants',19);
 insert into ITEM (ID, NAME,ITEM_BASE_ID)
+values (20, 'Silver pants',20);
+
+
+insert into ITEM_BONUS (ITEM_ID, BONUS_ID)
 values (20, 'Silver pants',20);
