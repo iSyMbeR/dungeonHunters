@@ -5,5 +5,8 @@ import lombok.Getter;
 @Getter
 public enum CardType {
     Attack,
-    Defense;
+    Miss,
+    Block,
+    Sleep,
+    ReducedDmg;
 }

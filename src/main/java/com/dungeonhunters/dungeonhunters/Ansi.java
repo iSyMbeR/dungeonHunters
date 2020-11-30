@@ -298,8 +298,6 @@ public final class Ansi {
             "||    ____| |____     ||\n"+
             "||   |           |    ||\n"+
             "||   |           |    ||\n"+
-            "||||||||||||||||||||||||\n"+
-            "||#friendly_health_bar||\n"+
             "||||||||||||||||||||||||";
     public static final String enemy =
             "||||||||||||||||||||||||\n"+
