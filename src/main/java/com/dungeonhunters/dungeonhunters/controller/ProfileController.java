@@ -242,12 +242,14 @@ public class ProfileController extends JFrame {
             tabNames = new String[playerInventoryItemsList.size()];
             tabDmg = new int[playerInventoryItemsList.size()];
             for (Item c : playerInventoryItemsList) {
+
                 tabNames[count] = c.getItemBase().getName();
                 tabDmg[count] = c.getItemBase().getDmg();
                 options.add(new JLabel(c.getItemBase().getName()));
                 itemDmgList.add(new JLabel("" + c.getItemBase().getDmg()));
                 tmp = new JLabel(String.valueOf(equippedItems.get(c.getItemBase().getName())));
                 if (equippedItems.get(tabNames[count]) == ItemEquipType.TAK) {
+
                     tmp.setForeground(Color.GREEN);
                 }
                 equip.add(tmp);
@@ -361,8 +363,10 @@ public class ProfileController extends JFrame {
 
         for (ItemBase c : listOfItemsFromBase) {
             container.add(new JLabel(" "));
+
             name = new JLabel(c.getName());
             dmg = new JLabel("" + c.getDmg());
+
             container.add(new JLabel(" "));
             container.add(new JLabel(" "));
             container.add(name);

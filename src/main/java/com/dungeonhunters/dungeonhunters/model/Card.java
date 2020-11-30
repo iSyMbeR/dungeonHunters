@@ -17,7 +17,8 @@ public class Card implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private CardType type;
     private int cost;
     private int value;
 

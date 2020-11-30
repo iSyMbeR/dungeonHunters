@@ -9,10 +9,7 @@ import org.springframework.stereotype.Controller;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.util.List;
 
 @Controller
@@ -48,22 +45,16 @@ public class MenuController extends JFrame {
             panel.add(l);
             iter++;
         }
-        //panel.setMinimumSize(new Dimension(100, 200));
-        panel.addKeyListener(new KeyAdapter() {
+
+        createControls(panel, new AbstractAction() {
             @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == 40 && selected != players.size() + 1) selected++;
-                if (e.getKeyCode() == 38 && selected != 1) selected--;
-                if (e.getKeyCode() == 10) {
-                    if (selected == 1) {
-                        gameController.clearScreen();
-                        showPlayerCreation();
-                    } else {
-                        gameController.setCurrentPlayer(players.get(selected - 2));
-                        gameController.switchToProfileController();
-                    }
+            public void actionPerformed(ActionEvent e) {
+                if(selected == 1) {
+                    showPlayerCreation();
+                }else{
+                    gameController.setCurrentPlayer(players.get(selected - 2));
+                    gameController.switchToProfileController();
                 }
-                refreshColor();
             }
         });
         panel.setFocusable(true);
@@ -100,14 +91,6 @@ public class MenuController extends JFrame {
         JTextField tf = new JTextField(20);
         tf.setBorder(null);
         tf.setBackground(null);
-        tf.requestFocus();
-        addWindowFocusListener(new WindowAdapter() {
-            public void windowGainedFocus(WindowEvent e) {
-                tf.requestFocusInWindow();
-            }
-
-        });
-
         tf.addActionListener(e -> {
             String name = tf.getText();
             List<Player> players = playerService.getPlayers();
@@ -136,5 +119,29 @@ public class MenuController extends JFrame {
         gameController.setMainContent(panel);
         tf.requestFocusInWindow();
 
+    }
+    public void createControls(JPanel p, AbstractAction action) {
+        selected = 1;
+        refreshColor();
+        Action incrementSelection = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (selected < p.getComponentCount()) selected++;
+                refreshColor();
+            }
+        };
+        Action decrementSelection = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (selected != 1) selected--;
+                refreshColor();
+            }
+        };
+        p.getInputMap().put(KeyStroke.getKeyStroke("UP"), "pressedUp");
+        p.getInputMap().put(KeyStroke.getKeyStroke("DOWN"), "pressedDown");
+        p.getInputMap().put(KeyStroke.getKeyStroke("ENTER"), "pressedEnter");
+        p.getActionMap().put("pressedUp", decrementSelection);
+        p.getActionMap().put("pressedDown", incrementSelection);
+        p.getActionMap().put("pressedEnter", action);
     }
 }
