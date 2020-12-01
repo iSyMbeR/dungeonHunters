@@ -80,93 +80,93 @@ values (14, 'Była dziewczyna', 150, 15, 750, 18, 14, 14);
 
 
 -- CARDS{
-insert into CARD (ID,name, type, cost, value)
-values (1,'Dotyk Proboszcza', 'Attack', 3, 29);
-insert into CARD (ID,name, type, cost, value)
-values (2,'Kołdra', 'Block', 1, 1);
-insert into CARD (ID,name, type, cost, value)
-values (3,'Mela na twarz', 'Attack', 2, 25);
-insert into CARD (ID,name, type, cost, value)
-values (4,'Złoty usmiech', 'ReducedDmg', 0, 15);
-insert into CARD (ID,name, type, cost, value)
-values (5,'Taczka', 'Block', 1, 1);
-insert into CARD (ID,name, type, cost, value)
-values (6,'Gwoździe', 'Miss', 1, 2);
-insert into CARD (ID,name, type, cost, value)
-values (7,'Rzut dziewczyną', 'Attack', 2, 25);
-insert into CARD (ID, name,type, cost, value)
-values (8,'4 dniowe slipy', 'Sleep', 3, 2);
-insert into CARD (ID,name, type, cost, value)
-values (9,'Ała nie bij', 'Miss', 1, 1);
-insert into CARD (ID,name, type, cost, value)
-values (10,'Formacja zółw', 'Block', 2, 1);
-insert into CARD (ID,name, type, cost, value)
-values (11,'Beknięcie', 'Sleep', 1, 2);
-insert into CARD (ID,name, type, cost, value)
-values (12,'Pierdnięcie', 'Sleep', 3, 4);
-insert into CARD (ID, name,type, cost, value)
-values (13,'Grzmot', 'Attack', 1, 25);
-insert into CARD (ID,name, type, cost, value)
-values (14,'Strajk', 'ReducedDmg', 2, 20);
-insert into CARD (ID,name, type, cost, value)
-values (15,'Lwię', 'Attack', 2, 35);
-insert into CARD (ID,name, type, cost, value)
-values (16,'Krowie muu', 'ReducedDmg', 2, 13);
-insert into CARD (ID, name,type, cost, value)
-values (17,'Usmiech bombelka', 'ReducedDmg', 3, 25);
-insert into CARD (ID, name,type, cost, value)
-values (18,'Pchniecie kulą', 'Attack', 3, 30);
-insert into CARD (ID,name, type, cost, value)
-values (19,'Odklepanie najmana', 'Sleep', 3, 3);
-insert into CARD (ID,name, type, cost, value)
-values (20,'Rzut kozą', 'Attack', 1, 45);
-insert into CARD (ID,name, type, cost, value)
-values (21,'Kobiecy liść', 'Sleep', 4, 4);
-insert into CARD (ID,name, type, cost, value)
-values (22,'Śpiew Stonogi', 'Attack', 6, 50);
+insert into CARD (ID,name,description, type, cost, value)
+values (1,'Dotyk Proboszcza','Lepiej tego unikac', 'Attack', 1, 29);
+insert into CARD (ID,name,description, type, cost, value)
+values (2,'Kołdra','Chyba nie widac mnie', 'Block', 0, 1);
+insert into CARD (ID,name,description, type, cost, value)
+values (3,'Mela na twarz','I cyk covid-19', 'Attack', 1, 25);
+insert into CARD (ID,name,description, type, cost, value)
+values (4,'Złoty usmiech','Po co myc zęby', 'ReducedDmg', 1, 2);
+insert into CARD (ID,name,description, type, cost, value)
+values (5,'Taczka','I wruuum', 'Block', 1, 1);
+insert into CARD (ID,name,description, type, cost, value)
+values (6,'Gwoździe','Przebija stopy', 'Miss', 1, 2);
+insert into CARD (ID,name,description, type, cost, value)
+values (7,'Rzut dziewczyną','Najblizej pod reka', 'Attack', 2, 25);
+insert into CARD (ID, name,description,type, cost, value)
+values (8,'4 dniowe slipy','I cyk na druga strone', 'Sleep', 1, 2);
+insert into CARD (ID,name,description, type, cost, value)
+values (9,'Ała nie bij','Nie w szczepionke', 'Miss', 1, 1);
+insert into CARD (ID,name,description, type, cost, value)
+values (10,'Formacja zółw','No przebij sie', 'Block', 1, 1);
+insert into CARD (ID,name,description, type, cost, value)
+values (11,'Beknięcie', 'Ale dobry obiad','Sleep', 1, 2);
+insert into CARD (ID,name,description, type, cost, value)
+values (12,'Pierdnięcie','Kapusta kiszona samo zdrowie', 'Sleep', 2, 4);
+insert into CARD (ID, name,description,type, cost, value)
+values (13,'Grzmot','Stan pod drzewem', 'Attack', 1, 25);
+insert into CARD (ID,name,description, type, cost, value)
+values (14,'Strajk', 'Jaki by tu marsz zrobic','ReducedDmg', 1, 2);
+insert into CARD (ID,name,description, type, cost, value)
+values (15,'Lwię','Krol lew to nie tylko bajka', 'Attack', 2, 35);
+insert into CARD (ID,name,description, type, cost, value)
+values (16,'Krowie muu','Muuuu', 'ReducedDmg', 2, 4);
+insert into CARD (ID, name,description,type, cost, value)
+values (17,'Usmiech bombelka','NALEZY MI SIE', 'ReducedDmg', 2, 3);
+insert into CARD (ID, name,description,type, cost, value)
+values (18,'Pchniecie kulą','Troche wazy', 'Attack', 2, 35);
+insert into CARD (ID,name,description, type, cost, value)
+values (19,'Odklepanie najmana','Nic dodac nic ujac', 'Sleep', 2, 3);
+insert into CARD (ID,name,description, type, cost, value)
+values (20,'Rzut kozą','Suchosc nosa','Attack', 2, 45);
+insert into CARD (ID,name,description, type, cost, value)
+values (21,'Kobiecy liść','Gdzie te rece wkladadasz', 'Sleep', 2, 4);
+insert into CARD (ID,name,description, type, cost, value)
+values (22,'Śpiew Stonogi','ZIOBRO TY .....', 'Attack', 2, 50);
 
 
 
 insert into ITEM_BASE (ID, NAME, DMG, RARITY)
 values (1, 'Stiletto',1, 50);
 insert into ITEM_BASE (ID,name, dmg, rarity)
-values (2, 'Axe',2, 50);
+values (2, 'Axe',2, 45);
 insert into ITEM_BASE (ID,name, dmg, rarity)
-values (3, 'Wooden helmet',3, 50);
+values (3, 'Wooden helmet',3, 40);
 insert into ITEM_BASE (ID,name, dmg, rarity)
 values (4, 'Boots',4, 50);
 insert into ITEM_BASE (ID,name, dmg, rarity)
-values (5, 'Amulet charm',5, 50);
+values (5, 'Amulet charm',5, 35);
 insert into ITEM_BASE (ID,name, dmg, rarity)
-values (6, 'Lightning charm',6, 50);
+values (6, 'Lightning charm',6, 30);
 insert into ITEM_BASE (ID,name, dmg, rarity)
-values (7, 'None charm',7, 50);
+values (7, 'None charm',7, 25);
 insert into ITEM_BASE (ID,name, dmg, rarity)
-values (8, 'Wooden sword',8, 50);
+values (8, 'Wooden sword',8, 24);
 insert into ITEM_BASE (ID,name, dmg, rarity)
-values (9, 'Steel sword',9, 50);
+values (9, 'Steel sword',9,23);
 insert into ITEM_BASE (ID,name, dmg, rarity)
-values (10, 'Silver sword',10, 50);
+values (10, 'Silver sword',10, 22);
 insert into ITEM_BASE (ID,name, dmg, rarity)
-values (11, 'Steel helmet',11, 50);
+values (11, 'Steel helmet',11, 21);
 insert into ITEM_BASE (ID,name, dmg, rarity)
-values (12, 'Silver helmet',12, 50);
+values (12, 'Silver helmet',12, 18);
 insert into ITEM_BASE (ID,name, dmg, rarity)
-values (13, 'Dragon shield',13, 50);
+values (13, 'Dragon shield',13, 17);
 insert into ITEM_BASE (ID,name, dmg, rarity)
-values (14, 'Wooden armor',14, 50);
+values (14, 'Wooden armor',14, 15);
 insert into ITEM_BASE (ID,name, dmg, rarity)
-values (15, 'Steel armor',15, 50);
+values (15, 'Steel armor',15, 13);
 insert into ITEM_BASE (ID,name, dmg, rarity)
-values (16, 'Silver armor',16, 50);
+values (16, 'Silver armor',16, 11);
 insert into ITEM_BASE (ID,name, dmg, rarity)
-values (17, 'Wooden armor',17, 50);
+values (17, 'Wooden armor',17, 10);
 insert into ITEM_BASE (ID, name, dmg, rarity)
-values (18, 'Wooden pants',18, 50);
+values (18, 'Wooden pants',18, 5);
 insert into ITEM_BASE (ID,name, dmg, rarity)
-values (19, 'Steel pants',19, 50);
+values (19, 'Steel pants',19, 4);
 insert into ITEM_BASE (ID,name, dmg, rarity)
-values (20,'Silver pants',20, 50);
+values (20,'Silver pants',20, 3);
 
 
 
