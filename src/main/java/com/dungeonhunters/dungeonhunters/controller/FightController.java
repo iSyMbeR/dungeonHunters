@@ -14,6 +14,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.Map;
 
+import static com.dungeonhunters.dungeonhunters.Ansi.opponentFight;
+import static com.dungeonhunters.dungeonhunters.Ansi.playerFight;
+
 @Controller
 public class FightController extends JFrame {
     public GameController gameController;
@@ -37,12 +40,19 @@ public class FightController extends JFrame {
 
     public void createView() {
         generateEnemy();
+        //-------------------te dwa panele juz powinny miec obrazki-------------------//
+        JPanel playerFightPanel = new JPanel();
+        JPanel opponentFightPanel = new JPanel();
+        playerFightPanel.setLayout(new BoxLayout(playerFightPanel, BoxLayout.Y_AXIS));
+        opponentFightPanel.setLayout(new BoxLayout(opponentFightPanel, BoxLayout.Y_AXIS));
+        generatePlayerAndEnemy(playerFightPanel, playerFight);
+        generatePlayerAndEnemy(opponentFightPanel, opponentFight);
+        //----------------------------------------------------------------------------//
         fight.nextTurn();
         logPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         getTurnPanel();
         getPlayerPanel();
         getEnemyPanel();
-
         optionsPanel = new JPanel();
         optionsPanel.setLayout(new BoxLayout(optionsPanel,BoxLayout.Y_AXIS));
         JLabel attackOption = new JLabel("Attack");
@@ -73,6 +83,7 @@ public class FightController extends JFrame {
         cardPanel.setLayout(new BoxLayout(cardPanel,BoxLayout.Y_AXIS));
         List<Card> cardList = deckService.getDeckById(fight.player.getDeck().getId()).getCardSet();
         for(Card c : cardList){
+
             JLabel name = new JLabel(c.getName()+" "+c.getType()+": "+c.getValue()+" cost: "+c.getCost());
             cardPanel.add(name);
         }
@@ -282,5 +293,18 @@ public class FightController extends JFrame {
         p.getActionMap().put("pressedUp",decrementSelection);
         p.getActionMap().put("pressedDown",incrementSelection);
         p.getActionMap().put("pressedEnter",action);
+    }
+
+    public void generatePlayerAndEnemy(JPanel panel, String asciArt){
+        StringBuilder tmp = new StringBuilder();
+        for(int i=0; i<asciArt.length(); i++) {
+            char ch = asciArt.charAt(i);
+            if (ch == '\n') {
+                JLabel lejbel= new JLabel(tmp+"");
+                panel.add(lejbel);
+                tmp.delete(0,i);
+            }
+            tmp.append(ch);
+        }
     }
 }
