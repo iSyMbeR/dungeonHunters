@@ -85,11 +85,11 @@ public class ProfileController extends JFrame {
         infoPanel.add(dmg);
         infoPanel.add(def);
 
-        JLabel fightLabel = new JLabel("Wejdź do lochu");
-        JLabel inventoryLabel = new JLabel("Pokaż ekwipunek");
-        JLabel deckLabel = new JLabel("Pokaż karty");
-        JLabel addCardLabel = new JLabel("Sklep");
-        JLabel exitLabel = new JLabel("Wyjdź");
+        JLabel fightLabel = new JLabel("Enter dungeon");
+        JLabel inventoryLabel = new JLabel("Show inventory");
+        JLabel deckLabel = new JLabel("Show cards");
+        JLabel addCardLabel = new JLabel("Shop");
+        JLabel exitLabel = new JLabel("Exit");
         JPanel selectPanel = new JPanel();
 
         //selectPanel.setBackground(Color.GRAY);
