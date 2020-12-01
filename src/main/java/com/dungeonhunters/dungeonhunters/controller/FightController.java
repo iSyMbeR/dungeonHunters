@@ -132,6 +132,7 @@ public class FightController extends JFrame {
         playerDmg.setAlignmentX(Component.CENTER_ALIGNMENT);
         playerDef.setAlignmentX(Component.CENTER_ALIGNMENT);
         playerStatus.setAlignmentX(Component.CENTER_ALIGNMENT);
+        playerIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
         playerPanel.add(playerName);
         playerPanel.add(playerHp);
         playerPanel.add(playerDmg);
@@ -171,6 +172,7 @@ public class FightController extends JFrame {
         enemyDmg.setAlignmentX(Component.CENTER_ALIGNMENT);
         enemyDef.setAlignmentX(Component.CENTER_ALIGNMENT);
         enemyStatus.setAlignmentX(Component.CENTER_ALIGNMENT);
+        enemyIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
         enemyPanel.add(enemyName);
         enemyPanel.add(enemyHp);
         enemyPanel.add(enemyDmg);

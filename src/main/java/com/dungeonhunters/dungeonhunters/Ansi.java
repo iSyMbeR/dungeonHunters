@@ -288,7 +288,7 @@ public final class Ansi {
 
     public static final String playerFight =
                     "(●̮̮̃•̃)\n" +
-                    "/█ \\()___)_______)\n" +
+                    "/█ \\()_)___)\n" +
                     ".Π.\n";
 
     public static final String opponentFight =
