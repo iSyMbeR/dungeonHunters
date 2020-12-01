@@ -21,6 +21,7 @@ public class Card implements Serializable {
     private CardType type;
     private int cost;
     private int value;
+    private String description;
 
 
 //    @ManyToOne
