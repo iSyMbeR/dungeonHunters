@@ -286,6 +286,19 @@ public final class Ansi {
                     "|____________| \n";
 
 
+    public static final String playerFight =
+                    "(●̮̮̃•̃)\n" +
+                    "/█ \\()___)_______)\n" +
+                    ".Π.\n";
+
+    public static final String opponentFight =
+                    "▄──────▄\n" +
+                    "█▀█▀█\n" +
+                    "█▄█▄█\n" +
+                    "──███───▄▄\n" +
+                    "──████▐█─█\n" +
+                    "──████─────█\n" +
+                    "──▀▀▀▀▀▀▀\n";
 
     public static final String player =
             "||||||||||||||||||||||||\n"+
