@@ -69,7 +69,7 @@ public class Fight {
             if(validEnemies.size() == 0){
                 Enemy en = Enemy.builder()
                         .name("Ostry przeciwnik")
-                        .dmg(50)
+                        .dmg(2)
                         .hp(200)
                         .stage(15)
                         .defense(0)
@@ -99,13 +99,14 @@ public class Fight {
         }
         if(playerBlocked){
             if(player.getDef()<damage){
-                player.setCurrentHp(player.getCurrentHp() - damage + player.getDef());
+                damage = damage - player.getDef();
+                player.setCurrentHp(player.getCurrentHp() - damage);
             }
             playerBlocked=false;
-            return player.getName()+" received " +damage+" damage (reduced by "+player.getDef()+") from "+enemy.getName()+" attack.";
+            return player.getName()+" received " +damage+" damage (damage reduced by defense) from "+enemy.getName()+" attack.";
         }else{
             player.setCurrentHp(player.getCurrentHp() - enemy.getDmg());
-            return player.getName()+" received " +enemy.getDmg()+"damage from "+enemy.getName()+" attack.";
+            return player.getName()+" received " +damage+" damage from "+enemy.getName()+" attack.";
         }
     }
 
@@ -153,6 +154,7 @@ public class Fight {
         turn++;
         actionsLeft=2;
         updateStatus();
+        refreshStatus();
         return "Turn "+(turn - 1)+" ended, started "+turn+" turn, "+actionsLeft+" actions left.";
     }
 

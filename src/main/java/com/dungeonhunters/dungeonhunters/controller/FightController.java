@@ -6,6 +6,7 @@ import com.dungeonhunters.dungeonhunters.model.Card;
 import com.dungeonhunters.dungeonhunters.model.Player;
 import com.dungeonhunters.dungeonhunters.service.DeckService;
 import com.dungeonhunters.dungeonhunters.service.EnemyService;
+import org.springframework.data.jpa.repository.query.Jpa21Utils;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
@@ -100,30 +101,61 @@ public class FightController extends JFrame {
 
     public void getPlayerPanel() {
         playerPanel = new JPanel();
+        playerPanel.setLayout(new BoxLayout(playerPanel,BoxLayout.Y_AXIS));
+        //SpringLayout layout = new SpringLayout();
+        //playerPanel.setLayout(new SpringLayout());
         JLabel playerName = new JLabel(fight.player.getName());
-        JLabel playerStats = new JLabel(
-                "HP: "+fight.player.getCurrentHp()+"/"+fight.player.getHp()+" DMG: "+
-                        fight.player.getDmg()+" DEF: "+fight.player.getDef()
-        );
-        playerPanel.add(playerName);
-        playerPanel.add(playerStats);
+        playerName.setFont(new Font("Verdana", Font.BOLD, 15));
+        JLabel playerHp = new JLabel("Life "+fight.player.getCurrentHp()+"/"+fight.player.getHp());
+        playerHp.setFont(new Font("Verdana", Font.BOLD, 18));
+        playerHp.setForeground(new Color(173,10,2));
+        JLabel playerDmg = new JLabel("Attack damage: "+fight.player.getDmg());
+        JLabel playerDef = new JLabel("Defense: "+fight.player.getDef());
+        String playerStatusText="";
         for(Map.Entry<Card, Integer> entry : fight.playerStatus.entrySet()){
-            JLabel l = new JLabel(entry.getKey().getType().toString()+": "+entry.getValue());
-            playerPanel.add(l);
+            playerStatusText += entry.getKey().getType().toString()+": "+entry.getValue()+" ";
         }
+        JLabel playerStatus = new JLabel(playerStatusText);
+        playerStatus.setForeground(new Color(24,45,181));
+        playerName.setAlignmentX(Component.CENTER_ALIGNMENT);
+        playerHp.setAlignmentX(Component.CENTER_ALIGNMENT);
+        playerDmg.setAlignmentX(Component.CENTER_ALIGNMENT);
+        playerDef.setAlignmentX(Component.CENTER_ALIGNMENT);
+        playerStatus.setAlignmentX(Component.CENTER_ALIGNMENT);
+        playerPanel.add(playerName);
+        playerPanel.add(playerHp);
+        playerPanel.add(playerDmg);
+        playerPanel.add(playerDef);
+        playerPanel.add(playerStatus);
+
     }
 
     public void getEnemyPanel() {
         enemyPanel = new JPanel();
+        enemyPanel.setLayout(new BoxLayout(enemyPanel,BoxLayout.Y_AXIS));
         JLabel enemyName = new JLabel(fight.enemy.getName());
-        JLabel enemyLife = new JLabel("HP: "+fight.enemy.getHp()+"/"+fight.enemyMaxHp+" DMG: "+
-                fight.enemy.getDmg()+" DEF: "+fight.enemy.getDefense());
-        enemyPanel.add(enemyName);
-        enemyPanel.add(enemyLife);
+        enemyName.setFont(new Font("Verdana", Font.BOLD, 15));
+        JLabel enemyHp = new JLabel("Life "+fight.enemy.getHp());
+        enemyHp.setFont(new Font("Verdana", Font.BOLD, 18));
+        enemyHp.setForeground(new Color(173,10,2));
+        JLabel enemyDmg = new JLabel("Attack damage: "+fight.enemy.getDmg());
+        JLabel enemyDef = new JLabel("Defense: "+fight.enemy.getDefense());
+        String enemyStatusText="";
         for(Map.Entry<Card, Integer> entry : fight.enemyStatus.entrySet()){
-            JLabel l = new JLabel(entry.getKey().getType().toString()+": "+entry.getValue());
-            enemyPanel.add(l);
+            enemyStatusText += entry.getKey().getType().toString()+": "+entry.getValue()+" ";
         }
+        JLabel enemyStatus = new JLabel(enemyStatusText);
+        enemyStatus.setForeground(new Color(0,145,12));
+        enemyName.setAlignmentX(Component.CENTER_ALIGNMENT);
+        enemyHp.setAlignmentX(Component.CENTER_ALIGNMENT);
+        enemyDmg.setAlignmentX(Component.CENTER_ALIGNMENT);
+        enemyDef.setAlignmentX(Component.CENTER_ALIGNMENT);
+        enemyStatus.setAlignmentX(Component.CENTER_ALIGNMENT);
+        enemyPanel.add(enemyName);
+        enemyPanel.add(enemyHp);
+        enemyPanel.add(enemyDmg);
+        enemyPanel.add(enemyDef);
+        enemyPanel.add(enemyStatus);
     }
 
     private void checkToEndBattle(int battleStatus) {
