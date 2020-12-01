@@ -116,6 +116,16 @@ public class FightController extends JFrame {
             playerStatusText += entry.getKey().getType().toString()+": "+entry.getValue()+" ";
         }
         JLabel playerStatus = new JLabel(playerStatusText);
+
+        JPanel playerIcon = new JPanel();
+        playerIcon.setLayout(new BoxLayout(playerIcon,BoxLayout.Y_AXIS));
+        String[] iconList = Ansi.playerFight.split("\n");
+        for(String s : iconList){
+            JLabel l = new JLabel(s);
+            playerIcon.add(l);
+        }
+
+
         playerStatus.setForeground(new Color(24,45,181));
         playerName.setAlignmentX(Component.CENTER_ALIGNMENT);
         playerHp.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -126,9 +136,11 @@ public class FightController extends JFrame {
         playerPanel.add(playerHp);
         playerPanel.add(playerDmg);
         playerPanel.add(playerDef);
+        playerPanel.add(playerIcon);
         playerPanel.add(playerStatus);
 
     }
+
 
     public void getEnemyPanel() {
         enemyPanel = new JPanel();
@@ -144,6 +156,14 @@ public class FightController extends JFrame {
         for(Map.Entry<Card, Integer> entry : fight.enemyStatus.entrySet()){
             enemyStatusText += entry.getKey().getType().toString()+": "+entry.getValue()+" ";
         }
+        JPanel enemyIcon = new JPanel();
+        enemyIcon.setLayout(new BoxLayout(enemyIcon,BoxLayout.Y_AXIS));
+        String[] iconList = Ansi.opponentFight.split("\n");
+        for(String s : iconList){
+            JLabel l = new JLabel(s);
+            enemyIcon.add(l);
+        }
+
         JLabel enemyStatus = new JLabel(enemyStatusText);
         enemyStatus.setForeground(new Color(0,145,12));
         enemyName.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -155,6 +175,7 @@ public class FightController extends JFrame {
         enemyPanel.add(enemyHp);
         enemyPanel.add(enemyDmg);
         enemyPanel.add(enemyDef);
+        enemyPanel.add(enemyIcon);
         enemyPanel.add(enemyStatus);
     }
 
