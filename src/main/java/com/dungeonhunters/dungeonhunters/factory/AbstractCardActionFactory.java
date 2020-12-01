@@ -8,6 +8,6 @@ import com.dungeonhunters.dungeonhunters.model.Player;
 import java.util.Map;
 
 public interface AbstractCardActionFactory {
-    void use(Card card, Player player, Enemy enemy, Map<Card, Integer> playerDebuffs, Map<Card, Integer> enemyDebuffs);
+    void use(Card card, Player player, Enemy enemy, Map<Card, Integer> playerStatus, Map<Card, Integer> enemyStatus);
     CardType getSupportedCardType();
 }

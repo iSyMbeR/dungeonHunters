@@ -12,6 +12,7 @@ import java.util.List;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.Map;
 
 import static com.dungeonhunters.dungeonhunters.Ansi.opponentFight;
 import static com.dungeonhunters.dungeonhunters.Ansi.playerFight;
@@ -55,11 +56,11 @@ public class FightController extends JFrame {
         optionsPanel = new JPanel();
         optionsPanel.setLayout(new BoxLayout(optionsPanel,BoxLayout.Y_AXIS));
         JLabel attackOption = new JLabel("Attack");
-        JLabel defendOption = new JLabel("Defend");
+//        JLabel defendOption = new JLabel("Defend");
         JLabel useCardOption = new JLabel("Use card");
         JLabel endTurnOption = new JLabel("End turn");
         optionsPanel.add(attackOption);
-        optionsPanel.add(defendOption);
+//        optionsPanel.add(defendOption);
         optionsPanel.add(useCardOption);
         optionsPanel.add(endTurnOption);
 
@@ -68,9 +69,9 @@ public class FightController extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(selected == 1) attack();
-                if(selected == 2) defend();
-                if(selected == 3) switchControlToCardMenu();
-                if(selected == 4) endTurn();
+//                if(selected == 2) defend();
+                if(selected == 2) switchControlToCardMenu();
+                if(selected == 3) endTurn();
             }
         });
         optionsPanel.setFocusable(true);
@@ -82,10 +83,11 @@ public class FightController extends JFrame {
         cardPanel.setLayout(new BoxLayout(cardPanel,BoxLayout.Y_AXIS));
         List<Card> cardList = deckService.getDeckById(fight.player.getDeck().getId()).getCardSet();
         for(Card c : cardList){
-            JLabel name = new JLabel(c.getName()+" dmg: "+c.getValue());
+
+            JLabel name = new JLabel(c.getName()+" "+c.getType()+": "+c.getValue()+" cost: "+c.getCost());
             cardPanel.add(name);
         }
-        cardPanel.add(new JLabel("I choose nothing"));
+        cardPanel.add(new JLabel("Back"));
         cardPanel.setFocusable(true);
         createControls(cardPanel, new AbstractAction() {
             @Override
@@ -105,6 +107,23 @@ public class FightController extends JFrame {
         );
         playerPanel.add(playerName);
         playerPanel.add(playerStats);
+        for(Map.Entry<Card, Integer> entry : fight.playerStatus.entrySet()){
+            JLabel l = new JLabel(entry.getKey().getType().toString()+": "+entry.getValue());
+            playerPanel.add(l);
+        }
+    }
+
+    public void getEnemyPanel() {
+        enemyPanel = new JPanel();
+        JLabel enemyName = new JLabel(fight.enemy.getName());
+        JLabel enemyLife = new JLabel("HP: "+fight.enemy.getHp()+"/"+fight.enemyMaxHp+" DMG: "+
+                fight.enemy.getDmg()+" DEF: "+fight.enemy.getDefense());
+        enemyPanel.add(enemyName);
+        enemyPanel.add(enemyLife);
+        for(Map.Entry<Card, Integer> entry : fight.enemyStatus.entrySet()){
+            JLabel l = new JLabel(entry.getKey().getType().toString()+": "+entry.getValue());
+            enemyPanel.add(l);
+        }
     }
 
     private void checkToEndBattle(int battleStatus) {
@@ -138,7 +157,6 @@ public class FightController extends JFrame {
         exit.requestFocusInWindow();
         fight.clearBattle();
     }
-
     private void showFailureScreen() {
         JPanel cont = new JPanel();
         JPanel lostMessagePanel = new JPanel();
@@ -163,6 +181,7 @@ public class FightController extends JFrame {
         });
         return p;
     }
+
     private void generateEnemy() {
         fight.createEnemy();
     }
@@ -170,13 +189,13 @@ public class FightController extends JFrame {
     private void useCard(Card card) {
         String message = fight.useCard(card);
         logPanel.add(new JLabel(message));
+        fight.refreshStatus();
         getPlayerPanel();
         getEnemyPanel();
         getCardPanel();
         buildMainContainer();
         checkToEndBattle(fight.checkEndBattleConditions());
     }
-
     public void attack(){
         String message = fight.playerAttack();
         logPanel.add(new JLabel(message));
@@ -202,6 +221,7 @@ public class FightController extends JFrame {
         buildMainContainer();
         checkToEndBattle(fight.checkEndBattleConditions());
     }
+
     public void buildMainContainer(){
         container = new JPanel();
         container.setLayout(new GridLayout(2,3));
@@ -214,19 +234,10 @@ public class FightController extends JFrame {
         gameController.setMainContent(container);
         optionsPanel.requestFocusInWindow();
     }
-
     public void getTurnPanel(){
         turnPanel = new JPanel();
         JLabel turnLabel = new JLabel("Turn: "+fight.turn);
         turnPanel.add(turnLabel);
-    }
-    public void getEnemyPanel() {
-        enemyPanel = new JPanel();
-        JLabel enemyName = new JLabel(fight.enemy.getName());
-        JLabel enemyLife = new JLabel("HP: "+fight.enemy.getHp()+"/"+fight.enemyMaxHp+" DMG: "+
-                fight.enemy.getDmg()+" DEF: "+fight.enemy.getDefense());
-        enemyPanel.add(enemyName);
-        enemyPanel.add(enemyLife);
     }
 
     public void switchControlToCardMenu(){

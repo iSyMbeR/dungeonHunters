@@ -28,7 +28,7 @@ public class Fight {
     public int enemyMaxHp = 0;
     public CardActionStrategyFactory cardActionFactory;
     public List<String> loot = new ArrayList<>();
-    public boolean playerBlocked;
+    public boolean playerBlocked,miss,reducedDmg,sleep;
     public final EnemyService enemyService;
     public final PlayerService playerService;
     public final BonusService bonusService;
@@ -38,19 +38,20 @@ public class Fight {
     public final InventoryService inventoryService;
     public ProfileController profileController;
     public GameController gameController;
+    public final Shop shop;
 
     @Autowired
     public void setCardActionFactory(CardActionStrategyFactory cardActionFactory) {
         this.cardActionFactory = cardActionFactory;
     }
 
-    public Fight(InventoryService inventoryService, ItemService itemService, BonusService bonusService, EnemyService enemyService, PlayerService playerService, DeckService deckService, ItemBaseService itemBaseService){
+    public Fight(InventoryService inventoryService, ItemService itemService, BonusService bonusService, EnemyService enemyService, PlayerService playerService, DeckService deckService, ItemBaseService itemBaseService, Shop shop){
         this.enemyService = enemyService;
         this.playerService = playerService;
         this.deckService = deckService;
-
-        this.playerDebuffs = new HashMap<>();
-        this.enemyDebuffs = new HashMap<>();
+        this.shop = shop;
+        this.playerStatus = new HashMap<>();
+        this.enemyStatus = new HashMap<>();
         this.itemBaseService = itemBaseService;
         this.bonusService = bonusService;
         this.itemService = itemService;
@@ -70,28 +71,44 @@ public class Fight {
     }
 
     public String enemyTurn(){
+        if(miss){
+            miss = false;
+            return enemy.getName()+" missed";
+        }
+        if(sleep){
+            sleep = false;
+            return enemy.getName()+" is sleeping ...";
+        }
+        int damage = enemy.getDmg();
+        if(reducedDmg) {
+            damage = damage / 2;
+            reducedDmg = false;
+        }
         if(playerBlocked){
-            if(player.getDef()<enemy.getDmg()){
-                player.setCurrentHp(player.getCurrentHp() - enemy.getDmg() + player.getDef());
+            if(player.getDef()<damage){
+                player.setCurrentHp(player.getCurrentHp() - damage + player.getDef());
             }
             playerBlocked=false;
+            return player.getName()+" received " +damage+" damage (reduced by "+player.getDef()+") from "+enemy.getName()+" attack.";
         }else{
             player.setCurrentHp(player.getCurrentHp() - enemy.getDmg());
             return player.getName()+" received " +enemy.getDmg()+"damage from "+enemy.getName()+" attack.";
         }
-        return null;
     }
 
     public String useCard(Card card) {
-        if(actionsLeft>0){
-            actionsLeft--;
+        if(actionsLeft>=card.getCost()){
+            actionsLeft = actionsLeft - card.getCost();
             Optional<AbstractCardActionFactory> abstractCardActionFactory = cardActionFactory.get(card.getType());
             abstractCardActionFactory.ifPresent(a -> a.use(card, player, enemy, playerStatus, enemyStatus));
-            player.getDeck().getCardSet().remove(card);
-            deckService.addDeck(player.getDeck());
+            Deck deck = deckService.getDeckById(player.getDeck().getId());
+            List<Card> cardSet = deck.getCardSet();
+            cardSet.remove(card);
+            deck.setCardSet(cardSet);
+            deckService.addDeck(deck);
             return "Card: "+card.getName()+" used, "+actionsLeft+" actions left.";
         }
-        return "Action limit reached, 0 actions left.";
+        return "Card require "+card.getCost()+" actions to use. You have "+actionsLeft;
     }
 
     public String playerAttack() {
@@ -122,7 +139,30 @@ public class Fight {
         if( enemyMaxHp == 0 )enemyMaxHp=enemy.getHp();
         turn++;
         actionsLeft=2;
+        updateStatus();
         return "Turn "+(turn - 1)+" ended, started "+turn+" turn, "+actionsLeft+" actions left.";
+    }
+
+    private void updateStatus() {
+        for(Map.Entry<Card,Integer> entry :playerStatus.entrySet()){
+            entry.setValue(entry.getValue() - 1);
+            if(entry.getValue() == 0) playerStatus.remove(entry.getKey(),0);
+        }
+        for(Map.Entry<Card,Integer> entry :enemyStatus.entrySet()){
+            entry.setValue(entry.getValue() - 1);
+            if(entry.getValue() == 0) enemyStatus.remove(entry.getKey(),0);
+        }
+    }
+
+    public void refreshStatus() {
+        for(Map.Entry<Card,Integer> entry :playerStatus.entrySet()){
+            if(entry.getKey().getType() == CardType.Block) playerBlocked = true;
+        }
+        for(Map.Entry<Card,Integer> entry :enemyStatus.entrySet()){
+            if(entry.getKey().getType() == CardType.Miss) miss = true;
+            if(entry.getKey().getType() == CardType.ReducedDmg) reducedDmg = true;
+            if(entry.getKey().getType() == CardType.Sleep) sleep = true;
+        }
     }
 
     public void generateLootAndUpdatePlayer() {
@@ -140,13 +180,13 @@ public class Fight {
                 player.setStage(player.getStage()+stagesGained);
                 player.setExperience(player.getExperience() - stagesGained*100);
                 player.setHp(player.getHp()+stagesGained*5);
-                player.setDmg(player.getDmg()+stagesGained*2);
+                player.setDmg(player.getDmg()+stagesGained);
                 player.setDef(player.getDef()+stagesGained);
             }
         }
         player.setGold(player.getGold()+goldLoot);
         playerService.addPlayer(player);
-
+        shop.refreshItems(player);
         //clearBattle();
 
     }
@@ -157,6 +197,12 @@ public class Fight {
         turn = 0;
         enemyMaxHp = 0;
         loot = new ArrayList<>();
+        playerStatus = new HashMap<>();
+        enemyStatus = new HashMap<>();
+        playerBlocked= false;
+        miss=false;
+        reducedDmg=false;
+        sleep = false;
     }
 
     public void looseBattleAndUpdatePlayer() {
