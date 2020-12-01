@@ -142,7 +142,7 @@ public class ProfileController extends JFrame {
 
     private void createDeckView() {
         JPanel container = new JPanel();
-        container.setLayout(new GridLayout(0,5));
+        container.setLayout(new GridLayout(0, 5));
         JPanel pName = new JPanel();
         JPanel pType = new JPanel();
         JPanel pDescription = new JPanel();
@@ -161,7 +161,7 @@ public class ProfileController extends JFrame {
         } else {
             for (Card c : cardList) {
                 JLabel l = new JLabel(c.getName());
-                JLabel ld = new JLabel(c.getType()+"");
+                JLabel ld = new JLabel(c.getType() + "");
                 JLabel ldescription = new JLabel(c.getDescription());
                 pName.add(l);
                 pType.add(ld);

@@ -266,6 +266,6 @@ public class Fight {
             return "You have received " + item.getItemBase().getName();
         }
 
-        return item.getItemBase().getName() +"You already own it" ;
+        return item.getItemBase().getName() +" You already own it" ;
     }
 }
