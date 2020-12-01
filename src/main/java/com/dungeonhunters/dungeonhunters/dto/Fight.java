@@ -66,6 +66,19 @@ public class Fight {
             for(Enemy e : allEnemies){
                 if(e.getStage() <= player.getStage()) validEnemies.add(e);
             }
+            if(validEnemies.size() == 0){
+                Enemy en = Enemy.builder()
+                        .name("Ostry przeciwnik")
+                        .dmg(50)
+                        .hp(200)
+                        .stage(15)
+                        .defense(0)
+                        .experienceDrop(80)
+                        .goldDrop(50)
+                        .build();
+                enemyService.addEnemy(en);
+                validEnemies.add(en);
+            }
             this.enemy = validEnemies.get(r.nextInt(validEnemies.size()));
         }
     }

@@ -17,8 +17,6 @@ public class AttackCardActionFactory implements AbstractCardActionFactory {
                     Map<Card, Integer> playerStatus,
                     Map<Card, Integer> enemyStatus) {
         enemy.setHp(enemy.getHp() - card.getValue());
-        System.out.println("halka: "+enemyStatus.size());
-        System.out.println("sdasd: "+card.getType());
     }
 
     @Override

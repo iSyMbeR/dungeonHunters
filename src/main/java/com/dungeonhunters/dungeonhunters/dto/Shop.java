@@ -26,12 +26,16 @@ public class Shop {
     public void refreshItems(Player player) {
         shopItems = new ArrayList<>();
         List<Card> allCardList = cardService.getAllCards();
+        List<Card> playerCards = player.getDeck().getCardSet();
+        List<Card> duplicates = new ArrayList<>();
+        for(Card c : playerCards){
+            allCardList.remove(c);
+        }
         if (allCardList.size() > 0) {
             Random r = new Random();
-            List<Card> duplicates = player.getDeck().getCardSet();
             for (int i = 0; i < 4; i++) {
                 Card card = allCardList.get(r.nextInt(allCardList.size()));
-                if (!deckService.getDeckById((player.getDeck().getId())).getCardSet().contains(card)) {
+                if (!duplicates.contains(card)) {
                     int max = 10;
                     int min = 5;
                     ShopItemDto item = ShopItemDto.builder()
@@ -40,10 +44,8 @@ public class Shop {
                             .id(card.getId())
                             .price(r.nextInt((max-min)+1)+min)
                             .build();
-                    if(!duplicates.contains(card)){
-                        shopItems.add(item);
-                        duplicates.add(card);
-                    }
+                    duplicates.add(card);
+                    shopItems.add(item);
                 }
             }
         }
