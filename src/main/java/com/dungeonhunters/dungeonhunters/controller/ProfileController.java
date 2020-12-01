@@ -67,14 +67,14 @@ public class ProfileController extends JFrame {
 
 //        name.setForeground(Color.BLUE);
         JLabel exp = new JLabel("Exp: " + player.getExperience());
-        exp.setForeground(Color.MAGENTA);
+        //exp.setForeground(Color.MAGENTA);
         JLabel stage = new JLabel("Stage: " + player.getStage());
-        stage.setForeground(Color.BLUE);
+        //stage.setForeground(Color.BLUE);
         JLabel hp = new JLabel("HP: " + player.getCurrentHp() + "/" + player.getHp());
 
-        hp.setForeground(Color.RED);
+        //hp.setForeground(Color.RED);
         JLabel gold = new JLabel("GOLD: " + player.getGold());
-        gold.setForeground(Color.ORANGE);
+        //gold.setForeground(Color.ORANGE);
         JLabel dmg = new JLabel("DMG: " + player.getDmg());
         JLabel def = new JLabel("DEF: " + player.getDef());
         infoPanel.add(name);
@@ -173,7 +173,6 @@ public class ProfileController extends JFrame {
     }
 
     private void createShopView() {
-        shop.refreshItems(player);
         JPanel container = new JPanel();
         container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
         JPanel options = new JPanel();
@@ -333,7 +332,6 @@ public class ProfileController extends JFrame {
     }
 
     private void createAllItemsView() {
-        shop.refreshItems(player);
         JPanel container = new JPanel();
         container.setBackground(Color.GRAY);
         container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));

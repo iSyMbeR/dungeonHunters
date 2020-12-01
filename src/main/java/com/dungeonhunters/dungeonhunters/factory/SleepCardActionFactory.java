@@ -7,22 +7,19 @@ import com.dungeonhunters.dungeonhunters.model.Player;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
-
 @Component
-public class AttackCardActionFactory implements AbstractCardActionFactory {
+public class SleepCardActionFactory implements AbstractCardActionFactory {
     @Override
     public void use(Card card,
                     Player player,
                     Enemy enemy,
                     Map<Card, Integer> playerStatus,
                     Map<Card, Integer> enemyStatus) {
-        enemy.setHp(enemy.getHp() - card.getValue());
-        System.out.println("halka: "+enemyStatus.size());
-        System.out.println("sdasd: "+card.getType());
+        enemyStatus.put(card, card.getValue());
     }
 
     @Override
     public CardType getSupportedCardType() {
-        return CardType.Attack;
+        return CardType.Sleep;
     }
 }
