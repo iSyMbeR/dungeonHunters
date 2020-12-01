@@ -142,30 +142,51 @@ public class ProfileController extends JFrame {
 
     private void createDeckView() {
         JPanel container = new JPanel();
-        container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
-        JPanel p = new JPanel();
+        container.setLayout(new GridLayout(0,5));
+        JPanel pName = new JPanel();
+        JPanel pType = new JPanel();
+        JPanel pDescription = new JPanel();
+        pName.setLayout(new BoxLayout(pName, BoxLayout.Y_AXIS));
+        pType.setLayout(new BoxLayout(pType, BoxLayout.Y_AXIS));
+        pDescription.setLayout(new BoxLayout(pDescription, BoxLayout.Y_AXIS));
         JPanel options = new JPanel();
         JLabel exit = new JLabel("Wyjdź");
         options.add(exit);
         List<Card> cardList = deckService.getDeckById(player.getDeck().getId()).getCardSet();
         if (cardList.size() == 0) {
-            JLabel empty = new JLabel("W Twoim decku nie ma żadnych kart");
-            p.add(empty);
+            JLabel empty = new JLabel("Deck is empty");
+            empty.setForeground(Color.pink);
+            pName.add(new JLabel(""));
+            pName.add(empty);
         } else {
             for (Card c : cardList) {
-                JLabel l = new JLabel(c.getName() + " " + c.getType());
-                p.add(l);
+                JLabel l = new JLabel(c.getName());
+                JLabel ld = new JLabel(c.getType()+"");
+                JLabel ldescription = new JLabel(c.getDescription());
+                pName.add(l);
+                pType.add(ld);
+                pDescription.add(ldescription);
             }
         }
-        p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
         createControls(options, new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (selected == 1) createView();
             }
         });
+        container.add(new JLabel(""));
+        container.add(new JLabel("NAME")).setForeground(Color.BLUE);
+        container.add(new JLabel("DESCRIPTION")).setForeground(Color.GRAY);
+        container.add(new JLabel("TYPE")).setForeground(Color.MAGENTA);
+        container.add(new JLabel(""));
 
-        container.add(p);
+        container.add(new JLabel(""));
+        container.add(pName);
+        container.add(pDescription);
+        container.add(pType);
+        container.add(new JLabel(""));
+        container.add(new JLabel(""));
+        container.add(new JLabel(""));
         container.add(options);
         options.setFocusable(true);
         gameController.setMainContent(container);
@@ -174,13 +195,17 @@ public class ProfileController extends JFrame {
 
     private void createShopView() {
         JPanel container = new JPanel();
-        container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
+        container.setLayout(new GridLayout(0, 4));
         JPanel options = new JPanel();
-        JLabel exit = new JLabel("Wyjdź");
+        JPanel gold = new JPanel();
+        JLabel exit = new JLabel("Exit");
         List<ShopItemDto> shopItems = shop.getItems();
         for (ShopItemDto c : shopItems) {
-            JLabel l = new JLabel(c.getName() + "  cost: " + c.getPrice() + " gold");
+            JLabel l = new JLabel(c.getName());
+            JLabel lg = new JLabel("cost: " + c.getPrice() + " gold");
+            gold.add(lg);
             options.add(l);
+
         }
         options.add(exit);
         createControls(options, new AbstractAction() {
@@ -195,28 +220,33 @@ public class ProfileController extends JFrame {
             }
         });
         options.setLayout(new BoxLayout(options, BoxLayout.Y_AXIS));
+        gold.setLayout(new BoxLayout(gold, BoxLayout.Y_AXIS));
+        container.add(new JLabel(""));
+        container.add(new JLabel("NAME")).setForeground(Color.BLUE);
+        container.add(new JLabel("COST")).setForeground(Color.darkGray);
+        container.add(new JLabel(""));
+
+        container.add(new JLabel(""));
         container.add(options);
+        container.add(gold);
+        container.add(new JLabel(""));
+        container.add(new JLabel(""));
         options.setFocusable(true);
         gameController.setMainContent(container);
         options.requestFocusInWindow();
 
     }
 
+
     private void createPlayerInventoryView() {
-        //generateRandomItem();
         JPanel container = new JPanel();
         container.setLayout(new GridLayout(3, 3));
-        //container.add(new JLabel(" "));
-        container.setBackground(Color.GRAY);
         container.add(new JLabel(""));
-        container.add(new JLabel("Lista twoich przedmiotów"));
+        container.add(new JLabel("List of your items"));
         container.add(new JLabel(""));
         JPanel options = new JPanel();
-        options.setBackground(Color.GRAY);
         JPanel itemDmgList = new JPanel();
-        itemDmgList.setBackground(Color.GRAY);
         JPanel equip = new JPanel();
-        equip.setBackground(Color.GRAY);
         JLabel tmp;
         options.setLayout(new BoxLayout(options, BoxLayout.Y_AXIS));
         itemDmgList.setLayout(new BoxLayout(itemDmgList, BoxLayout.Y_AXIS));
@@ -224,19 +254,24 @@ public class ProfileController extends JFrame {
         int count = 0;
 
         Set<Item> playerInventoryItemsList = player.getInventory().getItemList();
-        if (playerInventoryItemsList.isEmpty())
-            container.add(new JLabel("Nic nie posiadasz :(")).setForeground(Color.pink);
-        else {
-            tmp = new JLabel("NAZWA");
+        if (playerInventoryItemsList.isEmpty()) {
+            container.add(new JLabel(" "));
+            container.add(new JLabel(" "));
+            container.add(new JLabel("No items")).setForeground(Color.DARK_GRAY);
+            container.add(new JLabel(" "));
+            container.add(new JLabel(" "));
+            container.add(new JLabel(" "));
+        } else {
+            tmp = new JLabel("NAME");
             tmp.setForeground(Color.BLUE);
             container.add(tmp);
 
             tmp = new JLabel("DMG");
-            tmp.setForeground(Color.MAGENTA);
+            tmp.setForeground(Color.RED);
             container.add(tmp);
 
-            tmp = new JLabel("ZALOŻONY");
-            tmp.setForeground(Color.CYAN);
+            tmp = new JLabel("EQUIPPED");
+            tmp.setForeground(Color.GRAY);
             container.add(tmp);
             tabNames = new String[playerInventoryItemsList.size()];
             tabDmg = new int[playerInventoryItemsList.size()];
@@ -248,8 +283,7 @@ public class ProfileController extends JFrame {
                 itemDmgList.add(new JLabel("" + c.getItemBase().getDmg()));
                 tmp = new JLabel(String.valueOf(equippedItems.get(c.getItemBase().getName())));
                 if (equippedItems.get(tabNames[count]) == ItemEquipType.TAK) {
-
-                    tmp.setForeground(Color.GREEN);
+                    tmp.setForeground(Color.darkGray);
                 }
                 equip.add(tmp);
                 count++;
@@ -258,8 +292,8 @@ public class ProfileController extends JFrame {
         final int counter = count;
         JLabel changePage = new JLabel();
 
-        options.add(new JLabel("Wszystkie przedmioty"));
-        options.add(new JLabel("Wroc"));
+        options.add(new JLabel("All items"));
+        options.add(new JLabel("Back"));
         changePage.add(new JLabel());
         changePage.setLayout(new BoxLayout(changePage, BoxLayout.Y_AXIS));
         createControls(options, new AbstractAction() {
@@ -295,67 +329,33 @@ public class ProfileController extends JFrame {
         options.requestFocusInWindow();
     }
 
-
-    public void generateRandomItem() {
-        Set<Item> playerListItem = player.getInventory().getItemList();
-        int generatedLongItemBase = 1 + (int) (Math.random() * (itemBaseService.getSize()) - 1);
-        int generatedLongBonus = 1 + (int) (Math.random() * (bonusService.getSize()) - 1);
-
-        List<ItemBase> itemBaseList = itemBaseService.getItemBases();
-        List<Bonus> bonusListFromBase = bonusService.getAllBonuses();
-        List<Bonus> bonusList = new ArrayList<>();
-        bonusList.add(bonusListFromBase.get(generatedLongBonus - 1));
-
-        Item item = Item.builder()
-                .itemBase(itemBaseList.get(generatedLongItemBase - 1))
-                .bonus(bonusList)
-                .build();
-
-        boolean exist = false;
-        for (Item i : playerListItem) {
-            if (i.getItemBase().getName().equals(item.getItemBase().getName())) {
-                System.out.println("Niestety wylosowałes item, który już posiadasz " + item.getItemBase().getName());
-                exist = true;
-            }
-        }
-        if(!exist) {
-            playerListItem.add(item);
-
-            player.getInventory().setItemList(playerListItem);
-            player.setInventory(player.getInventory());
-            // nie trybi zapisanie inventory
-            //inventoryService.addInventory(player.getInventory());
-            itemService.addItem(item);
-            playerService.addPlayer(player);
-            equippedItems.put(item.getItemBase().getName(), ItemEquipType.NIE);
-        }
-    }
-
     private void createAllItemsView() {
         JPanel container = new JPanel();
-        container.setBackground(Color.GRAY);
         container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
         container.setLayout(new GridLayout(0, 5));
         JPanel options = new JPanel();
-        options.setBackground(Color.GRAY);
         JLabel exit = new JLabel("Back");
         JLabel name;
         JLabel dmg;
+        JLabel rarity;
         List<ItemBase> listOfItemsFromBase = itemBaseService.getItemBases();
         container.add(new JLabel(" "));
         container.add(new JLabel(" "));
-        container.add(new JLabel("List of all items to get"));
+        container.add(new JLabel(" List of all items to get ")).setForeground(Color.DARK_GRAY);
         container.add(new JLabel(" "));
         container.add(new JLabel(" "));
         JLabel tmp;
         container.add(new JLabel(" "));
-        container.add(new JLabel(" "));
-        tmp = new JLabel("NAZWA");
+        tmp = new JLabel("NAME");
         tmp.setForeground(Color.BLUE);
         container.add(tmp);
 
         tmp = new JLabel("DMG");
-        tmp.setForeground(Color.MAGENTA);
+        tmp.setForeground(Color.RED);
+        container.add(tmp);
+
+        tmp = new JLabel("RARITY");
+        tmp.setForeground(Color.DARK_GRAY);
         container.add(tmp);
 
 
@@ -364,11 +364,11 @@ public class ProfileController extends JFrame {
 
             name = new JLabel(c.getName());
             dmg = new JLabel("" + c.getDmg());
-
-            container.add(new JLabel(" "));
+            rarity = new JLabel("" + c.getRarity());
             container.add(new JLabel(" "));
             container.add(name);
             container.add(dmg);
+            container.add(rarity);
         }
         options.add(exit);
         createControls(options, new AbstractAction() {
