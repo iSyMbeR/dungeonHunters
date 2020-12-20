@@ -1,5 +1,7 @@
 package com.dungeonhunters.dungeonhunters.controller;
 
+import org.springframework.core.io.ClassPathResource;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
@@ -44,24 +46,24 @@ public class LogoController {
         return label;
     }
 
-    public static JLabel getLogoCard(String cardType){
+    public static JLabel getLogoCard(String cardType) {
         File file = null;
 
         switch (cardType){
             case "Attack":
-                file = new File("E:\\dungeonHunters\\dungeonHuntersJFrame\\src\\main\\resources\\Static\\CardImages\\Attack.jpg");
+                file = new File("src\\main\\resources\\Static\\CardImages\\Attack.jpg");
                 break;
             case "Block":
-                file = new File("E:\\dungeonHunters\\dungeonHuntersJFrame\\src\\main\\resources\\Static\\CardImages\\Block.jpg");
+                file = new File("src\\main\\resources\\Static\\CardImages\\Block.jpg");
                 break;
             case "Miss":
-                file = new File("E:\\dungeonHunters\\dungeonHuntersJFrame\\src\\main\\resources\\Static\\CardImages\\Miss.jpg");
+                file = new File("src\\main\\resources\\Static\\CardImages\\Miss.jpg");
                 break;
             case "Sleep":
-                file = new File("E:\\dungeonHunters\\dungeonHuntersJFrame\\src\\main\\resources\\Static\\CardImages\\Sleep.jpg");
+                file = new File("src\\main\\resources\\Static\\CardImages\\Sleep.jpg");
                 break;
             case "ReducedDmg":
-                file = new File("E:\\dungeonHunters\\dungeonHuntersJFrame\\src\\main\\resources\\Static\\CardImages\\ReducedDmg.jpg");
+                file = new File("src\\main\\resources\\Static\\CardImages\\ReducedDmg.jpg");
                 break;
             default:
                 System.out.println("Logo not found");

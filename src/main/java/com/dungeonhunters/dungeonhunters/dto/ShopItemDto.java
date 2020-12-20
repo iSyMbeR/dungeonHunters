@@ -1,5 +1,6 @@
 package com.dungeonhunters.dungeonhunters.dto;
 
+import com.dungeonhunters.dungeonhunters.model.CardType;
 import lombok.Builder;
 import lombok.Data;
 
@@ -8,7 +9,8 @@ import lombok.Data;
 public class ShopItemDto {
     public int price;
     public String name;
-    public ItemType type;
+    public CardType type;
+    public String description;
     public Long id;
     public Object item;
 }

@@ -36,12 +36,13 @@ public class Shop {
             for (int i = 0; i < 6; i++) {
                 Card card = allCardList.get(r.nextInt(allCardList.size()));
                 if (!duplicates.contains(card)) {
-                    int max = 10;
-                    int min = 5;
+                    int max = 6;
+                    int min = 2;
                     ShopItemDto item = ShopItemDto.builder()
                             .name(card.getName())
-                            .type(ItemType.CARD)
+                            .type(card.getType())
                             .id(card.getId())
+                            .description(card.getDescription())
                             .price(r.nextInt((max-min)+1)+min)
                             .build();
                     duplicates.add(card);
@@ -56,16 +57,15 @@ public class Shop {
 
     public void buyItem(Player player, int selected) {
         if(player.getGold()>=shopItems.get(selected).getPrice()){
-            if(shopItems.get(selected).getType() == ItemType.CARD){
-                player.setGold(player.getGold() - shopItems.get(selected).getPrice());
-                Deck deck = deckService.getDeckById(player.getDeck().getId());
-                List<Card> set = deck.getCardSet();
-                set.add(cardService.getCardById(shopItems.get(selected).getId()));
-                deck.setCardSet(set);
-                playerService.addPlayer(player);
-                deckService.addDeck(deck);
-                shopItems.remove(selected);
-            }
+            player.setGold(player.getGold() - shopItems.get(selected).getPrice());
+            Deck deck = deckService.getDeckById(player.getDeck().getId());
+            List<Card> set = deck.getCardSet();
+            set.add(cardService.getCardById(shopItems.get(selected).getId()));
+            deck.setCardSet(set);
+            playerService.addPlayer(player);
+            deckService.addDeck(deck);
+            shopItems.remove(selected);
+
 //            if(shopItems.get(selected).getType() == ItemType.ITEM){
 //                List<Item> itemList =  player.getInventory().getItemList();
 //                itemList.add(itemService.getItemById(shopItems.get(selected).getId()));
