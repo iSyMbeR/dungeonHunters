@@ -51,10 +51,8 @@ public class MenuController extends JFrame {
             setButtonStyle(b, Color.white);
             menu.add(b);
         }
-        menu.setFocusable(true);
         panel.add(menu);
         gameController.setMainContent(panel);
-        panel.requestFocusInWindow();
     }
 
     public void setGameController(GameController gameController) {

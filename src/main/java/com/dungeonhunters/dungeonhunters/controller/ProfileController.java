@@ -5,18 +5,19 @@ import com.dungeonhunters.dungeonhunters.dto.Shop;
 import com.dungeonhunters.dungeonhunters.dto.ShopItemDto;
 import com.dungeonhunters.dungeonhunters.model.*;
 import com.dungeonhunters.dungeonhunters.service.*;
-import lombok.Data;
+import org.hibernate.cfg.JPAIndexHolder;
 import org.springframework.stereotype.Controller;
-import org.tritonus.share.ArraySet;
 
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 import static com.dungeonhunters.dungeonhunters.controller.MusicController.getMusic;
 
@@ -28,53 +29,105 @@ public class ProfileController extends JFrame {
     public GameController gameController;
     public Player player;
     public static Map<String, ItemEquipType> equippedItems = new HashMap<>();
-    private boolean putted = false;
+    private boolean equipped = false;
     private String tabNames[];
     private int tabDmg[];
     private int activeItems;
     public int selected = 1;
     private final Shop shop;
     private final DeckService deckService;
-    private final CardService cardService;
-    private final ItemService itemService;
-    private final BonusService bonusService;
     private final ItemBaseService itemBaseService;
-    private final InventoryService inventoryService;
 
 
-    ProfileController(InventoryService inventoryService, ItemBaseService itemBaseService, BonusService bonusService, DeckService deckService, CardService cardService, Shop shop, ItemService itemService, PlayerService playerService) {
+    ProfileController(ItemBaseService itemBaseService, DeckService deckService, Shop shop, PlayerService playerService) {
         this.deckService = deckService;
-        this.cardService = cardService;
-        this.itemService = itemService;
         this.playerService = playerService;
-        this.bonusService = bonusService;
         this.itemBaseService = itemBaseService;
-        this.inventoryService = inventoryService;
         this.shop = shop;
     }
 
     public void createView() {
-        if (!putted) {
+        if (!equipped) {
             for (Item c : player.getInventory().getItemList()) {
                 equippedItems.put(c.getItemBase().getName(), ItemEquipType.NIE);
             }
-            putted = true;
+            equipped = true;
         }
         panel = new JPanel();
+        JPanel topPanel = new JPanel();
+        topPanel.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
+        topPanel.setPreferredSize(new Dimension(1200,200));
+        //topPanel.setBorder(BorderFactory.createLineBorder(Color.black,5));
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
+        bottomPanel.setPreferredSize(new Dimension(1200,600));
+        //bottomPanel.setBorder(BorderFactory.createLineBorder(Color.red,5));
+
+        //content panel
+        JPanel contentPanel = new JPanel();
+        contentPanel.setPreferredSize(new Dimension(1000,600));
+        JLabel cp = new JLabel("Content panel here");
+        contentPanel.add(cp);
+        contentPanel.setBackground(Color.lightGray);
+        //contentPanel.setBorder(BorderFactory.createLineBorder(Color.BLUE,3));
+
+        //select panel
+        JButton fightButton = new JButton("Enter dungeon");
+        fightButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                gameController.switchToFightController();
+            }
+        });
+        JButton inventoryButton = new JButton("Show inventory");
+        inventoryButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                createPlayerInventoryView();
+            }
+        });
+        JButton deckButton = new JButton("Show cards");
+        deckButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                createDeckView();
+            }
+        });
+        JButton shopButton = new JButton("Shop");
+        shopButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                createShopView();
+            }
+        });
+        JButton exitButton = new JButton("Exit");
+        exitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                exitGame();
+            }
+        });
+        JPanel selectPanel = new JPanel();
+        selectPanel.add(fightButton);
+        selectPanel.add(inventoryButton);
+        selectPanel.add(deckButton);
+        selectPanel.add(shopButton);
+        selectPanel.add(exitButton);
+        selectPanel.setPreferredSize(new Dimension(200,600));
+        styleSelectPanel(selectPanel);
+
+
+
+
+        //info panel
         JPanel infoPanel = new JPanel();
-//        infoPanel.setBackground(Color.GRAY);
+        infoPanel.setPreferredSize(new Dimension(400,200));
+        //infoPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK,3));
         JLabel name = new JLabel(player.getName());
-
-//        name.setForeground(Color.BLUE);
         JLabel exp = new JLabel("Exp: " + player.getExperience());
-        //exp.setForeground(Color.MAGENTA);
         JLabel stage = new JLabel("Stage: " + player.getStage());
-        //stage.setForeground(Color.BLUE);
         JLabel hp = new JLabel("HP: " + player.getCurrentHp() + "/" + player.getHp());
-
-        //hp.setForeground(Color.RED);
         JLabel gold = new JLabel("GOLD: " + player.getGold());
-        //gold.setForeground(Color.ORANGE);
         JLabel dmg = new JLabel("DMG: " + player.getDmg());
         JLabel def = new JLabel("DEF: " + player.getDef());
         infoPanel.add(name);
@@ -85,44 +138,62 @@ public class ProfileController extends JFrame {
         infoPanel.add(dmg);
         infoPanel.add(def);
 
-        JLabel fightLabel = new JLabel("Enter dungeon");
-        JLabel inventoryLabel = new JLabel("Show inventory");
-        JLabel deckLabel = new JLabel("Show cards");
-        JLabel addCardLabel = new JLabel("Shop");
-        JLabel exitLabel = new JLabel("Exit");
-        JPanel selectPanel = new JPanel();
+        //statistic panel
+        JPanel statisticPanel = new JPanel();
+        statisticPanel.setPreferredSize(new Dimension(400,200));
+        JLabel sl = new JLabel("Statistic panel here");
+        statisticPanel.add(sl);
+        //statisticPanel.setBorder(BorderFactory.createLineBorder(Color.GREEN,3));
 
-        //selectPanel.setBackground(Color.GRAY);
-        selectPanel.add(fightLabel);
-        selectPanel.add(inventoryLabel);
-        selectPanel.add(deckLabel);
-        selectPanel.add(addCardLabel);
-        selectPanel.add(exitLabel);
-        selectPanel.setLayout(new BoxLayout(selectPanel, BoxLayout.Y_AXIS));
+        //player panel
+        JPanel playerPanel = new JPanel();
+        playerPanel.setPreferredSize(new Dimension(400,200));
+        JLabel pl = new JLabel("Player panel here");
+        playerPanel.add(pl);
+        //playerPanel.setBorder(BorderFactory.createLineBorder(Color.YELLOW,3));
 
-        createControls(selectPanel, new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (selected == 1) {
-                    // mati we zobacz czemu tego widoku nie chce
-                    // wczytywac tylko sama muzaczka idzie bo mnie zaraz chui sttrzeli
-                    //createPerformanceBeforeFight();
-                    gameController.switchToFightController();
-                }
-                if (selected == 2) createPlayerInventoryView();
-                if (selected == 3) createDeckView();
-                if (selected == 4) createShopView();
-                if (selected == 5) exitGame();
-            }
-        });
-        panel.setLayout(new GridLayout(2, 1));
-        panel.add(infoPanel);
-        panel.add(selectPanel);
-        selectPanel.setFocusable(true);
+        topPanel.add(playerPanel);
+        topPanel.add(statisticPanel);
+        topPanel.add(infoPanel);
+        bottomPanel.add(selectPanel);
+        bottomPanel.add(contentPanel);
+
+        panel.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
+        panel.add(topPanel);
+        panel.add(bottomPanel);
         gameController.setMainContent(panel);
-        selectPanel.requestFocusInWindow();
     }
 
+    private void updateContentPanel(JPanel p) {
+        p.removeAll();
+        p.revalidate();
+        p.repaint();
+    }
+
+    private void styleSelectPanel(JPanel selectPanel) {
+        selectPanel.setLayout(new FlowLayout());
+        for(Component c : selectPanel.getComponents()){
+            setButtonStyle((JButton)c, 150);
+        }
+    }
+    private void setButtonStyle(JButton button, int width){
+        Color hoveredColor = Color.red;
+        Color normalColor = Color.white;
+        button.setBorder(null);
+        button.setPreferredSize(new Dimension(width,40));
+        button.setBackground(normalColor);
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                button.setBackground(hoveredColor);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setBackground(normalColor);
+            }
+        });
+    }
     private void exitGame() {
         System.exit(0);
     }
