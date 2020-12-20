@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.RoundRectangle2D;
 import java.util.List;
 
 @Controller
@@ -22,40 +23,32 @@ public class MenuController extends JFrame {
     }
 
     public void createView() {
-        int buttonHeight = 40;
-        int menuWidth = 200;
         panel = new JPanel();
         panel.setLayout(new FlowLayout());
         panel.setAlignmentY(Component.CENTER_ALIGNMENT);
-        panel.setBorder(BorderFactory.createLineBorder(Color.BLACK,2));
         JPanel menu = new JPanel();
-        menu.setBorder(BorderFactory.createLineBorder(Color.RED,2));
         List<Player> players = playerService.getPlayers();
-        menu.setLayout(new GridBagLayout());
-        menu.setPreferredSize(new Dimension(menuWidth,players.size()*buttonHeight));
-
+        menu.setLayout(new FlowLayout());
+        menu.setPreferredSize(new Dimension(200,600));
         JButton b = new JButton("Stwórz nową postać");
-        b.setPreferredSize(new Dimension(menuWidth,buttonHeight));
+        b.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showPlayerCreation();
+            }
+        });
+        setButtonStyle(b, Color.LIGHT_GRAY);
         menu.add(b);
         for (Player player : players) {
             b = new JButton(player.getName());
-            b.setPreferredSize(new Dimension(menuWidth,buttonHeight));
             b.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    Player selectedPlayer=null;
-                    System.out.println(e.getActionCommand());
-                    for(Player p : players){
-                        if(player.getName().equals(e.getActionCommand())) selectedPlayer = player;
-                    }
-                    if(selectedPlayer==null){
-                        showPlayerCreation();
-                    }else{
-                        gameController.setCurrentPlayer(selectedPlayer);
+                        gameController.setCurrentPlayer(player);
                         gameController.switchToProfileController();
-                    }
                 }
             });
+            setButtonStyle(b, Color.white);
             menu.add(b);
         }
         menu.setFocusable(true);
@@ -72,6 +65,23 @@ public class MenuController extends JFrame {
         this.panel = panel;
     }
 
+    private void setButtonStyle(JButton button, Color color){
+        Color hoveredColor = Color.red;
+        button.setBorder(null);
+        button.setPreferredSize(new Dimension(200,40));
+        button.setBackground(color);
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                button.setBackground(hoveredColor);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setBackground(color);
+            }
+        });
+    }
     private void showPlayerCreation() {
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
