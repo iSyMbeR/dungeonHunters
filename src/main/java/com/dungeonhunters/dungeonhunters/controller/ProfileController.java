@@ -214,6 +214,7 @@ public class ProfileController extends JFrame {
     private void createDeckView() {
         JPanel container = new JPanel();
         container.setLayout(new GridLayout(0, 5));
+
         JPanel pName = new JPanel();
         JPanel pType = new JPanel();
         JPanel pDescription = new JPanel();
@@ -223,6 +224,7 @@ public class ProfileController extends JFrame {
         JPanel options = new JPanel();
         JLabel exit = new JLabel("Wyjdź");
         options.add(exit);
+
         List<Card> cardList = deckService.getDeckById(player.getDeck().getId()).getCardSet();
         if (cardList.size() == 0) {
             JLabel empty = new JLabel("Deck is empty");

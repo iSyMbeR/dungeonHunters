@@ -23,6 +23,7 @@ public class Player implements Serializable{
     private int def;
     private int gold;
     private int currentHp;
+    private String logo;
     @OneToOne
     private Deck deck;
     @OneToOne
