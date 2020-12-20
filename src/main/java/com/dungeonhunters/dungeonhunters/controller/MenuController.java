@@ -1,7 +1,5 @@
 package com.dungeonhunters.dungeonhunters.controller;
 
-import com.dungeonhunters.dungeonhunters.model.Card;
-import com.dungeonhunters.dungeonhunters.model.Item;
 import com.dungeonhunters.dungeonhunters.model.Player;
 import com.dungeonhunters.dungeonhunters.service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +15,6 @@ public class MenuController extends JFrame {
     public JPanel panel;
     public GameController gameController;
     public final PlayerService playerService;
-    public int selected = 1;
 
     @Autowired
     MenuController(PlayerService playerService) {
@@ -25,59 +22,50 @@ public class MenuController extends JFrame {
     }
 
     public void createView() {
+        int buttonHeight = 40;
+        int menuWidth = 200;
         panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 0, 0));
+        panel.setLayout(new FlowLayout());
+        panel.setAlignmentY(Component.CENTER_ALIGNMENT);
+        panel.setBorder(BorderFactory.createLineBorder(Color.BLACK,2));
+        JPanel menu = new JPanel();
+        menu.setBorder(BorderFactory.createLineBorder(Color.RED,2));
         List<Player> players = playerService.getPlayers();
-        JLabel l = new JLabel("Stwórz nową postać");
-        setLabelStyle(l);
-        l.setForeground(Color.red);
-        panel.add(l);
-        int iter = 2;
+        menu.setLayout(new GridBagLayout());
+        menu.setPreferredSize(new Dimension(menuWidth,players.size()*buttonHeight));
+
+        JButton b = new JButton("Stwórz nową postać");
+        b.setPreferredSize(new Dimension(menuWidth,buttonHeight));
+        menu.add(b);
         for (Player player : players) {
-            l = new JLabel(player.getName());
-            setLabelStyle(l);
-            if (iter == selected) {
-                l.setForeground(Color.red);
-
-            }
-            ;
-            panel.add(l);
-            iter++;
-        }
-
-        createControls(panel, new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(selected == 1) {
-                    showPlayerCreation();
-                }else{
-                    gameController.setCurrentPlayer(players.get(selected - 2));
-                    gameController.switchToProfileController();
+            b = new JButton(player.getName());
+            b.setPreferredSize(new Dimension(menuWidth,buttonHeight));
+            b.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    Player selectedPlayer=null;
+                    System.out.println(e.getActionCommand());
+                    for(Player p : players){
+                        if(player.getName().equals(e.getActionCommand())) selectedPlayer = player;
+                    }
+                    if(selectedPlayer==null){
+                        showPlayerCreation();
+                    }else{
+                        gameController.setCurrentPlayer(selectedPlayer);
+                        gameController.switchToProfileController();
+                    }
                 }
-            }
-        });
-        panel.setFocusable(true);
+            });
+            menu.add(b);
+        }
+        menu.setFocusable(true);
+        panel.add(menu);
         gameController.setMainContent(panel);
         panel.requestFocusInWindow();
     }
 
     public void setGameController(GameController gameController) {
         this.gameController = gameController;
-    }
-
-    public void refreshColor() {
-        Component[] components = panel.getComponents();
-        for (Component c : components) {
-            c.setForeground(Color.BLACK);
-        }
-        panel.getComponent(selected - 1).setForeground(Color.red);
-    }
-
-    public void setLabelStyle(JLabel label) {
-        label.setFont(new Font("Verdana", Font.PLAIN, 20));
-//        label.setPreferredSize(new Dimension(100,30));
-//        label.setBorder(BorderFactory.createLineBorder(Color.BLUE));
     }
 
     private void setPanel(JPanel panel) {
@@ -119,29 +107,5 @@ public class MenuController extends JFrame {
         gameController.setMainContent(panel);
         tf.requestFocusInWindow();
 
-    }
-    public void createControls(JPanel p, AbstractAction action) {
-        selected = 1;
-        refreshColor();
-        Action incrementSelection = new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (selected < p.getComponentCount()) selected++;
-                refreshColor();
-            }
-        };
-        Action decrementSelection = new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (selected != 1) selected--;
-                refreshColor();
-            }
-        };
-        p.getInputMap().put(KeyStroke.getKeyStroke("UP"), "pressedUp");
-        p.getInputMap().put(KeyStroke.getKeyStroke("DOWN"), "pressedDown");
-        p.getInputMap().put(KeyStroke.getKeyStroke("ENTER"), "pressedEnter");
-        p.getActionMap().put("pressedUp", decrementSelection);
-        p.getActionMap().put("pressedDown", incrementSelection);
-        p.getActionMap().put("pressedEnter", action);
     }
 }

@@ -23,7 +23,6 @@ public class Card implements Serializable {
     private int value;
     private String description;
 
-
 //    @ManyToOne
 //    private Deck deck;
 
