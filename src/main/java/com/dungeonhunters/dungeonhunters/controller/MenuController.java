@@ -12,7 +12,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.dungeonhunters.dungeonhunters.controller.LogoController.getLogo;
+import static com.dungeonhunters.dungeonhunters.controller.LogoController.getLogoPlayer;
 
 @Controller
 public class MenuController extends JFrame {
@@ -32,7 +32,7 @@ public class MenuController extends JFrame {
         JPanel menu = new JPanel();
         List<Player> players = playerService.getPlayers();
         menu.setLayout(new FlowLayout());
-        menu.setPreferredSize(new Dimension(200,600));
+        menu.setPreferredSize(new Dimension(200, 600));
         JButton b = new JButton("Stwórz nową postać");
         b.addActionListener(new ActionListener() {
             @Override
@@ -48,8 +48,8 @@ public class MenuController extends JFrame {
             b.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                        gameController.setCurrentPlayer(player);
-                        gameController.switchToProfileController();
+                    gameController.setCurrentPlayer(player);
+                    gameController.switchToProfileController();
                 }
             });
             setButtonStyle(b, Color.white);
@@ -67,10 +67,10 @@ public class MenuController extends JFrame {
         this.panel = panel;
     }
 
-    private void setButtonStyle(JButton button, Color color){
+    private void setButtonStyle(JButton button, Color color) {
         Color hoveredColor = Color.red;
         button.setBorder(null);
-        button.setPreferredSize(new Dimension(200,40));
+        button.setPreferredSize(new Dimension(200, 40));
         button.setBackground(color);
         button.addMouseListener(new MouseAdapter() {
             @Override
@@ -84,6 +84,7 @@ public class MenuController extends JFrame {
             }
         });
     }
+
     private void showPlayerCreation(String logo) {
 
         JPanel panel = new JPanel();
@@ -112,8 +113,6 @@ public class MenuController extends JFrame {
             }
             gameController.setCurrentPlayer(player);
             gameController.switchToProfileController();
-
-
         });
         panel.add(l);
         panel.add(tf);
@@ -127,13 +126,13 @@ public class MenuController extends JFrame {
         panel2.setAlignmentY(Component.CENTER_ALIGNMENT);
         JPanel logoList = new JPanel();
         logoList.setLayout(new FlowLayout());
-        logoList.setPreferredSize(new Dimension(200,600));
+        logoList.setPreferredSize(new Dimension(200, 600));
         logoList.setAlignmentY(Component.CENTER_ALIGNMENT);
         JLabel info = new JLabel("Wybierz wygląd postaci");
         logoList.add(info);
 
 
-        for(LogoType o : LogoType.values()){
+        for (LogoType o : LogoType.values()) {
             JButton b = new JButton(String.valueOf(o));
 
             b.addActionListener(new ActionListener() {
