@@ -24,7 +24,5 @@ public class Card implements Serializable {
     private String description;
 
 
-//    @ManyToOne
-//    private Deck deck;
 
 }

@@ -11,7 +11,7 @@ import java.util.UUID;
 @Entity
 @ToString
 @Builder
-public class Player implements Serializable {
+public class Player implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
