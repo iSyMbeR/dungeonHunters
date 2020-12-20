@@ -15,6 +15,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
@@ -201,8 +202,10 @@ public class ProfileController extends JFrame {
         List<ShopItemDto> shopItems = shop.getItems();
         panel.setPreferredSize(new Dimension(1000, (shopItems.size() * 105) + 50));
         for (ShopItemDto c : shopItems) {
+            JLabel itemIcon = LogoController.getLogoCard(c.getType().toString());
             JPanel itemContainer = new JPanel();
             JLabel itemName = new JLabel(c.getName());
+            JLabel itemDescription = new JLabel(c.getDescription());
             JLabel itemCost = new JLabel( c.getPrice() + " gold");
             JButton buyButton = new JButton("Buy");
             buyButton.addActionListener(new ActionListener() {
@@ -212,7 +215,9 @@ public class ProfileController extends JFrame {
                 }
             });
             if(player.getGold()<c.price) buyButton.setEnabled(false);
+            itemContainer.add(itemIcon);
             itemContainer.add(itemName);
+            itemContainer.add(itemDescription);
             itemContainer.add(itemCost);
             itemContainer.add(buyButton);
             styleItemShopEntry(itemContainer);
@@ -225,11 +230,15 @@ public class ProfileController extends JFrame {
     private void styleItemShopEntry(JPanel itemContainer) {
         itemContainer.setPreferredSize(new Dimension(990,100));
         itemContainer.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
-        JLabel itemName = (JLabel)itemContainer.getComponent(0);
+        JLabel itemIcon = (JLabel)itemContainer.getComponent(0);
+        itemIcon.setPreferredSize(new Dimension(100,100));
+        JLabel itemName = (JLabel)itemContainer.getComponent(1);
         itemName.setBorder(BorderFactory.createEmptyBorder(0,50,0,0));
         itemName.setPreferredSize(new Dimension(300,100));
-        itemContainer.getComponent(1).setPreferredSize(new Dimension(200,100));
-        JButton buyButton = (JButton)itemContainer.getComponent(2);
+        JLabel itemDescription = (JLabel) itemContainer.getComponent(2);
+        itemDescription.setPreferredSize(new Dimension(300,100));
+        itemContainer.getComponent(3).setPreferredSize(new Dimension(200,100));
+        JButton buyButton = (JButton)itemContainer.getComponent(4);
         buyButton.setPreferredSize(new Dimension(100,50));
         buyButton.setBorder(BorderFactory.createEmptyBorder(25,0,25,0));
         buyButton.setFocusPainted(false);
