@@ -27,4 +27,5 @@ public class Item implements Serializable {
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable
     private List<Bonus> bonus;
+
 }

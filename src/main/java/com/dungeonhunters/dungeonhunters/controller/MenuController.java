@@ -1,5 +1,6 @@
 package com.dungeonhunters.dungeonhunters.controller;
 
+import com.dungeonhunters.dungeonhunters.dto.LogoType;
 import com.dungeonhunters.dungeonhunters.model.Player;
 import com.dungeonhunters.dungeonhunters.service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +9,10 @@ import org.springframework.stereotype.Controller;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.RoundRectangle2D;
+import java.util.ArrayList;
 import java.util.List;
+
+import static com.dungeonhunters.dungeonhunters.controller.LogoController.getLogo;
 
 @Controller
 public class MenuController extends JFrame {
@@ -34,7 +37,8 @@ public class MenuController extends JFrame {
         b.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                showPlayerCreation();
+                showPlayerCreation2();
+                //showPlayerCreation();
             }
         });
         setButtonStyle(b, Color.LIGHT_GRAY);
@@ -82,7 +86,8 @@ public class MenuController extends JFrame {
             }
         });
     }
-    private void showPlayerCreation() {
+    private void showPlayerCreation(String logo) {
+
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
         JLabel l = new JLabel("Podaj nazwę postaci: ");
@@ -105,17 +110,47 @@ public class MenuController extends JFrame {
             if (exists) {
                 player = players.get(iter);
             } else {
-                player = gameController.createPlayer(
-                        name
-                );
+                player = gameController.createPlayer(name, logo);
             }
             gameController.setCurrentPlayer(player);
             gameController.switchToProfileController();
+
+
         });
         panel.add(l);
         panel.add(tf);
         gameController.setMainContent(panel);
         tf.requestFocusInWindow();
+    }
+
+    private void showPlayerCreation2() {
+        JPanel panel2 = new JPanel();
+        panel2.setLayout(new FlowLayout());
+        panel2.setAlignmentY(Component.CENTER_ALIGNMENT);
+        JPanel logoList = new JPanel();
+        logoList.setLayout(new FlowLayout());
+        logoList.setPreferredSize(new Dimension(200,600));
+        logoList.setAlignmentY(Component.CENTER_ALIGNMENT);
+        JLabel info = new JLabel("Wybierz wygląd postaci");
+        logoList.add(info);
+
+
+        for(LogoType o : LogoType.values()){
+            JButton b = new JButton(String.valueOf(o));
+
+            b.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    showPlayerCreation(e.getActionCommand());
+                }
+            });
+            setButtonStyle(b, Color.white);
+            logoList.add(b);
+        }
+        logoList.setFocusable(true);
+        panel2.add(logoList);
+        gameController.setMainContent(panel2);
+        panel2.requestFocusInWindow();
 
     }
 }

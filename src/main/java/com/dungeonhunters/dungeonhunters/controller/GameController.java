@@ -134,7 +134,7 @@ public class GameController extends JFrame {
         return deckService.addDeck(deck);
     }
 
-    public Player createPlayer(String name) {
+    public Player createPlayer(String name, String logo) {
         Player player = Player.builder()
                 .name(name)
                 .hp(100)
@@ -146,6 +146,7 @@ public class GameController extends JFrame {
                 .gold(0)
                 .dmg(10)
                 .def(0)
+                .logo(logo)
                 .build();
         return playerService.addPlayer(player);
     }
