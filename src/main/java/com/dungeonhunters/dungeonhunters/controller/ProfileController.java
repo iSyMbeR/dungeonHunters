@@ -5,7 +5,6 @@ import com.dungeonhunters.dungeonhunters.dto.Shop;
 import com.dungeonhunters.dungeonhunters.dto.ShopItemDto;
 import com.dungeonhunters.dungeonhunters.model.*;
 import com.dungeonhunters.dungeonhunters.service.*;
-import org.hibernate.cfg.JPAIndexHolder;
 import org.springframework.stereotype.Controller;
 
 
@@ -65,7 +64,10 @@ public class ProfileController extends JFrame {
 
         //content panel
         JPanel contentPanel = new JPanel();
-        contentPanel.setPreferredSize(new Dimension(1000,600));
+        JScrollPane scrollable = new JScrollPane(contentPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollable.setPreferredSize(new Dimension(1000,600));
+        scrollable.getVerticalScrollBar().setUnitIncrement(16);
+        //contentPanel.setPreferredSize(new Dimension(1000,1000));
         JLabel cp = new JLabel("Content panel here");
         contentPanel.add(cp);
         contentPanel.setBackground(Color.lightGray);
@@ -97,7 +99,7 @@ public class ProfileController extends JFrame {
         shopButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                createShopView();
+                createAndDisplayShopView(contentPanel);
             }
         });
         JButton exitButton = new JButton("Exit");
@@ -156,7 +158,7 @@ public class ProfileController extends JFrame {
         topPanel.add(statisticPanel);
         topPanel.add(infoPanel);
         bottomPanel.add(selectPanel);
-        bottomPanel.add(contentPanel);
+        bottomPanel.add(scrollable);
 
         panel.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
         panel.add(topPanel);
@@ -164,24 +166,91 @@ public class ProfileController extends JFrame {
         gameController.setMainContent(panel);
     }
 
-    private void updateContentPanel(JPanel p) {
-        p.removeAll();
-        p.revalidate();
-        p.repaint();
+    private void createAndDisplayShopView(JPanel panel) {
+        panel.removeAll();
+        JLabel shopName = new JLabel("Shop");
+        shopName.setPreferredSize(new Dimension(850,40));
+        shopName.setFont(new Font("Arial",Font.BOLD,20));
+        JButton refreshItems = new JButton("Refresh items");
+        refreshItems.setFocusPainted(false);
+        refreshItems.setBackground(null);
+        refreshItems.setBorder(null);
+        refreshItems.setPreferredSize(new Dimension(100, 40));
+        refreshItems.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                shop.refreshItems(player);
+                createAndDisplayShopView(panel);
+
+            }
+        });
+        refreshItems.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                refreshItems.setForeground(Color.BLUE);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                refreshItems.setForeground(Color.BLACK);
+            }
+        });
+        panel.add(shopName);
+        panel.add(refreshItems);
+        panel.setLayout(new FlowLayout(FlowLayout.LEFT,5,5));
+        List<ShopItemDto> shopItems = shop.getItems();
+        panel.setPreferredSize(new Dimension(1000, (shopItems.size() * 105) + 50));
+        for (ShopItemDto c : shopItems) {
+            JPanel itemContainer = new JPanel();
+            JLabel itemName = new JLabel(c.getName());
+            JLabel itemCost = new JLabel( c.getPrice() + " gold");
+            JButton buyButton = new JButton("Buy");
+            buyButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    shop.buyItem(player, shopItems.indexOf(c));
+                }
+            });
+            if(player.getGold()<c.price) buyButton.setEnabled(false);
+            itemContainer.add(itemName);
+            itemContainer.add(itemCost);
+            itemContainer.add(buyButton);
+            styleItemShopEntry(itemContainer);
+            panel.add(itemContainer);
+        }
+        panel.revalidate();
+        panel.repaint();
+    }
+
+    private void styleItemShopEntry(JPanel itemContainer) {
+        itemContainer.setPreferredSize(new Dimension(990,100));
+        itemContainer.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
+        JLabel itemName = (JLabel)itemContainer.getComponent(0);
+        itemName.setBorder(BorderFactory.createEmptyBorder(0,50,0,0));
+        itemName.setPreferredSize(new Dimension(300,100));
+        itemContainer.getComponent(1).setPreferredSize(new Dimension(200,100));
+        JButton buyButton = (JButton)itemContainer.getComponent(2);
+        buyButton.setPreferredSize(new Dimension(100,50));
+        buyButton.setBorder(BorderFactory.createEmptyBorder(25,0,25,0));
+        buyButton.setFocusPainted(false);
+        buyButton.setFont(new Font("Arial", Font.BOLD, 25));
+        buyButton.setBackground(Color.GRAY);
     }
 
     private void styleSelectPanel(JPanel selectPanel) {
         selectPanel.setLayout(new FlowLayout());
         for(Component c : selectPanel.getComponents()){
-            setButtonStyle((JButton)c, 150);
+            setButtonStyle((JButton)c);
+
         }
     }
-    private void setButtonStyle(JButton button, int width){
-        Color hoveredColor = Color.red;
+    private void setButtonStyle(JButton button){
+        Color hoveredColor = Color.blue;
         Color normalColor = Color.white;
         button.setBorder(null);
-        button.setPreferredSize(new Dimension(width,40));
+        button.setPreferredSize(new Dimension(150,40));
         button.setBackground(normalColor);
+        button.setFocusPainted(false);
         button.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -276,7 +345,6 @@ public class ProfileController extends JFrame {
             JLabel lg = new JLabel("cost: " + c.getPrice() + " gold");
             gold.add(lg);
             options.add(l);
-
         }
         options.add(exit);
         createControls(options, new AbstractAction() {

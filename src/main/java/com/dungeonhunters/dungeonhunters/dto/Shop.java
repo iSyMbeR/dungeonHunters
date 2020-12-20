@@ -33,7 +33,7 @@ public class Shop {
         }
         if (allCardList.size() > 0) {
             Random r = new Random();
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < 6; i++) {
                 Card card = allCardList.get(r.nextInt(allCardList.size()));
                 if (!duplicates.contains(card)) {
                     int max = 10;
