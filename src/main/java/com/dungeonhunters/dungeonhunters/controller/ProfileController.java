@@ -300,12 +300,12 @@ public class ProfileController extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (selected <= counter) {
-                    if (equippedItems.get(tabNames[selected - 1]) == ItemEquipType.NIE && activeItems <= 3) {
+                    if (equippedItems.get(tabNames[selected - 1]) == ItemEquipType.NIE && activeItems < 3) {
                         equippedItems.put(tabNames[selected - 1], ItemEquipType.TAK);
                         activeItems++;
                         player.setDmg(player.getDmg() + tabDmg[selected - 1]);
                         playerService.addPlayer(player);
-                    } else {
+                    } else if(equippedItems.get(tabNames[selected - 1]) == ItemEquipType.TAK){
                         equippedItems.put(tabNames[selected - 1], ItemEquipType.NIE);
                         activeItems--;
                         player.setDmg(player.getDmg() - tabDmg[selected - 1]);

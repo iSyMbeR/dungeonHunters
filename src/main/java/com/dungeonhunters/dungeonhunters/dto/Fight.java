@@ -28,7 +28,7 @@ public class Fight {
     public int enemyMaxHp = 0;
     public CardActionStrategyFactory cardActionFactory;
     public List<String> loot = new ArrayList<>();
-    public boolean playerBlocked,miss,reducedDmg,sleep;
+    public boolean playerBlocked, miss, reducedDmg, sleep;
     public final EnemyService enemyService;
     public final PlayerService playerService;
     public final BonusService bonusService;
@@ -45,7 +45,7 @@ public class Fight {
         this.cardActionFactory = cardActionFactory;
     }
 
-    public Fight(InventoryService inventoryService, ItemService itemService, BonusService bonusService, EnemyService enemyService, PlayerService playerService, DeckService deckService, ItemBaseService itemBaseService, Shop shop){
+    public Fight(InventoryService inventoryService, ItemService itemService, BonusService bonusService, EnemyService enemyService, PlayerService playerService, DeckService deckService, ItemBaseService itemBaseService, Shop shop) {
         this.enemyService = enemyService;
         this.playerService = playerService;
         this.deckService = deckService;
@@ -59,14 +59,14 @@ public class Fight {
     }
 
     public void createEnemy() {
-        if (enemy == null){
+        if (enemy == null) {
             Random r = new Random();
             List<Enemy> allEnemies = enemyService.getAllEnemies();
             List<Enemy> validEnemies = new ArrayList<>();
-            for(Enemy e : allEnemies){
-                if(e.getStage() <= player.getStage()) validEnemies.add(e);
+            for (Enemy e : allEnemies) {
+                if (e.getStage() <= player.getStage()) validEnemies.add(e);
             }
-            if(validEnemies.size() == 0){
+            if (validEnemies.size() == 0) {
                 Enemy en = Enemy.builder()
                         .name("Ostry przeciwnik")
                         .dmg(2)
@@ -83,35 +83,35 @@ public class Fight {
         }
     }
 
-    public String enemyTurn(){
-        if(miss){
+    public String enemyTurn() {
+        if (miss) {
             miss = false;
-            return enemy.getName()+" missed";
+            return enemy.getName() + " missed";
         }
-        if(sleep){
+        if (sleep) {
             sleep = false;
-            return enemy.getName()+" is sleeping ...";
+            return enemy.getName() + " is sleeping ...";
         }
         int damage = enemy.getDmg();
-        if(reducedDmg) {
+        if (reducedDmg) {
             damage = damage / 2;
             reducedDmg = false;
         }
-        if(playerBlocked){
-            if(player.getDef()<damage){
+        if (playerBlocked) {
+            if (player.getDef() < damage) {
                 damage = damage - player.getDef();
                 player.setCurrentHp(player.getCurrentHp() - damage);
             }
-            playerBlocked=false;
-            return player.getName()+" received " +damage+" damage (damage reduced by defense) from "+enemy.getName()+" attack.";
-        }else{
+            playerBlocked = false;
+            return player.getName() + " received " + damage + " damage (damage reduced by defense) from " + enemy.getName() + " attack.";
+        } else {
             player.setCurrentHp(player.getCurrentHp() - enemy.getDmg());
-            return player.getName()+" received " +damage+" damage from "+enemy.getName()+" attack.";
+            return player.getName() + " received " + damage + " damage from " + enemy.getName() + " attack.";
         }
     }
 
     public String useCard(Card card) {
-        if(actionsLeft>=card.getCost()){
+        if (actionsLeft >= card.getCost()) {
             actionsLeft = actionsLeft - card.getCost();
             Optional<AbstractCardActionFactory> abstractCardActionFactory = cardActionFactory.get(card.getType());
             abstractCardActionFactory.ifPresent(a -> a.use(card, player, enemy, playerStatus, enemyStatus));
@@ -120,63 +120,64 @@ public class Fight {
             cardSet.remove(card);
             deck.setCardSet(cardSet);
             deckService.addDeck(deck);
-            return "Card: "+card.getName()+" used, "+actionsLeft+" actions left.";
+            return "Card: " + card.getName() + " used, " + actionsLeft + " actions left.";
         }
-        return "Card require "+card.getCost()+" actions to use. You have "+actionsLeft;
+        return "Card require " + card.getCost() + " actions to use. You have " + actionsLeft;
     }
 
     public String playerAttack() {
-        if(actionsLeft>0){
+        if (actionsLeft > 0) {
             int totalDmgDealt = player.getDmg();
             enemy.setHp(enemy.getHp() - totalDmgDealt);
             actionsLeft--;
-            return player.getName()+" deal "+totalDmgDealt+" to "+enemy.getName()+", "+actionsLeft+" actions left.";
+            return player.getName() + " deal " + totalDmgDealt + " to " + enemy.getName() + ", " + actionsLeft + " actions left.";
         }
         return "Action limit reached, 0 actions left.";
     }
 
-    public int checkEndBattleConditions(){
-        if(player.getCurrentHp()<=0) return -1;
-        if(enemy.getHp()<=0) return 1;
+    public int checkEndBattleConditions() {
+        if (player.getCurrentHp() <= 0) return -1;
+        if (enemy.getHp() <= 0) return 1;
         return 0;
     }
+
     public String playerDefend() {
-        if(actionsLeft>0 && !playerBlocked){
-            playerBlocked=true;
+        if (actionsLeft > 0 && !playerBlocked) {
+            playerBlocked = true;
             actionsLeft--;
-            return player.getName()+" is defending himself, "+actionsLeft+" actions left.";
+            return player.getName() + " is defending himself, " + actionsLeft + " actions left.";
         }
         return "Action limit reached, 0 actions left.";
     }
 
-    public String nextTurn(){
-        if( enemyMaxHp == 0 )enemyMaxHp=enemy.getHp();
+    public String nextTurn() {
+        if (enemyMaxHp == 0) enemyMaxHp = enemy.getHp();
         turn++;
-        actionsLeft=2;
+        actionsLeft = 2;
         updateStatus();
         refreshStatus();
-        return "Turn "+(turn - 1)+" ended, started "+turn+" turn, "+actionsLeft+" actions left.";
+        return "Turn " + (turn - 1) + " ended, started " + turn + " turn, " + actionsLeft + " actions left.";
     }
 
     private void updateStatus() {
-        for(Map.Entry<Card,Integer> entry :playerStatus.entrySet()){
+        for (Map.Entry<Card, Integer> entry : playerStatus.entrySet()) {
             entry.setValue(entry.getValue() - 1);
-            if(entry.getValue() == 0) playerStatus.remove(entry.getKey(),0);
+            if (entry.getValue() == 0) playerStatus.remove(entry.getKey(), 0);
         }
-        for(Map.Entry<Card,Integer> entry :enemyStatus.entrySet()){
+        for (Map.Entry<Card, Integer> entry : enemyStatus.entrySet()) {
             entry.setValue(entry.getValue() - 1);
-            if(entry.getValue() == 0) enemyStatus.remove(entry.getKey(),0);
+            if (entry.getValue() == 0) enemyStatus.remove(entry.getKey(), 0);
         }
     }
 
     public void refreshStatus() {
-        for(Map.Entry<Card,Integer> entry :playerStatus.entrySet()){
-            if(entry.getKey().getType() == CardType.Block) playerBlocked = true;
+        for (Map.Entry<Card, Integer> entry : playerStatus.entrySet()) {
+            if (entry.getKey().getType() == CardType.Block) playerBlocked = true;
         }
-        for(Map.Entry<Card,Integer> entry :enemyStatus.entrySet()){
-            if(entry.getKey().getType() == CardType.Miss) miss = true;
-            if(entry.getKey().getType() == CardType.ReducedDmg) reducedDmg = true;
-            if(entry.getKey().getType() == CardType.Sleep) sleep = true;
+        for (Map.Entry<Card, Integer> entry : enemyStatus.entrySet()) {
+            if (entry.getKey().getType() == CardType.Miss) miss = true;
+            if (entry.getKey().getType() == CardType.ReducedDmg) reducedDmg = true;
+            if (entry.getKey().getType() == CardType.Sleep) sleep = true;
         }
     }
 
@@ -184,22 +185,22 @@ public class Fight {
         int goldLoot = enemy.getGoldDrop();
         int expGained = enemy.getExperienceDrop();
 
-        loot.add("You dropped "+goldLoot+" gold");
-        loot.add("You gained "+expGained+" experience");
+        loot.add("You dropped " + goldLoot + " gold");
+        loot.add("You gained " + expGained + " experience");
         loot.add(generateRandomItem());
 
-        if(player.getExperience() + expGained >= 100){
+        if (player.getExperience() + expGained >= 100) {
             player.setExperience(player.getExperience() + expGained);
-            if (player.getExperience()>=100){
-                int stagesGained = player.getExperience()/100;
-                player.setStage(player.getStage()+stagesGained);
-                player.setExperience(player.getExperience() - stagesGained*100);
-                player.setHp(player.getHp()+stagesGained*5);
-                player.setDmg(player.getDmg()+stagesGained);
-                player.setDef(player.getDef()+stagesGained);
+            if (player.getExperience() >= 100) {
+                int stagesGained = player.getExperience() / 100;
+                player.setStage(player.getStage() + stagesGained);
+                player.setExperience(player.getExperience() - stagesGained * 100);
+                player.setHp(player.getHp() + stagesGained * 5);
+                player.setDmg(player.getDmg() + stagesGained);
+                player.setDef(player.getDef() + stagesGained);
             }
         }
-        player.setGold(player.getGold()+goldLoot);
+        player.setGold(player.getGold() + goldLoot);
         playerService.addPlayer(player);
         shop.refreshItems(player);
         //clearBattle();
@@ -214,9 +215,9 @@ public class Fight {
         loot = new ArrayList<>();
         playerStatus = new HashMap<>();
         enemyStatus = new HashMap<>();
-        playerBlocked= false;
-        miss=false;
-        reducedDmg=false;
+        playerBlocked = false;
+        miss = false;
+        reducedDmg = false;
         sleep = false;
     }
 
@@ -252,7 +253,7 @@ public class Fight {
             }
 
         }
-        if(!exist) {
+        if (!exist) {
             playerListItem.add(item);
 
             player.getInventory().setItemList(playerListItem);
@@ -266,6 +267,6 @@ public class Fight {
             return "You have received " + item.getItemBase().getName();
         }
 
-        return item.getItemBase().getName() +" You already own it" ;
+        return item.getItemBase().getName() + " You already own it";
     }
 }

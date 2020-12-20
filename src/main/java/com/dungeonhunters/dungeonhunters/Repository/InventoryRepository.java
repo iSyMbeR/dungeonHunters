@@ -22,4 +22,5 @@ public interface InventoryRepository extends JpaRepository<Inventory,Long> {
     @Query("select i from Item i where i.id= :id")
     List<Item> getAllItems(@Param("id") Long id);
 
+
 }
