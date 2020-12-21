@@ -51,9 +51,9 @@ values (11, 'Demon', 120, 12, 600, 15, 11, 11);
 insert into ENEMY (ID, NAME,HP, DMG, EXPERIENCE_DROP, GOLD_DROP, STAGE, DEFENSE)
 values (12, 'Orshabaal', 130, 13, 650, 16, 12, 12);
 insert into ENEMY (ID, NAME,HP, DMG, EXPERIENCE_DROP, GOLD_DROP, STAGE, DEFENSE)
-values (13, 'Tesciowa', 140, 14, 700, 17, 13, 13);
+values (13, 'Cieslak', 140, 14, 700, 17, 13, 13);
 insert into ENEMY (ID, NAME,HP, DMG, EXPERIENCE_DROP, GOLD_DROP, STAGE, DEFENSE)
-values (14, 'Była dziewczyna', 150, 15, 750, 18, 14, 14);
+values (14, 'Rudy', 150, 15, 750, 18, 14, 14);
 -- ITEM_BASE
 
 -- insert into ITEM_BASE (ID, DMG, RARITY) values (1, 10, 50);
