@@ -261,7 +261,6 @@ public class ProfileController extends JFrame {
         itemContainer.getComponent(5).setPreferredSize(new Dimension(50, 100));
     }
 
-
     private void styleItemShopEntry(JPanel itemContainer) {
 
         itemContainer.setPreferredSize(new Dimension(990,100));
@@ -273,8 +272,9 @@ public class ProfileController extends JFrame {
         itemName.setPreferredSize(new Dimension(200,100));
         JLabel itemDescription = (JLabel) itemContainer.getComponent(2);
         itemDescription.setPreferredSize(new Dimension(350,100));
-        itemContainer.getComponent(3).setPreferredSize(new Dimension(200,100));
-        JButton buyButton = (JButton)itemContainer.getComponent(4);
+        itemContainer.getComponent(3).setPreferredSize(new Dimension(40,100));
+        itemContainer.getComponent(4).setPreferredSize(new Dimension(160, 100));
+        JButton buyButton = (JButton)itemContainer.getComponent(5);
         buyButton.setPreferredSize(new Dimension(100,50));
         buyButton.setBorder(BorderFactory.createEmptyBorder(25,0,25,0));
         buyButton.setFocusPainted(false);

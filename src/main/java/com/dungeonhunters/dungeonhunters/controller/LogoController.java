@@ -90,6 +90,9 @@ public class LogoController {
             case "amulet charm":
                 file = new File("src\\main\\resources\\Static\\ItemsLogo\\Amulet charm.jpg");
                 break;
+            case "lightning charm":
+                file = new File("src\\main\\resources\\Static\\ItemsLogo\\lightning charm.jpg");
+                break;
             case "axe":
                 file = new File("src\\main\\resources\\Static\\ItemsLogo\\Axe.jpg");
                 break;
