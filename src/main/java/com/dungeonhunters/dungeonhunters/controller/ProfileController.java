@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
+import static com.dungeonhunters.dungeonhunters.controller.LogoController.getLogoItem;
 import static com.dungeonhunters.dungeonhunters.controller.MusicController.getMusic;
 
 @Controller
@@ -426,10 +427,11 @@ public class ProfileController extends JFrame {
 
             panel.add(name);
 
-
             for (Item c : playerInventoryItemsList) {
 
-                JLabel itemIcon = new JLabel("Puste ico");
+                System.out.println(c.getItemBase().getName());
+                JLabel itemIcon = LogoController.getLogoItem(c.getItemBase().getName());
+                //JLabel itemIcon = new JLabel("");
                 JPanel itemContainer = new JPanel();
                 JLabel itemName = new JLabel(c.getItemBase().getName());
                 JLabel itemDescription = new JLabel(c.getItemBase().getDmg() + " atk");

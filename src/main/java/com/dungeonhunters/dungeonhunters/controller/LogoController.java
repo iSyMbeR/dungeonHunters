@@ -16,10 +16,10 @@ public class LogoController {
 
         switch (logoName){
             case "Ork":
-                file = new File("E:\\dungeonHunters\\dungeonHuntersJFrame\\src\\main\\resources\\Static\\PlayerLogo\\Ork.jpg");
+                file = new File("src\\main\\resources\\Static\\PlayerLogo\\Ork.jpg");
                 break;
             case "Troll":
-                file = new File("E:\\dungeonHunters\\dungeonHuntersJFrame\\src\\main\\resources\\Static\\PlayerLogo\\Troll.jpg");
+                file = new File("src\\main\\resources\\Static\\PlayerLogo\\Troll.jpg");
                 break;
             case "Elf":
                 file = new File("E:\\dungeonHunters\\dungeonHuntersJFrame\\src\\main\\resources\\Static\\PlayerLogo\\Elf.jpg");
