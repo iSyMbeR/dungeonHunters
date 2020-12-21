@@ -153,9 +153,10 @@ public class Fight {
                 actionsLeft--;
                 return player.getName() + " is defending himself, " + actionsLeft + " actions left.";
             }
-            return "you are already blocking";
+            return "Action limit reached, 0 actions left.";
         }
-        return "Action limit reached, 0 actions left.";
+        return "You are already blocking";
+
     }
 
     public String nextTurn() {

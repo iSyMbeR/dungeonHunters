@@ -164,7 +164,7 @@ public class FightController extends JFrame {
         JPanel enemyIconContainer = new JPanel(new FlowLayout(FlowLayout.LEFT, 25, 25));
         enemyIconContainer.setPreferredSize(new Dimension(350, 350));
         enemyIconContainer.setBackground(Color.lightGray);
-        JLabel enemyIcon = new JLabel("tutaj bedzie ikona przeciwnika");
+        JLabel enemyIcon = LogoController.getLogoEnemy(fight.enemy.getName());
         enemyIcon.setBackground(Color.white);
         enemyIcon.setPreferredSize(new Dimension(300, 300));
         enemyIcon.setBackground(Color.orange);
@@ -175,10 +175,6 @@ public class FightController extends JFrame {
         JLabel enemyHp = new JLabel("Life " + fight.enemy.getHp() + "/" + fight.getEnemyMaxHp(),SwingConstants.RIGHT);
         JLabel enemyDmg = new JLabel("Attack damage: " + fight.enemy.getDmg(),SwingConstants.RIGHT);
         JLabel enemyDef = new JLabel("Defense: " + fight.enemy.getDefense(),SwingConstants.RIGHT);
-//        enemyName.setAlignmentX(JLabel.RIGHT_ALIGNMENT);
-//        enemyHp.setAlignmentX(JLabel.RIGHT_ALIGNMENT);
-//        enemyDmg.setAlignmentX(JLabel.RIGHT_ALIGNMENT);
-//        enemyDef.setAlignmentX(JLabel.RIGHT_ALIGNMENT);
 
         JPanel enemyStatus = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         for (Map.Entry<Card, Integer> entry : fight.enemyStatus.entrySet()) {
@@ -235,13 +231,20 @@ public class FightController extends JFrame {
         playerPanel.setPreferredSize(new Dimension(600, 350));
         enemyPanel.setPreferredSize(new Dimension(600, 350));
         actionPanel.setPreferredSize(new Dimension(100, 400));
-        cardPanel.setPreferredSize(new Dimension(1100, 400));
+        cardPanel.setPreferredSize(new Dimension(800, 400));
+        logPanel.setPreferredSize(new Dimension(300,400));
+        logPanel.setLayout(new FlowLayout(FlowLayout.LEFT,0,2));
+        JScrollPane scrollable = new JScrollPane(logPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollable.setPreferredSize(new Dimension(300, 400));
+        scrollable.setBorder(null);
+        scrollable.getVerticalScrollBar().setUnitIncrement(16);
         mainPanel.add(turnPanel);
         mainPanel.add(playerPanel);
         mainPanel.add(enemyPanel);
         mainPanel.add(actionPanel);
         mainPanel.add(cardPanel);
         removeLayoutGapsFromPanel();
+        mainPanel.add(scrollable);
 
     }
 
@@ -299,10 +302,16 @@ public class FightController extends JFrame {
         fight.looseBattleAndUpdatePlayer();
         showFailureScreen();
     }
-
+    private void logInfo(String message){
+        if((logPanel.getComponents().length+2)*14>logPanel.getHeight()) logPanel.setPreferredSize(new Dimension(300,(logPanel.getComponents().length+2)*14));
+        JLabel m = new JLabel(message);
+        m.setPreferredSize(new Dimension(250,12));
+        m.setFont(new Font("Arail", Font.ITALIC,12));
+        logPanel.add(m);
+    }
     private void useCard(Card card) {
         String message = fight.useCard(card);
-        logPanel.add(new JLabel(message));
+        logInfo(message);
         fight.refreshStatus();
         buildPlayerPanel();
         buildEnemyPanel();
@@ -312,7 +321,7 @@ public class FightController extends JFrame {
 
     public void attack() {
         String message = fight.playerAttack();
-        logPanel.add(new JLabel(message));
+        logInfo(message);
         buildEnemyPanel();
         checkToEndBattle(fight.checkEndBattleConditions());
     }
@@ -320,16 +329,16 @@ public class FightController extends JFrame {
 
     public void defend(){
         String message = fight.playerDefend();
-        logPanel.add(new JLabel(message));
+        logInfo(message);
         buildPlayerPanel();
     }
 
     public void endTurn() {
         String message;
         message = fight.enemyTurn();
-        logPanel.add(new JLabel(message));
+        logInfo(message);
         message = fight.nextTurn();
-        logPanel.add(new JLabel(message));
+        logInfo(message);
         buildPlayerPanel();
         buildEnemyPanel();
         buildTurnPanel();
