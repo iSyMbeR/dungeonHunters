@@ -263,20 +263,20 @@ public class ProfileController extends JFrame {
 
 
     private void styleItemShopEntry(JPanel itemContainer) {
-        itemContainer.setPreferredSize(new Dimension(990, 100));
-        itemContainer.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        JLabel itemIcon = (JLabel) itemContainer.getComponent(0);
-        itemIcon.setPreferredSize(new Dimension(100, 100));
-        JLabel itemName = (JLabel) itemContainer.getComponent(1);
-        itemName.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 0));
-        itemName.setPreferredSize(new Dimension(300, 100));
+
+        itemContainer.setPreferredSize(new Dimension(990,100));
+        itemContainer.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
+        JLabel itemIcon = (JLabel)itemContainer.getComponent(0);
+        itemIcon.setPreferredSize(new Dimension(100,100));
+        JLabel itemName = (JLabel)itemContainer.getComponent(1);
+        itemName.setBorder(BorderFactory.createEmptyBorder(0,50,0,0));
+        itemName.setPreferredSize(new Dimension(200,100));
         JLabel itemDescription = (JLabel) itemContainer.getComponent(2);
-        itemDescription.setPreferredSize(new Dimension(300, 100));
-        itemContainer.getComponent(3).setPreferredSize(new Dimension(40, 100));
-        itemContainer.getComponent(4).setPreferredSize(new Dimension(160, 100));
-        JButton buyButton = (JButton) itemContainer.getComponent(5);
-        buyButton.setPreferredSize(new Dimension(90, 50));
-        buyButton.setBorder(BorderFactory.createEmptyBorder(25, 0, 25, 0));
+        itemDescription.setPreferredSize(new Dimension(350,100));
+        itemContainer.getComponent(3).setPreferredSize(new Dimension(200,100));
+        JButton buyButton = (JButton)itemContainer.getComponent(4);
+        buyButton.setPreferredSize(new Dimension(100,50));
+        buyButton.setBorder(BorderFactory.createEmptyBorder(25,0,25,0));
         buyButton.setFocusPainted(false);
         buyButton.setFont(new Font("Arial", Font.BOLD, 25));
         buyButton.setBackground(Color.GRAY);
