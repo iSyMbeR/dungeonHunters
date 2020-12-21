@@ -14,8 +14,6 @@ import java.util.*;
 import java.util.List;
 
 
-import static com.dungeonhunters.dungeonhunters.Ansi.*;
-
 @Controller
 public class GameController extends JFrame {
     public final PlayerService playerService;

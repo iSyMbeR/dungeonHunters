@@ -234,9 +234,9 @@ public class ProfileController extends JFrame {
         itemIcon.setPreferredSize(new Dimension(100,100));
         JLabel itemName = (JLabel)itemContainer.getComponent(1);
         itemName.setBorder(BorderFactory.createEmptyBorder(0,50,0,0));
-        itemName.setPreferredSize(new Dimension(300,100));
+        itemName.setPreferredSize(new Dimension(200,100));
         JLabel itemDescription = (JLabel) itemContainer.getComponent(2);
-        itemDescription.setPreferredSize(new Dimension(300,100));
+        itemDescription.setPreferredSize(new Dimension(350,100));
         itemContainer.getComponent(3).setPreferredSize(new Dimension(200,100));
         JButton buyButton = (JButton)itemContainer.getComponent(4);
         buyButton.setPreferredSize(new Dimension(100,50));

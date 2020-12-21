@@ -21,6 +21,7 @@ import static com.dungeonhunters.dungeonhunters.controller.ProfileController.equ
 public class Fight {
     public Player player;
     public Enemy enemy;
+    public Area area;
     public Map<Card, Integer> playerStatus;
     public Map<Card, Integer> enemyStatus;
     public int actionsLeft = 0;
@@ -36,6 +37,7 @@ public class Fight {
     public final ItemBaseService itemBaseService;
     public final ItemService itemService;
     public final InventoryService inventoryService;
+    public final AreaService areaService;
     public ProfileController profileController;
     public GameController gameController;
     public final Shop shop;
@@ -45,7 +47,7 @@ public class Fight {
         this.cardActionFactory = cardActionFactory;
     }
 
-    public Fight(InventoryService inventoryService, ItemService itemService, BonusService bonusService, EnemyService enemyService, PlayerService playerService, DeckService deckService, ItemBaseService itemBaseService, Shop shop) {
+    public Fight(AreaService areaService, InventoryService inventoryService, ItemService itemService, BonusService bonusService, EnemyService enemyService, PlayerService playerService, DeckService deckService, ItemBaseService itemBaseService, Shop shop) {
         this.enemyService = enemyService;
         this.playerService = playerService;
         this.deckService = deckService;
@@ -56,6 +58,7 @@ public class Fight {
         this.bonusService = bonusService;
         this.itemService = itemService;
         this.inventoryService = inventoryService;
+        this.areaService = areaService;
     }
 
     public void createEnemy() {
@@ -268,5 +271,11 @@ public class Fight {
         }
 
         return item.getItemBase().getName() + " You already own it";
+    }
+
+    public void generateArea() {
+        List<Area> areas = areaService.getAllAreas();
+        Random r = new Random();
+        setArea(areas.get(r.nextInt(areas.size())));
     }
 }
