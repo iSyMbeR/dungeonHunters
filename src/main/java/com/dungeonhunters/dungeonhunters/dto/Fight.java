@@ -145,10 +145,15 @@ public class Fight {
     }
 
     public String playerDefend() {
-        if (actionsLeft > 0 && !playerBlocked) {
-            playerBlocked = true;
-            actionsLeft--;
-            return player.getName() + " is defending himself, " + actionsLeft + " actions left.";
+        if(!playerBlocked){
+            if (actionsLeft > 0) {
+                Card card = Card.builder().type(CardType.Block).value(1).build();
+                playerStatus.put(card,card.getValue());
+                playerBlocked = true;
+                actionsLeft--;
+                return player.getName() + " is defending himself, " + actionsLeft + " actions left.";
+            }
+            return "you are already blocking";
         }
         return "Action limit reached, 0 actions left.";
     }
