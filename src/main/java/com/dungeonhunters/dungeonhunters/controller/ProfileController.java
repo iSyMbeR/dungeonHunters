@@ -94,7 +94,7 @@ public class ProfileController extends JFrame {
         deckButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                createDeckView();
+                createDeckView(contentPanel);
             }
         });
         JButton shopButton = new JButton("Shop");
@@ -226,6 +226,22 @@ public class ProfileController extends JFrame {
         panel.repaint();
     }
 
+    private void styleCardDeckEntry(JPanel itemContainer) {
+        itemContainer.setPreferredSize(new Dimension(990, 100));
+        itemContainer.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        JLabel itemIcon = (JLabel) itemContainer.getComponent(0);
+        itemIcon.setPreferredSize(new Dimension(100, 100));
+        JLabel itemName = (JLabel) itemContainer.getComponent(1);
+        itemName.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 0));
+        itemName.setPreferredSize(new Dimension(300, 100));
+        JLabel itemDescription = (JLabel) itemContainer.getComponent(2);
+        itemDescription.setPreferredSize(new Dimension(300, 100));
+        itemContainer.getComponent(3).setPreferredSize(new Dimension(200, 100));
+        itemContainer.getComponent(4).setPreferredSize(new Dimension(40, 100));
+        itemContainer.getComponent(5).setPreferredSize(new Dimension(50, 100));
+    }
+
+
     private void styleItemShopEntry(JPanel itemContainer) {
         itemContainer.setPreferredSize(new Dimension(990, 100));
         itemContainer.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
@@ -308,59 +324,40 @@ public class ProfileController extends JFrame {
         getMusic("start");
     }
 
-    private void createDeckView() {
-        JPanel container = new JPanel();
-        container.setLayout(new GridLayout(0, 5));
+    private void createDeckView(JPanel panel) {
+        panel.removeAll();
+        JLabel deckName = new JLabel("Cards Deck");
 
-        JPanel pName = new JPanel();
-        JPanel pType = new JPanel();
-        JPanel pDescription = new JPanel();
-        pName.setLayout(new BoxLayout(pName, BoxLayout.Y_AXIS));
-        pType.setLayout(new BoxLayout(pType, BoxLayout.Y_AXIS));
-        pDescription.setLayout(new BoxLayout(pDescription, BoxLayout.Y_AXIS));
-        JPanel options = new JPanel();
-        JLabel exit = new JLabel("Wyjdź");
-        options.add(exit);
-
+        deckName.setPreferredSize(new Dimension(850, 40));
+        deckName.setFont(new Font("Arial", Font.BOLD, 20));
+        panel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
         List<Card> cardList = deckService.getDeckById(player.getDeck().getId()).getCardSet();
-        if (cardList.size() == 0) {
-            JLabel empty = new JLabel("Deck is empty");
-            empty.setForeground(Color.pink);
-            pName.add(new JLabel(""));
-            pName.add(empty);
+        panel.setPreferredSize(new Dimension(1000, (cardList.size() * 105) + 50));
+        panel.add(deckName);
+        if (cardList.isEmpty()) {
+            panel.add(new JLabel("No cards")).setForeground(Color.DARK_GRAY);
         } else {
             for (Card c : cardList) {
-                JLabel l = new JLabel(c.getName());
-                JLabel ld = new JLabel(c.getType() + "");
-                JLabel ldescription = new JLabel(c.getDescription());
-                pName.add(l);
-                pType.add(ld);
-                pDescription.add(ldescription);
+                JPanel itemContainer = new JPanel();
+                JLabel cardIcon = LogoController.getLogoCard(c.getType().toString());
+                JLabel cardName = new JLabel(c.getName());
+                JLabel cardDescription = new JLabel(c.getDescription());
+                JLabel cardValue = new JLabel((c.getValue()) + " " + c.getType().toString());
+                JLabel costIco = LogoController.getLogoCard("Crystal");
+                JLabel costValue = new JLabel(c.getCost()+"");
+                costValue.setFont(new Font("Arial", Font.BOLD, 30));
+                itemContainer.add(cardIcon);
+                itemContainer.add(cardName);
+                itemContainer.add(cardValue);
+                itemContainer.add(cardDescription);
+                itemContainer.add(costIco);
+                itemContainer.add(costValue);
+                styleCardDeckEntry(itemContainer);
+                panel.add(itemContainer);
             }
+            panel.revalidate();
+            panel.repaint();
         }
-        createControls(options, new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (selected == 1) createView();
-            }
-        });
-        container.add(new JLabel(""));
-        container.add(new JLabel("NAME")).setForeground(Color.BLUE);
-        container.add(new JLabel("DESCRIPTION")).setForeground(Color.GRAY);
-        container.add(new JLabel("TYPE")).setForeground(Color.MAGENTA);
-        container.add(new JLabel(""));
-
-        container.add(new JLabel(""));
-        container.add(pName);
-        container.add(pDescription);
-        container.add(pType);
-        container.add(new JLabel(""));
-        container.add(new JLabel(""));
-        container.add(new JLabel(""));
-        container.add(options);
-        options.setFocusable(true);
-        gameController.setMainContent(container);
-        options.requestFocusInWindow();
     }
 
     private void createShopView() {
@@ -416,16 +413,11 @@ public class ProfileController extends JFrame {
         panel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
         Set<Item> playerInventoryItemsList = player.getInventory().getItemList();
         panel.setPreferredSize(new Dimension(1000, (playerInventoryItemsList.size() * 105) + 50));
-
+        panel.add(inventoryName);
         if (playerInventoryItemsList.isEmpty()) {
             panel.add(new JLabel("No items")).setForeground(Color.DARK_GRAY);
         } else {
 
-            JLabel name = new JLabel("Inventory");
-            name.setPreferredSize(new Dimension(300, 20));
-            name.setFont(new Font("Arial", Font.BOLD, 20));
-
-            panel.add(name);
 
             for (Item c : playerInventoryItemsList) {
 

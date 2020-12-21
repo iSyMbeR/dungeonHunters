@@ -1,6 +1,5 @@
 package com.dungeonhunters.dungeonhunters.controller;
 
-import org.springframework.core.io.ClassPathResource;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -64,6 +63,9 @@ public class LogoController {
                 break;
             case "ReducedDmg":
                 file = new File("src\\main\\resources\\Static\\CardImages\\ReducedDmg.jpg");
+                break;
+            case "Crystal":
+                file = new File("src\\main\\resources\\Static\\CardImages\\Crystal.png");
                 break;
             default:
                 System.out.println("Logo not found");
