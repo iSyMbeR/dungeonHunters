@@ -82,7 +82,17 @@ public class LogoController {
         JLabel label = new JLabel(new ImageIcon(image));
         return label;
     }
-
+    public static JButton getButtonWithIcon(String iconName){
+        File file = new File("src\\main\\resources\\Static\\Icons\\"+iconName+".png");
+        BufferedImage image = null;
+        try {
+            image = ImageIO.read(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        JButton button = new JButton(new ImageIcon(image));
+        return button;
+    }
     public static JLabel getLogoItem(String logoName){
         File file = null;
         System.out.println("weszlo "+ logoName);
