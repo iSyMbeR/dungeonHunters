@@ -161,7 +161,10 @@ public class LogoController {
                 file = new File("src\\main\\resources\\Static\\ItemsLogo\\Amulet charm.jpg");
                 break;
             case "lightning charm":
-                file = new File("src\\main\\resources\\Static\\ItemsLogo\\lightning charm.jpg");
+                file = new File("src\\main\\resources\\Static\\ItemsLogo\\Lightning charm.jpg");
+                break;
+            case "none charm":
+                file = new File("src\\main\\resources\\Static\\ItemsLogo\\None charm.jpg");
                 break;
             case "axe":
                 file = new File("src\\main\\resources\\Static\\ItemsLogo\\Axe.jpg");
@@ -170,10 +173,10 @@ public class LogoController {
                 file = new File("src\\main\\resources\\Static\\ItemsLogo\\Boots.jpg");
                 break;
             case "stiletto":
-                file = new File("src\\main\\resources\\Static\\ItemsLogo\\stiletto.jpg");
+                file = new File("src\\main\\resources\\Static\\ItemsLogo\\Stiletto.png");
                 break;
             case "dragon shield":
-                file = new File("src\\main\\resources\\Static\\ItemsLogo\\Dragon shield.jpg");
+                file = new File("src\\main\\resources\\Static\\ItemsLogo\\Dragon shield.png");
                 break;
             case "silver armor":
                 file = new File("src\\main\\resources\\Static\\ItemsLogo\\Silver armor.jpg");
@@ -197,7 +200,7 @@ public class LogoController {
                 file = new File("src\\main\\resources\\Static\\ItemsLogo\\Steel pants.jpg");
                 break;
             case "steel sword":
-                file = new File("src\\main\\resources\\Static\\ItemsLogo\\Steel sword.jpg");
+                file = new File("src\\main\\resources\\Static\\ItemsLogo\\Steel sword.png");
                 break;
             case "wooden armor":
                 file = new File("src\\main\\resources\\Static\\ItemsLogo\\Wooden armor.jpg");
