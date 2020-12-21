@@ -176,7 +176,7 @@ public class LogoController {
                 file = new File("src\\main\\resources\\Static\\ItemsLogo\\Stiletto.png");
                 break;
             case "dragon shield":
-                file = new File("src\\main\\resources\\Static\\ItemsLogo\\Dragon shield.jpg");
+                file = new File("src\\main\\resources\\Static\\ItemsLogo\\Dragon shield.png");
                 break;
             case "silver armor":
                 file = new File("src\\main\\resources\\Static\\ItemsLogo\\Silver armor.jpg");
@@ -200,7 +200,7 @@ public class LogoController {
                 file = new File("src\\main\\resources\\Static\\ItemsLogo\\Steel pants.jpg");
                 break;
             case "steel sword":
-                file = new File("src\\main\\resources\\Static\\ItemsLogo\\Steel sword.jpg");
+                file = new File("src\\main\\resources\\Static\\ItemsLogo\\Steel sword.png");
                 break;
             case "wooden armor":
                 file = new File("src\\main\\resources\\Static\\ItemsLogo\\Wooden armor.jpg");

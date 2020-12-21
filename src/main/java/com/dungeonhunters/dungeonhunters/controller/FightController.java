@@ -4,13 +4,20 @@ package com.dungeonhunters.dungeonhunters.controller;
 import com.dungeonhunters.dungeonhunters.dto.Fight;
 import com.dungeonhunters.dungeonhunters.model.Card;
 import com.dungeonhunters.dungeonhunters.model.Player;
+import com.dungeonhunters.dungeonhunters.service.CardService;
 import com.dungeonhunters.dungeonhunters.service.DeckService;
 import com.dungeonhunters.dungeonhunters.service.EnemyService;
+import com.dungeonhunters.dungeonhunters.service.PlayerService;
 import org.springframework.data.jpa.repository.query.Jpa21Utils;
 import org.springframework.stereotype.Controller;
 
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Map;
@@ -22,6 +29,7 @@ public class FightController extends JFrame {
     public GameController gameController;
     public final EnemyService enemyService;
     private final DeckService deckService;
+    private final CardService cardService;
     public final Fight fight;
     public int selected = 1;
     public JPanel mainPanel;
@@ -32,9 +40,10 @@ public class FightController extends JFrame {
     public JPanel logPanel;
     public JPanel turnPanel;
 
-    FightController(EnemyService enemyService, DeckService deckService, Fight fight) {
+    FightController(EnemyService enemyService, DeckService deckService, Fight fight, CardService cardService) {
         this.enemyService = enemyService;
         this.deckService = deckService;
+        this.cardService = cardService;
         this.fight = fight;
     }
 
@@ -66,10 +75,56 @@ public class FightController extends JFrame {
         buildCardPanel();
     }
 
+
+
     private void buildCardPanel() {
+        List<Card> cardList = new ArrayList<>();
+        cardList.add(cardService.getCardById(1l));
+        cardList.add(cardService.getCardById(2l));
+        System.out.println(cardList);
         JLabel cardLabel = new JLabel("karty here");
-        cardPanel.setBackground(Color.white);
-        cardPanel.add(cardLabel);
+
+        BufferedImage buttonCardIcon = null;
+        try {
+            buttonCardIcon = ImageIO.read(new File("src\\main\\resources\\Static\\CardFight\\AttackCard.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("nie znaleziono ");
+        }
+
+        for (Card c : cardList){
+            System.out.println(c.getName());
+            JButton cardButton = new JButton(new ImageIcon(buttonCardIcon));
+            cardButton.setSize(new Dimension(200,100));
+            cardButton.setForeground(Color.BLACK);
+            cardButton.setText(c.getName());
+            cardButton.setHorizontalTextPosition(cardLabel.CENTER);
+            cardButton.setVerticalTextPosition(cardLabel.BOTTOM);
+
+            cardButton.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    cardButton.setForeground(Color.BLUE);
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    cardButton.setForeground(Color.BLACK);
+                }
+            });
+            cardButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println("dealt fchui damage");
+                    cardButton.removeAll();
+                }
+            });
+            cardButton.setContentAreaFilled(false);
+            cardPanel.setBackground(Color.white);
+            cardPanel.add(cardLabel);
+            cardPanel.add(cardButton);
+        }
+
     }
 
     private void buildActionPanel() {
@@ -111,7 +166,7 @@ public class FightController extends JFrame {
 
         JPanel stats = new JPanel(new FlowLayout(FlowLayout.LEFT,25,5));
         JLabel playerName = new JLabel(fight.player.getName());
-        JLabel playerHp = new JLabel("Life " + fight.player.getCurrentHp() + "/" + fight.player.getHp());
+        JLabel playerHp = new JLabel("HP " + fight.player.getCurrentHp() + "/" + fight.player.getHp());
         JLabel playerDmg = new JLabel("Attack damage: " + fight.player.getDmg());
         JLabel playerDef = new JLabel("Defense: " + fight.player.getDef());
 
@@ -172,7 +227,7 @@ public class FightController extends JFrame {
 
         JPanel stats = new JPanel(new FlowLayout(FlowLayout.LEFT,25,5));
         JLabel enemyName = new JLabel(fight.enemy.getName(),SwingConstants.RIGHT);
-        JLabel enemyHp = new JLabel("Life " + fight.enemy.getHp() + "/" + fight.getEnemyMaxHp(),SwingConstants.RIGHT);
+        JLabel enemyHp = new JLabel("HP " + fight.enemy.getHp() + "/" + fight.getEnemyMaxHp(),SwingConstants.RIGHT);
         JLabel enemyDmg = new JLabel("Attack damage: " + fight.enemy.getDmg(),SwingConstants.RIGHT);
         JLabel enemyDef = new JLabel("Defense: " + fight.enemy.getDefense(),SwingConstants.RIGHT);
 
