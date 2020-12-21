@@ -72,7 +72,7 @@ public class LogoController {
                 file = new File("src\\main\\resources\\Static\\EnemyLogo\\Malfoj.png");
                 break;
             case "Najman":
-                file = new File("src\\main\\resources\\Static\\EnemyLogo\\Najman.png");
+                file = new File("src\\main\\resources\\Static\\EnemyLogo\\Najman2.png");
                 break;
             case "Orshabaal":
                 file = new File("src\\main\\resources\\Static\\EnemyLogo\\Orshabaal.png");
@@ -100,6 +100,7 @@ public class LogoController {
             image = ImageIO.read(file);
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.println(enemyName);
         }
         JLabel label = new JLabel(new ImageIcon(image));
         return label;
@@ -138,6 +139,7 @@ public class LogoController {
             image = ImageIO.read(file);
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.println(cardType);
         }
         JLabel label = new JLabel(new ImageIcon(image));
         return label;
@@ -223,6 +225,7 @@ public class LogoController {
             image = ImageIO.read(file);
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.println(logoName);
         }
         JLabel label = new JLabel(new ImageIcon(image));
         return label;

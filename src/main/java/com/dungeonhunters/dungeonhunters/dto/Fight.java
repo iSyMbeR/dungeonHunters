@@ -272,7 +272,7 @@ public class Fight {
             playerService.addPlayer(player);
             //inventoryService.updateItemsSetList(player.getInventory().getId(), player.getInventory().getItemList());
             inventoryService.addInventory(player.getInventory());
-            equippedItems.put(item.getItemBase().getName(), ItemEquipType.NIE);
+            equippedItems.put(item.getItemBase().getName(), ItemEquipType.UNEQUIPPED);
             return "You have received " + item.getItemBase().getName();
         }
 

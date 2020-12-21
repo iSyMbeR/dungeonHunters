@@ -85,22 +85,23 @@ public class FightController extends JFrame {
         JLabel cardLabel = new JLabel("karty here");
 
         BufferedImage buttonCardIcon = null;
-        try {
-            buttonCardIcon = ImageIO.read(new File("src\\main\\resources\\Static\\CardFight\\AttackCard.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("nie znaleziono ");
-        }
+
 
         for (Card c : cardList){
-            System.out.println(c.getName());
+
+            //wczytywanie icon
+            try {
+                buttonCardIcon = ImageIO.read(new File("src\\main\\resources\\Static\\CardFight\\"+ c.getType()+".png"));
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("nie znaleziono" + c.getName());
+            }
             JButton cardButton = new JButton(new ImageIcon(buttonCardIcon));
             cardButton.setSize(new Dimension(200,100));
             cardButton.setForeground(Color.BLACK);
             cardButton.setText(c.getName());
             cardButton.setHorizontalTextPosition(cardLabel.CENTER);
-            cardButton.setVerticalTextPosition(cardLabel.BOTTOM);
-
+            cardButton.setVerticalTextPosition(cardLabel.TOP);
             cardButton.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseEntered(MouseEvent e) {
@@ -109,14 +110,13 @@ public class FightController extends JFrame {
 
                 @Override
                 public void mouseExited(MouseEvent e) {
-                    cardButton.setForeground(Color.BLACK);
+                    cardButton.setForeground(Color.WHITE);
                 }
             });
             cardButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    System.out.println("dealt fchui damage");
-                    cardButton.removeAll();
+                    System.out.println(e.getActionCommand());
                 }
             });
             cardButton.setContentAreaFilled(false);
