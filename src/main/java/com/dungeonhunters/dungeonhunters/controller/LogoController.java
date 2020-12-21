@@ -67,6 +67,9 @@ public class LogoController {
             case "Crystal":
                 file = new File("src\\main\\resources\\Static\\CardImages\\Crystal.png");
                 break;
+            case "Gold":
+                file = new File("src\\main\\resources\\Static\\CardImages\\Gold.png");
+                break;
             default:
                 System.out.println("Logo not found");
         }

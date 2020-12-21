@@ -21,6 +21,7 @@ import java.util.List;
 
 import static com.dungeonhunters.dungeonhunters.controller.LogoController.getLogoItem;
 import static com.dungeonhunters.dungeonhunters.controller.MusicController.getMusic;
+import static org.springframework.boot.ansi.AnsiColor.CYAN;
 
 @Controller
 
@@ -31,8 +32,6 @@ public class ProfileController extends JFrame {
     public Player player;
     public static Map<String, ItemEquipType> equippedItems = new HashMap<>();
     private boolean equipped = false;
-    private String tabNames[];
-    private int tabDmg[];
     private int activeItems;
     public int selected = 1;
     private final Shop shop;
@@ -127,31 +126,50 @@ public class ProfileController extends JFrame {
         //infoPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK,3));
         JLabel name = new JLabel(player.getName());
         JLabel exp = new JLabel("Exp: " + player.getExperience());
+        exp.setForeground(Color.DARK_GRAY);
         JLabel stage = new JLabel("Stage: " + player.getStage());
-        JLabel hp = new JLabel("HP: " + player.getCurrentHp() + "/" + player.getHp());
+        stage.setForeground(Color.black);
+        //JLabel hp = new JLabel("HP: " + player.getCurrentHp() + "/" + player.getHp());
         JLabel gold = new JLabel("GOLD: " + player.getGold());
+        gold.setForeground(Color.ORANGE);
         JLabel dmg = new JLabel("DMG: " + player.getDmg());
+        dmg.setForeground(Color.RED);
         JLabel def = new JLabel("DEF: " + player.getDef());
+        def.setForeground(Color.BLUE);
         infoPanel.add(name);
         infoPanel.add(exp);
         infoPanel.add(stage);
-        infoPanel.add(hp);
+        //infoPanel.add(hp);
         infoPanel.add(gold);
         infoPanel.add(dmg);
         infoPanel.add(def);
 
         //statistic panel
         JPanel statisticPanel = new JPanel();
+        statisticPanel.setLayout(new FlowLayout());
         statisticPanel.setPreferredSize(new Dimension(400, 200));
+        int bonusDmg = player.getDmg() - playerService.getPlayerById(player.getId()).getDmg();
+
         JLabel sl = new JLabel("Statistic panel here");
+        JLabel eqquipedItems = new JLabel("Eqquiped: " + activeItems + " items (+" + bonusDmg + " dmg)");
+        eqquipedItems.setForeground(Color.RED);
+        statisticPanel.add(eqquipedItems);
         statisticPanel.add(sl);
         //statisticPanel.setBorder(BorderFactory.createLineBorder(Color.GREEN,3));
 
         //player panel
         JPanel playerPanel = new JPanel();
+        playerPanel.setLayout(new FlowLayout());
         playerPanel.setPreferredSize(new Dimension(400, 200));
         JLabel pl = new JLabel("Player panel here");
+        JLabel playerIcon = LogoController.getLogoPlayer(player.getLogo());
+        JLabel playerHp = new JLabel(String.valueOf(player.getHp()) + " HP");
+        playerIcon.setPreferredSize(new Dimension(200,200));
         playerPanel.add(pl);
+        playerPanel.add(playerIcon);
+        playerPanel.add(playerHp);
+
+
         //playerPanel.setBorder(BorderFactory.createLineBorder(Color.YELLOW,3));
 
         topPanel.add(playerPanel);
@@ -205,7 +223,8 @@ public class ProfileController extends JFrame {
             JPanel itemContainer = new JPanel();
             JLabel itemName = new JLabel(c.getName());
             JLabel itemDescription = new JLabel(c.getDescription());
-            JLabel itemCost = new JLabel(c.getPrice() + " gold");
+            JLabel goldIcon = LogoController.getLogoCard("Gold");
+            JLabel itemCost = new JLabel(String.valueOf(c.getPrice()));
             JButton buyButton = new JButton("Buy");
             buyButton.addActionListener(new ActionListener() {
                 @Override
@@ -217,6 +236,7 @@ public class ProfileController extends JFrame {
             itemContainer.add(itemIcon);
             itemContainer.add(itemName);
             itemContainer.add(itemDescription);
+            itemContainer.add(goldIcon);
             itemContainer.add(itemCost);
             itemContainer.add(buyButton);
             styleItemShopEntry(itemContainer);
@@ -252,8 +272,9 @@ public class ProfileController extends JFrame {
         itemName.setPreferredSize(new Dimension(300, 100));
         JLabel itemDescription = (JLabel) itemContainer.getComponent(2);
         itemDescription.setPreferredSize(new Dimension(300, 100));
-        itemContainer.getComponent(3).setPreferredSize(new Dimension(200, 100));
-        JButton buyButton = (JButton) itemContainer.getComponent(4);
+        itemContainer.getComponent(3).setPreferredSize(new Dimension(40, 100));
+        itemContainer.getComponent(4).setPreferredSize(new Dimension(160, 100));
+        JButton buyButton = (JButton) itemContainer.getComponent(5);
         buyButton.setPreferredSize(new Dimension(90, 50));
         buyButton.setBorder(BorderFactory.createEmptyBorder(25, 0, 25, 0));
         buyButton.setFocusPainted(false);
@@ -326,7 +347,7 @@ public class ProfileController extends JFrame {
 
     private void createDeckView(JPanel panel) {
         panel.removeAll();
-        JLabel deckName = new JLabel("Cards Deck");
+        JLabel deckName = new JLabel("Deck");
 
         deckName.setPreferredSize(new Dimension(850, 40));
         deckName.setFont(new Font("Arial", Font.BOLD, 20));
