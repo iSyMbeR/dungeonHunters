@@ -73,4 +73,13 @@ public class Shop {
 //            }
         }
     }
+
+    public boolean buyRefreshItems(Player player) {
+        if(player.getGold()>=2){
+            player.setGold(player.getGold() - 2);
+            playerService.addPlayer(player);
+            return true;
+        }
+        return false;
+    }
 }
