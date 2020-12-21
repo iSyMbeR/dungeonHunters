@@ -15,25 +15,85 @@ public class LogoController {
 
         switch (logoName){
             case "Ork":
-                file = new File("src\\main\\resources\\Static\\PlayerLogo\\Ork.jpg");
+                file = new File("src\\main\\resources\\Static\\PlayerLogo\\Ork.png");
                 break;
             case "Troll":
-                file = new File("src\\main\\resources\\Static\\PlayerLogo\\Troll.jpg");
+                file = new File("src\\main\\resources\\Static\\PlayerLogo\\Troll.png");
                 break;
             case "Elf":
-                file = new File("src\\main\\resources\\Static\\PlayerLogo\\Elf.jpg");
+                file = new File("src\\main\\resources\\Static\\PlayerLogo\\Elf.png");
                 break;
             case "Grabarz":
-                file = new File("src\\main\\resources\\Static\\PlayerLogo\\Grabarz.jpg");
+                file = new File("src\\main\\resources\\Static\\PlayerLogo\\Grabarz.png");
                 break;
             case "Smok":
-                file = new File("src\\main\\resources\\Static\\PlayerLogo\\Smok.jpg");
+                file = new File("src\\main\\resources\\Static\\PlayerLogo\\Smok.png");
                 break;
             case "Czlowiek":
-                file = new File("src\\main\\resources\\Static\\PlayerLogo\\Czlowiek.jpg");
+                file = new File("src\\main\\resources\\Static\\PlayerLogo\\Czlowiek.png");
                 break;
             default:
                 System.out.println("Logo not found");
+        }
+        BufferedImage image = null;
+        try {
+            image = ImageIO.read(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        JLabel label = new JLabel(new ImageIcon(image));
+        return label;
+    }
+
+    public static JLabel getLogoEnemy(String enemyName){
+
+        File file = null;
+
+        switch (enemyName){
+            case "Cieslak":
+                file = new File("src\\main\\resources\\Static\\EnemyLogo\\Cieslak.png");
+                break;
+            case "Demon":
+                file = new File("src\\main\\resources\\Static\\EnemyLogo\\Demon.png");
+                break;
+            case "Golf III gaz":
+                file = new File("src\\main\\resources\\Static\\EnemyLogo\\Golf III gaz.png");
+                break;
+            case "Gryf":
+                file = new File("src\\main\\resources\\Static\\EnemyLogo\\Gryf.png");
+                break;
+            case "Hagrid":
+                file = new File("src\\main\\resources\\Static\\EnemyLogo\\Hagrid.png");
+                break;
+            case "Korwin Klejn":
+                file = new File("src\\main\\resources\\Static\\EnemyLogo\\Korwin Klejn.png");
+                break;
+            case "Malfoj":
+                file = new File("src\\main\\resources\\Static\\EnemyLogo\\Malfoj.png");
+                break;
+            case "Najman":
+                file = new File("src\\main\\resources\\Static\\EnemyLogo\\Najman.png");
+                break;
+            case "Orshabaal":
+                file = new File("src\\main\\resources\\Static\\EnemyLogo\\Orshabaal.png");
+                break;
+            case "Passat 1.8 tdi":
+                file = new File("src\\main\\resources\\Static\\EnemyLogo\\Passat 1.8 tdi.png");
+                break;
+            case "Ron":
+                file = new File("src\\main\\resources\\Static\\EnemyLogo\\Ron.png");
+                break;
+            case "Rudy":
+                file = new File("src\\main\\resources\\Static\\EnemyLogo\\Rudy.png");
+                break;
+            case "Stonoga":
+                file = new File("src\\main\\resources\\Static\\EnemyLogo\\Stonoga.png");
+                break;
+            case "Zgredek":
+                file = new File("src\\main\\resources\\Static\\EnemyLogo\\Zgredek.png");
+                break;
+            default:
+                System.out.println(enemyName + " logo not found");
         }
         BufferedImage image = null;
         try {

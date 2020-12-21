@@ -30,9 +30,12 @@ public class MenuController extends JFrame {
         panel.setLayout(new FlowLayout());
         panel.setAlignmentY(Component.CENTER_ALIGNMENT);
         JPanel menu = new JPanel();
+        JScrollPane scrollable = new JScrollPane(menu, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollable.setPreferredSize(new Dimension(200, 600));
+        scrollable.getVerticalScrollBar().setUnitIncrement(16);
         List<Player> players = playerService.getPlayers();
         menu.setLayout(new FlowLayout());
-        menu.setPreferredSize(new Dimension(200, 600));
+        menu.setPreferredSize(new Dimension(200, playerService.getSize() * 46 + 30));
         JButton b = new JButton("Stwórz nową postać");
         b.addActionListener(new ActionListener() {
             @Override
@@ -55,7 +58,8 @@ public class MenuController extends JFrame {
             setButtonStyle(b, Color.white);
             menu.add(b);
         }
-        panel.add(menu);
+        panel.add(scrollable);
+
         gameController.setMainContent(panel);
     }
 
