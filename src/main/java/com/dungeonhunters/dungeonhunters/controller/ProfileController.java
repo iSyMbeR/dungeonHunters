@@ -50,7 +50,7 @@ public class ProfileController extends JFrame {
     public void createView() {
         if (!equipped) {
             for (Item c : player.getInventory().getItemList()) {
-                equippedItems.put(c.getItemBase().getName(), ItemEquipType.NIE);
+                equippedItems.put(c.getItemBase().getName(), ItemEquipType.UNEQUIPPED);
             }
             equipped = true;
         }
@@ -313,7 +313,7 @@ public class ProfileController extends JFrame {
         JLabel itemDescription = (JLabel) itemContainer.getComponent(2);
         itemDescription.setPreferredSize(new Dimension(300, 100));
         JButton buyButton = (JButton) itemContainer.getComponent(3);
-        buyButton.setPreferredSize(new Dimension(60, 50));
+        buyButton.setPreferredSize(new Dimension(150, 50));
         buyButton.setBorder(BorderFactory.createEmptyBorder(25, 0, 25, 0));
         buyButton.setFocusPainted(false);
         buyButton.setFont(new Font("Arial", Font.BOLD, 20));
@@ -396,9 +396,9 @@ public class ProfileController extends JFrame {
                 styleCardDeckEntry(itemContainer);
                 panel.add(itemContainer);
             }
-            panel.revalidate();
-            panel.repaint();
         }
+        panel.revalidate();
+        panel.repaint();
     }
 
     private void createShopView() {
@@ -485,13 +485,13 @@ public class ProfileController extends JFrame {
                 equipButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        if (e.getActionCommand().equals("NIE")) {
-                            if (activeItems <= 3) {
+                        if (e.getActionCommand().equals("UNEQUIPPED")) {
+                            if (activeItems < 4) {
                                 player.setDmg(player.getDmg() + c.getItemBase().getDmg());
-                                equippedItems.replace(itemName.getText(), ItemEquipType.TAK);
+                                equippedItems.replace(itemName.getText(), ItemEquipType.EQUIPPED);
                                 activeItems++;
                                 System.out.println(activeItems);
-                                equipButton.setText("TAK");
+                                equipButton.setText("EQUIPPED");
                                 equipButton.setBackground(Color.LIGHT_GRAY);
 
                             }
@@ -499,8 +499,8 @@ public class ProfileController extends JFrame {
                             player.setDmg(player.getDmg() - c.getItemBase().getDmg());
                             activeItems--;
                             System.out.println(activeItems);
-                            equippedItems.replace(itemName.getText(), ItemEquipType.NIE);
-                            equipButton.setText("NIE");
+                            equippedItems.replace(itemName.getText(), ItemEquipType.UNEQUIPPED);
+                            equipButton.setText("UNEQUIPPED");
                             equipButton.setBackground(Color.GRAY);
                         }
                     }
