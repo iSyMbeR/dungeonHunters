@@ -106,15 +106,15 @@ public class FightController extends JFrame {
         cardPanel.setLayout(new FlowLayout(FlowLayout.CENTER,25,25));
         List<Card> cardList = deckService.getDeckById(fight.player.getDeck().getId()).getCardSet();
         int cardCount = cardList.size();
-        int height = 0;
+        int height = 25;
         while(cardCount>0){
             cardCount-=4;
-            height+=260;
+            height+=235;
         }
         cardPanel.setPreferredSize(new Dimension(800,height));
         for(Card c : cardList){
             JPanel singleCard = new JPanel(new FlowLayout(FlowLayout.CENTER,0,0));
-            singleCard.setPreferredSize(new Dimension(164,209));
+            singleCard.setPreferredSize(new Dimension(164,210));
             singleCard.setBorder(BorderFactory.createLineBorder(Color.BLACK,2));
             singleCard.setBackground(Color.white);
 
@@ -300,11 +300,11 @@ public class FightController extends JFrame {
         scrollableCards.setPreferredSize(new Dimension(800, 400));
         scrollableCards.setBorder(null);
         scrollableCards.getVerticalScrollBar().setUnitIncrement(16);
-        logPanel.setPreferredSize(new Dimension(300,400));
+        logPanel.setPreferredSize(new Dimension(298,398));
         logPanel.setLayout(new FlowLayout(FlowLayout.LEFT,0,2));
         JScrollPane scrollableLogs = new JScrollPane(logPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollableLogs.setPreferredSize(new Dimension(300, 400));
-        scrollableLogs.setBorder(null);
+        scrollableLogs.setBorder(BorderFactory.createLineBorder(Color.GRAY,1));
         scrollableLogs.getVerticalScrollBar().setUnitIncrement(16);
         mainPanel.add(turnPanel);
         mainPanel.add(playerPanel);
