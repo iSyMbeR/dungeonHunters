@@ -176,6 +176,12 @@ public class LogoController {
             case "amulet charm":
                 file = new File("src\\main\\resources\\Static\\ItemsLogo\\Amulet charm.jpg");
                 break;
+            case "goldcoin":
+                file = new File("src\\main\\resources\\Static\\ItemsLogo\\GoldCoin.png");
+                break;
+            case "xp":
+                file = new File("src\\main\\resources\\Static\\ItemsLogo\\Xp.png");
+                break;
             case "lightning charm":
                 file = new File("src\\main\\resources\\Static\\ItemsLogo\\Lightning charm.jpg");
                 break;

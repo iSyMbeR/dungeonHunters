@@ -409,16 +409,15 @@ public class FightController extends JFrame {
         JPanel lootScreen = new JPanel();
         lootScreen.setLayout(new FlowLayout(FlowLayout.CENTER,100,0));
         JPanel lootContainer = new JPanel(new FlowLayout(FlowLayout.CENTER,100,50));
-        for(String lootName : fight.loot){
+        for(Map.Entry<String,Integer> entry: fight.loot.entrySet()){
             JPanel lootItem = new JPanel();
-            lootItem.setLayout(new BoxLayout(lootItem,BoxLayout.Y_AXIS));
-            lootItem.setPreferredSize(new Dimension(104,154));
-            lootItem.setBorder(BorderFactory.createLineBorder(Color.black,2));
-            // JLabel lootItemIcon = LogoController.getLogoItem(lootName);
-             JLabel lootItemIcon = new JLabel("lael");
-            lootItemIcon.setPreferredSize(new Dimension(100,100));
-            JLabel lootItemLabel = new JLabel(lootName);
-            lootItemLabel.setPreferredSize(new Dimension(100,50));
+            lootItem.setLayout(new FlowLayout(FlowLayout.CENTER,0,0));
+            lootItem.setPreferredSize(new Dimension(120,150));
+//            lootItem.setBorder(BorderFactory.createLineBorder(Color.black,2));
+            JLabel lootItemIcon = LogoController.getLogoItem(entry.getKey());
+            lootItemIcon.setPreferredSize(new Dimension(120,100));
+            JLabel lootItemLabel = new JLabel(entry.getKey()+" x"+entry.getValue(),SwingConstants.CENTER);
+            lootItemLabel.setPreferredSize(new Dimension(120,50));
             lootItem.add(lootItemIcon);
             lootItem.add(lootItemLabel);
             lootContainer.add(lootItem);
