@@ -8,5 +8,6 @@ public enum CardType {
     Miss,
     Block,
     Sleep,
-    ReducedDmg;
+    ReducedDmg,
+    Health;
 }
