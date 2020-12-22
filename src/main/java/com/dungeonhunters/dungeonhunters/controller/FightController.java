@@ -101,7 +101,66 @@ public class FightController extends JFrame {
         b.setBorder(null);
         b.setFocusPainted(false);
     }
+    private void buildCardPanel(){
+        cardPanel.removeAll();
+        cardPanel.setLayout(new FlowLayout(FlowLayout.CENTER,25,25));
+        List<Card> cardList = deckService.getDeckById(fight.player.getDeck().getId()).getCardSet();
+        int cardCount = cardList.size();
+        int height = 0;
+        while(cardCount>0){
+            cardCount-=4;
+            height+=260;
+        }
+        cardPanel.setPreferredSize(new Dimension(800,height));
+        for(Card c : cardList){
+            JPanel singleCard = new JPanel(new FlowLayout(FlowLayout.CENTER,0,0));
+            singleCard.setPreferredSize(new Dimension(164,209));
+            singleCard.setBorder(BorderFactory.createLineBorder(Color.BLACK,2));
+            singleCard.setBackground(Color.white);
 
+            JPanel costPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT,0,0));
+            costPanel.setBackground(null);
+            costPanel.setPreferredSize(new Dimension(160,20));
+
+            for(int i=0;i<c.getCost();i++){
+                JLabel crystal = LogoController.getLogoCard("Crystal-small");
+                crystal.setPreferredSize(new Dimension(20,20));
+                costPanel.add(crystal);
+            }
+            singleCard.add(costPanel);
+
+            JLabel cardName = new JLabel(c.getName(),SwingConstants.CENTER);
+            cardName.setPreferredSize(new Dimension(160,20));
+            cardName.setFont(new Font("Arial", Font.BOLD,12));
+
+            JLabel cardImage = LogoController.getLogoCard(c.getType().toString());
+            cardImage.setPreferredSize(new Dimension(160,100));
+
+            JLabel effect = new JLabel(c.getValue() + " " + c.getType().toString(), SwingConstants.CENTER);
+            effect.setPreferredSize(new Dimension(160,20));
+
+            JButton useButton = new JButton("Use");
+            useButton.setPreferredSize(new Dimension(80,40));
+            useButton.setAlignmentX(SwingConstants.CENTER);
+            useButton.setFont(new Font("Arial",Font.BOLD,20));
+            useButton.setBorder(null);
+            useButton.setBackground(Color.blue);
+            useButton.setForeground(Color.white);
+            useButton.setFocusPainted(false);
+            useButton.addActionListener(e -> {
+                useCard(c);
+            });
+
+            singleCard.add(costPanel);
+            singleCard.add(cardName);
+            singleCard.add(cardImage);
+            singleCard.add(effect);
+            singleCard.add(useButton);
+            cardPanel.add(singleCard);
+        }
+        cardPanel.revalidate();
+        cardPanel.repaint();
+    }
     private void buildPlayerPanel() {
         playerPanel.removeAll();
         playerPanel.setBackground(Color.lightGray);
