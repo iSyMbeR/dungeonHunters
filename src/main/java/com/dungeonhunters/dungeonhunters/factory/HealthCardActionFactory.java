@@ -16,7 +16,11 @@ public class HealthCardActionFactory implements AbstractCardActionFactory {
                     Enemy enemy,
                     Map<Card, Integer> playerStatus,
                     Map<Card, Integer> enemyStatus) {
-        enemyStatus.put(card, card.getValue());
+        if (player.getCurrentHp() + card.getValue() >= player.getHp()) {
+            player.setCurrentHp(player.getHp());
+        }else {
+            player.setCurrentHp(player.getCurrentHp() + card.getValue());
+        }
     }
 
     @Override

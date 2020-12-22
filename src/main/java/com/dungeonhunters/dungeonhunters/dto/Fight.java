@@ -29,7 +29,7 @@ public class Fight {
     public int enemyMaxHp = 0;
     public CardActionStrategyFactory cardActionFactory;
     public List<String> loot = new ArrayList<>();
-    public boolean playerBlocked, miss, reducedDmg, sleep, health;
+    public boolean playerBlocked, miss, reducedDmg, sleep;
     public final EnemyService enemyService;
     public final PlayerService playerService;
     public final BonusService bonusService;
@@ -183,7 +183,6 @@ public class Fight {
     public void refreshStatus() {
         for (Map.Entry<Card, Integer> entry : playerStatus.entrySet()) {
             if (entry.getKey().getType() == CardType.Block) playerBlocked = true;
-            if (entry.getKey().getType() == CardType.Health) health = true;
         }
         for (Map.Entry<Card, Integer> entry : enemyStatus.entrySet()) {
             if (entry.getKey().getType() == CardType.Miss) miss = true;
@@ -228,7 +227,6 @@ public class Fight {
         enemyStatus = new HashMap<>();
         playerBlocked = false;
         miss = false;
-        health = false;
         reducedDmg = false;
         sleep = false;
     }

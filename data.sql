@@ -124,6 +124,8 @@ insert into CARD (ID,name,description, type, cost, value)
 values (21,'Kobiecy liść','Gdzie te rece wkladadasz', 'Sleep', 2, 4);
 insert into CARD (ID,name,description, type, cost, value)
 values (22,'Śpiew Stonogi','ZIOBRO TY .....', 'Attack', 2, 50);
+insert into CARD (ID,name,description, type, cost, value)
+values (23,'Bimberek','Trzea sie odkaźić', 'Attack', 1, 50);
 
 
 
