@@ -31,14 +31,15 @@ public class ProfileController extends JFrame {
     public final PlayerService playerService;
     public GameController gameController;
     public Player player;
-    public static Map<Item,ItemEquipType> inventoryItems = new HashMap<>();
-    private boolean equipped = false;
+    public Map<Item,ItemEquipType> inventoryItems;
     private int activeItems=0;
     public int selected = 1;
+    public int additionalDmg;
     private final Shop shop;
     private final DeckService deckService;
     private final ItemBaseService itemBaseService;
     public JPanel infoPanel, playerPanel,statisticPanel,selectPanel;
+
 
 
     ProfileController(ItemBaseService itemBaseService, DeckService deckService, Shop shop, PlayerService playerService) {
@@ -46,16 +47,25 @@ public class ProfileController extends JFrame {
         this.playerService = playerService;
         this.itemBaseService = itemBaseService;
         this.shop = shop;
+        this.inventoryItems = new HashMap<>();
     }
 
     public void createView() {
-        if (!equipped) {
-            System.out.println("lista itemów odswieżona");
-            for (Item c : player.getInventory().getItemList()) {
-                inventoryItems.put(c,ItemEquipType.UNEQUIPPED);
+
+        boolean contains=false;
+        for (Item c : player.getInventory().getItemList()) {
+            for(Map.Entry<Item,ItemEquipType> entry : inventoryItems.entrySet()){
+                if (entry.getKey().getId().equals(c.getId())) {
+                    contains = true;
+                    break;
+                }
             }
-            equipped = true;
+            if(!contains)inventoryItems.put(c, ItemEquipType.UNEQUIPPED);
+            contains=false;
         }
+        System.out.println(player.getInventory().getItemList().size());
+        System.out.println(inventoryItems.size());
+
         panel = new JPanel();
         panel.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
         JPanel topPanel = new JPanel();
@@ -452,7 +462,7 @@ public class ProfileController extends JFrame {
         inventoryName.setPreferredSize(new Dimension(850, 40));
         inventoryName.setFont(new Font("Arial", Font.BOLD, 20));
         panel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
-        Set<Item> playerInventoryItemsList = player.getInventory().getItemList();
+        Set<Item> playerInventoryItemsList = inventoryItems.keySet();
         panel.setPreferredSize(new Dimension(1000, (playerInventoryItemsList.size() * 105) + 50));
         panel.add(inventoryName);
         if (playerInventoryItemsList.isEmpty()) {
@@ -460,7 +470,6 @@ public class ProfileController extends JFrame {
         } else {
 
             for (Item c : playerInventoryItemsList) {
-
                 JLabel itemIcon = getLogoItem(c.getItemBase().getName());
                 JPanel itemContainer = new JPanel();
                 JLabel itemName = new JLabel(c.getItemBase().getName());
@@ -489,6 +498,7 @@ public class ProfileController extends JFrame {
                             player.setDmg(player.getDmg() + c.getItemBase().getDmg());
                             inventoryItems.replace(c,ItemEquipType.EQUIPPED);
                             activeItems++;
+                            additionalDmg+=c.getItemBase().getDmg();
                             equipButton.setText(ItemEquipType.EQUIPPED.toString());
                             createStatisticPanel();
                             createInfoPanel();
@@ -500,6 +510,7 @@ public class ProfileController extends JFrame {
                         activeItems--;
                         inventoryItems.replace(c,ItemEquipType.UNEQUIPPED);
                         equipButton.setText(ItemEquipType.UNEQUIPPED.toString());
+                        additionalDmg-=c.getItemBase().getDmg();
                         createStatisticPanel();
                         createInfoPanel();
                         createPlayerInventoryView(panel);
