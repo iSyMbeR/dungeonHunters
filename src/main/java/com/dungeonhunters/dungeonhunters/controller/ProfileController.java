@@ -51,12 +51,20 @@ public class ProfileController extends JFrame {
 
     public void createView() {
 
+        boolean contains=false;
         for (Item c : player.getInventory().getItemList()) {
-            inventoryItems.putIfAbsent(c, ItemEquipType.UNEQUIPPED);
+            for(Map.Entry<Item,ItemEquipType> entry : inventoryItems.entrySet()){
+                if (entry.getKey().getId().equals(c.getId())) {
+                    contains = true;
+                    break;
+                }
+            }
+            if(!contains)inventoryItems.put(c, ItemEquipType.UNEQUIPPED);
+            contains=false;
         }
-        for(Map.Entry<Item,ItemEquipType> entry : inventoryItems.entrySet()){
-            System.out.println(entry.getValue());
-        }
+        System.out.println(player.getInventory().getItemList().size());
+        System.out.println(inventoryItems.size());
+
         panel = new JPanel();
         panel.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
         JPanel topPanel = new JPanel();
@@ -453,7 +461,7 @@ public class ProfileController extends JFrame {
         inventoryName.setPreferredSize(new Dimension(850, 40));
         inventoryName.setFont(new Font("Arial", Font.BOLD, 20));
         panel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
-        Set<Item> playerInventoryItemsList = player.getInventory().getItemList();
+        Set<Item> playerInventoryItemsList = inventoryItems.keySet();
         panel.setPreferredSize(new Dimension(1000, (playerInventoryItemsList.size() * 105) + 50));
         panel.add(inventoryName);
         if (playerInventoryItemsList.isEmpty()) {
