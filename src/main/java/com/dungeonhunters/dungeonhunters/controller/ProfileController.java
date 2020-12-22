@@ -6,6 +6,7 @@ import com.dungeonhunters.dungeonhunters.dto.Shop;
 import com.dungeonhunters.dungeonhunters.dto.ShopItemDto;
 import com.dungeonhunters.dungeonhunters.model.*;
 import com.dungeonhunters.dungeonhunters.service.*;
+import org.springframework.data.jpa.repository.query.Jpa21Utils;
 import org.springframework.stereotype.Controller;
 
 
@@ -62,8 +63,6 @@ public class ProfileController extends JFrame {
             if(!contains)inventoryItems.put(c, ItemEquipType.UNEQUIPPED);
             contains=false;
         }
-        System.out.println(player.getInventory().getItemList().size());
-        System.out.println(inventoryItems.size());
 
         panel = new JPanel();
         panel.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
@@ -138,10 +137,10 @@ public class ProfileController extends JFrame {
 
         createPlayerPanel();
         createInfoPanel();
-        createStatisticPanel();
+//        createStatisticPanel();
 
         topPanel.add(playerPanel);
-        topPanel.add(statisticPanel);
+//        topPanel.add(statisticPanel);
         topPanel.add(infoPanel);
         bottomPanel.add(selectPanel);
         bottomPanel.add(scrollable);
@@ -151,52 +150,91 @@ public class ProfileController extends JFrame {
         panel.add(bottomPanel);
         gameController.setMainContent(panel);
     }
-    private void createStatisticPanel(){
-        statisticPanel.removeAll();
-        statisticPanel.setLayout(new FlowLayout());
-        statisticPanel.setPreferredSize(new Dimension(400, 200));
-        int bonusDmg = 0;
-        for(Map.Entry<Item,ItemEquipType> entry : inventoryItems.entrySet()){
-            if(entry.getValue() == ItemEquipType.EQUIPPED)bonusDmg+=entry.getKey().getItemBase().getDmg();
-        }
-        JLabel equippedItems = new JLabel("Eqquiped: " + activeItems + " items (+" + bonusDmg + " dmg)");
-        equippedItems.setForeground(Color.RED);
-        statisticPanel.add(equippedItems);
-        statisticPanel.revalidate();
-        statisticPanel.repaint();
+//    private void createStatisticPanel(){
+//        statisticPanel.removeAll();
+//        statisticPanel.setLayout(new FlowLayout());
+//        statisticPanel.setPreferredSize(new Dimension(400, 200));
+//
+//        JLabel equippedItems = new JLabel("Eqquiped: " + activeItems + " items (+" + bonusDmg + " dmg)");
+//        equippedItems.setForeground(Color.RED);
+//        statisticPanel.add(equippedItems);
+//        statisticPanel.revalidate();
+//        statisticPanel.repaint();
+//    }
+    private void setStyleToLabel(JLabel l, int width, int height, Color color,int fontSize, int fontWeight){
+        l.setPreferredSize(new Dimension(width,height));
+        l.setForeground(color);
+        l.setFont(new Font("Arial", fontWeight,fontSize));
     }
     private void createPlayerPanel(){
         playerPanel.removeAll();
         playerPanel.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
-        playerPanel.setPreferredSize(new Dimension(400, 200));
+        playerPanel.setPreferredSize(new Dimension(600, 200));
         JLabel playerIcon = LogoController.getLogoPlayer(player.getLogo());
         playerIcon.setPreferredSize(new Dimension(200,200));
+        JPanel info = new JPanel(new FlowLayout(FlowLayout.LEFT,25,0));
+        info.setPreferredSize(new Dimension(400,200));
+
+        JLabel name = new JLabel(player.getName()+" ("+player.getLogo()+")");
+        setStyleToLabel(name, 350,24, Color.black,20, Font.BOLD);
+        JLabel exp = new JLabel("xp: " + player.getExperience());
+        setStyleToLabel(exp, 350,20, Color.DARK_GRAY,16, Font.PLAIN);
+        JLabel stage = new JLabel("level: " + player.getStage());
+        setStyleToLabel(stage, 350,20, Color.DARK_GRAY,16, Font.PLAIN);
+        JLabel hp = new JLabel("hp: " + player.getCurrentHp() + "/" + player.getHp());
+        setStyleToLabel(hp, 350,20, Color.RED,16, Font.BOLD);
+        JLabel gold = new JLabel("gold: " + player.getGold());
+        setStyleToLabel(gold, 350,20, Color.DARK_GRAY,16, Font.PLAIN);
+        JLabel dmg = new JLabel("dmg: " + player.getDmg());
+        setStyleToLabel(dmg, 350,16, Color.DARK_GRAY,14, Font.PLAIN);
+        JLabel def = new JLabel("def: " + player.getDef());
+        setStyleToLabel(def, 350,16, Color.DARK_GRAY,14, Font.PLAIN);
+
+        info.add(name);
+        info.add(hp);
+        info.add(exp);
+        info.add(stage);
+        info.add(gold);
+        info.add(dmg);
+        info.add(def);
         playerPanel.add(playerIcon);
+        playerPanel.add(info);
         playerPanel.revalidate();
         playerPanel.repaint();
     }
     private void createInfoPanel(){
         infoPanel.removeAll();
-        infoPanel.setPreferredSize(new Dimension(400, 200));
-        JLabel name = new JLabel(player.getName());
-        JLabel exp = new JLabel("Exp: " + player.getExperience());
-        exp.setForeground(Color.DARK_GRAY);
-        JLabel stage = new JLabel("Stage: " + player.getStage());
-        stage.setForeground(Color.black);
-        JLabel hp = new JLabel("HP: " + player.getCurrentHp() + "/" + player.getHp());
-        JLabel gold = new JLabel("GOLD: " + player.getGold());
-        gold.setForeground(Color.ORANGE);
-        JLabel dmg = new JLabel("DMG: " + player.getDmg());
-        dmg.setForeground(Color.RED);
-        JLabel def = new JLabel("DEF: " + player.getDef());
-        def.setForeground(Color.BLUE);
-        infoPanel.add(name);
-        infoPanel.add(exp);
-        infoPanel.add(stage);
-        infoPanel.add(hp);
-        infoPanel.add(gold);
-        infoPanel.add(dmg);
-        infoPanel.add(def);
+        infoPanel.setPreferredSize(new Dimension(600, 200));
+        infoPanel.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
+        int bonusDmg = 0;
+        for(Map.Entry<Item,ItemEquipType> entry : inventoryItems.entrySet()){
+            if(entry.getValue() == ItemEquipType.EQUIPPED)bonusDmg+=entry.getKey().getItemBase().getDmg();
+        }
+
+        JPanel leftSide = new JPanel(new FlowLayout(FlowLayout.LEFT,25,25));
+        leftSide.setPreferredSize(new Dimension(300,200));
+        JLabel ownedItems = new JLabel("You have "+inventoryItems.size()+" items");
+        setStyleToLabel(ownedItems,250,20,Color.black,14,Font.PLAIN);
+        JLabel ownedCards = new JLabel("You have "+deckService.getDeckById(player.getDeck().getId()).getCardSet().size()+" cards");
+        setStyleToLabel(ownedCards,250,20,Color.black,14,Font.PLAIN);
+        JLabel equippedItems = new JLabel("Eqquiped: " + activeItems + " items (+" + bonusDmg + " dmg)");
+        setStyleToLabel(equippedItems,250,20,Color.black,14,Font.PLAIN);
+
+        JPanel rightSide = new JPanel(new FlowLayout(FlowLayout.LEFT,0,0));
+        rightSide.setPreferredSize(new Dimension(200,200));
+        for(Map.Entry<Item,ItemEquipType> entry : inventoryItems.entrySet()){
+            if(entry.getValue() == ItemEquipType.EQUIPPED){
+                JLabel equippedItem = LogoController.getLogoItem(entry.getKey().getItemBase().getName());
+                equippedItem.setPreferredSize(new Dimension(98,98));
+                equippedItem.setBorder(BorderFactory.createLineBorder(Color.BLACK,1));
+                rightSide.add(equippedItem);
+            }
+        }
+        leftSide.add(ownedItems);
+        leftSide.add(ownedCards);
+        leftSide.add(equippedItems);
+        infoPanel.add(leftSide);
+        infoPanel.add(rightSide);
         infoPanel.revalidate();
         infoPanel.repaint();
     }
@@ -498,8 +536,8 @@ public class ProfileController extends JFrame {
                             inventoryItems.replace(c,ItemEquipType.EQUIPPED);
                             activeItems++;
                             equipButton.setText(ItemEquipType.EQUIPPED.toString());
-                            createStatisticPanel();
                             createInfoPanel();
+                            createPlayerPanel();
                             createPlayerInventoryView(panel);
 
                         }
@@ -508,8 +546,8 @@ public class ProfileController extends JFrame {
                         activeItems--;
                         inventoryItems.replace(c,ItemEquipType.UNEQUIPPED);
                         equipButton.setText(ItemEquipType.UNEQUIPPED.toString());
-                        createStatisticPanel();
                         createInfoPanel();
+                        createPlayerPanel();
                         createPlayerInventoryView(panel);
                     }
                 });

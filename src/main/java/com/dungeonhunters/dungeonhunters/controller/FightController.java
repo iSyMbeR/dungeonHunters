@@ -241,10 +241,11 @@ public class FightController extends JFrame {
         JLabel enemyDef = new JLabel("Defense: " + fight.enemy.getDefense(),SwingConstants.RIGHT);
 
         JPanel enemyStatus = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        enemyStatus.setPreferredSize(new Dimension(200,100));
         enemyStatus.setBackground(Color.white);
         for (Map.Entry<Card, Integer> entry : fight.enemyStatus.entrySet()) {
-            JLabel l = new JLabel(entry.getKey().getType().toString() + ": " + entry.getValue());
-            l.setPreferredSize(new Dimension(250, 25));
+            JLabel l = new JLabel(entry.getKey().getType().toString() + ": " + entry.getValue(), SwingConstants.RIGHT);
+            l.setPreferredSize(new Dimension(200, 25));
             l.setForeground(Color.green);
             enemyStatus.add(l);
         }
@@ -400,9 +401,14 @@ public class FightController extends JFrame {
         for(String lootName : fight.loot){
             JPanel lootItem = new JPanel();
             lootItem.setLayout(new BoxLayout(lootItem,BoxLayout.Y_AXIS));
-            lootItem.setPreferredSize(new Dimension(200,300));
+            lootItem.setPreferredSize(new Dimension(104,154));
             lootItem.setBorder(BorderFactory.createLineBorder(Color.black,2));
+            // JLabel lootItemIcon = LogoController.getLogoItem(lootName);
+             JLabel lootItemIcon = new JLabel("lael");
+            lootItemIcon.setPreferredSize(new Dimension(100,100));
             JLabel lootItemLabel = new JLabel(lootName);
+            lootItemLabel.setPreferredSize(new Dimension(100,50));
+            lootItem.add(lootItemIcon);
             lootItem.add(lootItemLabel);
             lootContainer.add(lootItem);
         }
