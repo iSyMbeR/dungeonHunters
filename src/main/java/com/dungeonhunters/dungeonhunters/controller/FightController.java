@@ -173,7 +173,7 @@ public class FightController extends JFrame {
         playerIcon.setBackground(Color.orange);
         playerIconContainer.add(playerIcon);
 
-        int value;
+/*        int value;
         if(gameController.profileController.additionalDmg > oldAdditonalDmg){
             value = gameController.profileController.additionalDmg - oldAdditonalDmg;
             fight.player.setDmg(fight.player.getDmg() + value);
@@ -183,7 +183,7 @@ public class FightController extends JFrame {
             fight.player.setDmg(fight.player.getDmg() - value);
             oldAdditonalDmg = gameController.profileController.additionalDmg;
         }
-
+*/
         JPanel stats = new JPanel(new FlowLayout(FlowLayout.LEFT,25,5));
         JLabel playerName = new JLabel(fight.player.getName());
         JLabel playerHp = new JLabel("HP " + fight.player.getCurrentHp() + "/" + fight.player.getHp());
