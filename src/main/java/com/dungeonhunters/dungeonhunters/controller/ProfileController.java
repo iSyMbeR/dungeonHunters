@@ -1,6 +1,7 @@
 package com.dungeonhunters.dungeonhunters.controller;
 
 import com.dungeonhunters.dungeonhunters.dto.ItemEquipType;
+import com.dungeonhunters.dungeonhunters.dto.ItemType;
 import com.dungeonhunters.dungeonhunters.dto.Shop;
 import com.dungeonhunters.dungeonhunters.dto.ShopItemDto;
 import com.dungeonhunters.dungeonhunters.model.*;
@@ -30,9 +31,9 @@ public class ProfileController extends JFrame {
     public final PlayerService playerService;
     public GameController gameController;
     public Player player;
-    public static Map<String, ItemEquipType> equippedItems = new HashMap<>();
+    public static Map<Item,ItemEquipType> inventoryItems = new HashMap<>();
     private boolean equipped = false;
-    private int activeItems;
+    private int activeItems=0;
     public int selected = 1;
     private final Shop shop;
     private final DeckService deckService;
@@ -49,8 +50,9 @@ public class ProfileController extends JFrame {
 
     public void createView() {
         if (!equipped) {
+            System.out.println("lista itemów odswieżona");
             for (Item c : player.getInventory().getItemList()) {
-                equippedItems.put(c.getItemBase().getName(), ItemEquipType.UNEQUIPPED);
+                inventoryItems.put(c,ItemEquipType.UNEQUIPPED);
             }
             equipped = true;
         }
@@ -71,8 +73,7 @@ public class ProfileController extends JFrame {
         scrollable.setPreferredSize(new Dimension(1000, 600));
         scrollable.getVerticalScrollBar().setUnitIncrement(16);
         //contentPanel.setPreferredSize(new Dimension(1000,1000));
-        JLabel cp = new JLabel("Content panel here");
-        contentPanel.add(cp);
+        createPlayerInventoryView(contentPanel);
         contentPanel.setBackground(Color.lightGray);
         //contentPanel.setBorder(BorderFactory.createLineBorder(Color.BLUE,3));
 
@@ -143,16 +144,15 @@ public class ProfileController extends JFrame {
     }
     private void createStatisticPanel(){
         statisticPanel.removeAll();
-        statisticPanel = new JPanel();
         statisticPanel.setLayout(new FlowLayout());
         statisticPanel.setPreferredSize(new Dimension(400, 200));
-        int bonusDmg = player.getDmg() - playerService.getPlayerById(player.getId()).getDmg();
-
-        JLabel sl = new JLabel("Statistic panel here");
-        JLabel eqquipedItems = new JLabel("Eqquiped: " + activeItems + " items (+" + bonusDmg + " dmg)");
-        eqquipedItems.setForeground(Color.RED);
-        statisticPanel.add(eqquipedItems);
-        statisticPanel.add(sl);
+        int bonusDmg = 0;
+        for(Map.Entry<Item,ItemEquipType> entry : inventoryItems.entrySet()){
+            if(entry.getValue() == ItemEquipType.EQUIPPED)bonusDmg+=entry.getKey().getItemBase().getDmg();
+        }
+        JLabel equippedItems = new JLabel("Eqquiped: " + activeItems + " items (+" + bonusDmg + " dmg)");
+        equippedItems.setForeground(Color.RED);
+        statisticPanel.add(equippedItems);
         statisticPanel.revalidate();
         statisticPanel.repaint();
     }
@@ -459,18 +459,19 @@ public class ProfileController extends JFrame {
             panel.add(new JLabel("No items")).setForeground(Color.DARK_GRAY);
         } else {
 
-
             for (Item c : playerInventoryItemsList) {
 
-                System.out.println(c.getItemBase().getName());
-                JLabel itemIcon = LogoController.getLogoItem(c.getItemBase().getName());
-                //JLabel itemIcon = new JLabel("");
+                JLabel itemIcon = getLogoItem(c.getItemBase().getName());
                 JPanel itemContainer = new JPanel();
                 JLabel itemName = new JLabel(c.getItemBase().getName());
                 JLabel itemDescription = new JLabel(c.getItemBase().getDmg() + " atk");
-                JLabel itemsEquip = new JLabel(String.valueOf(equippedItems.get(c.getItemBase().getName())));
-                JButton equipButton = new JButton(itemsEquip.getText());
+                JButton equipButton = new JButton(inventoryItems.get(c).toString());
                 equipButton.setForeground(Color.WHITE);
+                if(inventoryItems.get(c) == ItemEquipType.EQUIPPED) {
+                    equipButton.setBackground(Color.LIGHT_GRAY);
+                }else{
+                    equipButton.setBackground(Color.GRAY);
+                }
                 equipButton.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseEntered(MouseEvent e) {
@@ -482,27 +483,26 @@ public class ProfileController extends JFrame {
                         equipButton.setForeground(Color.WHITE);
                     }
                 });
-                equipButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        if (e.getActionCommand().equals("UNEQUIPPED")) {
-                            if (activeItems < 4) {
-                                player.setDmg(player.getDmg() + c.getItemBase().getDmg());
-                                equippedItems.replace(itemName.getText(), ItemEquipType.EQUIPPED);
-                                activeItems++;
-                                System.out.println(activeItems);
-                                equipButton.setText("EQUIPPED");
-                                equipButton.setBackground(Color.LIGHT_GRAY);
+                equipButton.addActionListener(e -> {
+                    if (e.getActionCommand().equals(ItemEquipType.UNEQUIPPED.toString())) {
+                        if (activeItems < 4) {
+                            player.setDmg(player.getDmg() + c.getItemBase().getDmg());
+                            inventoryItems.replace(c,ItemEquipType.EQUIPPED);
+                            activeItems++;
+                            equipButton.setText(ItemEquipType.EQUIPPED.toString());
+                            createStatisticPanel();
+                            createInfoPanel();
+                            createPlayerInventoryView(panel);
 
-                            }
-                        } else {
-                            player.setDmg(player.getDmg() - c.getItemBase().getDmg());
-                            activeItems--;
-                            System.out.println(activeItems);
-                            equippedItems.replace(itemName.getText(), ItemEquipType.UNEQUIPPED);
-                            equipButton.setText("UNEQUIPPED");
-                            equipButton.setBackground(Color.GRAY);
                         }
+                    } else {
+                        player.setDmg(player.getDmg() - c.getItemBase().getDmg());
+                        activeItems--;
+                        inventoryItems.replace(c,ItemEquipType.UNEQUIPPED);
+                        equipButton.setText(ItemEquipType.UNEQUIPPED.toString());
+                        createStatisticPanel();
+                        createInfoPanel();
+                        createPlayerInventoryView(panel);
                     }
                 });
 

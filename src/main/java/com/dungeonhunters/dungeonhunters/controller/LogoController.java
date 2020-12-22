@@ -163,7 +163,6 @@ public class LogoController {
     }
     public static JLabel getLogoItem(String logoName){
         File file = null;
-        System.out.println("weszlo "+ logoName);
         switch (logoName.toLowerCase()){
             case "amulet charm":
                 file = new File("src\\main\\resources\\Static\\ItemsLogo\\Amulet charm.jpg");
@@ -225,7 +224,6 @@ public class LogoController {
             default:
                 System.out.println("Logo not found");
         }
-        System.out.println("Wyszlo z switcha" +" kk");
         BufferedImage image = null;
         try {
             image = ImageIO.read(file);
