@@ -134,6 +134,15 @@ public class LogoController {
             case "Gold":
                 file = new File("src\\main\\resources\\Static\\CardImages\\Gold.png");
                 break;
+            case "GoldCoin":
+                file = new File("src\\main\\resources\\Static\\CardImages\\GoldCoin.png");
+                break;
+            case "goldgrosze":
+                file = new File("src\\main\\resources\\Static\\CardImages\\goldgrosze.png");
+                break;
+            case "Xp":
+                file = new File("src\\main\\resources\\Static\\CardImages\\Xp.png");
+                break;
             case "Health":
                 file = new File("src\\main\\resources\\Static\\CardImages\\Health.png");
                 break;
