@@ -33,7 +33,7 @@ public class FightController extends JFrame {
     private final DeckService deckService;
     private final CardService cardService;
     public final Fight fight;
-    public int selected = 1;
+    public int oldAdditonalDmg;
     public JPanel mainPanel;
     public JPanel actionPanel;
     public JPanel cardPanel;
@@ -172,6 +172,17 @@ public class FightController extends JFrame {
         playerIcon.setPreferredSize(new Dimension(300, 300));
         playerIcon.setBackground(Color.orange);
         playerIconContainer.add(playerIcon);
+
+        int value;
+        if(gameController.profileController.additionalDmg > oldAdditonalDmg){
+            value = gameController.profileController.additionalDmg - oldAdditonalDmg;
+            fight.player.setDmg(fight.player.getDmg() + value);
+            oldAdditonalDmg = gameController.profileController.additionalDmg;
+        } else if (gameController.profileController.additionalDmg < oldAdditonalDmg){
+            value = oldAdditonalDmg - gameController.profileController.additionalDmg;
+            fight.player.setDmg(fight.player.getDmg() - value);
+            oldAdditonalDmg = gameController.profileController.additionalDmg;
+        }
 
         JPanel stats = new JPanel(new FlowLayout(FlowLayout.LEFT,25,5));
         JLabel playerName = new JLabel(fight.player.getName());
@@ -419,12 +430,30 @@ public class FightController extends JFrame {
     }
     private void showFailureScreen() {
         JPanel cont = new JPanel();
+        cont.setLayout(new FlowLayout());
+        cont.setPreferredSize(new Dimension(10,200));
+        cont.setAlignmentX(Component.CENTER_ALIGNMENT);
         JPanel lostMessagePanel = new JPanel();
         JLabel lostMessage = new JLabel("You lost. Your character has been deleted");
         JButton mainMenuButton = new JButton("Exit to main menu");
+
+        mainMenuButton.setForeground(Color.WHITE);
+        mainMenuButton.setBackground(Color.BLACK);
+        mainMenuButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                mainMenuButton.setForeground(Color.RED);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                mainMenuButton.setForeground(Color.WHITE);
+            }
+        });
         mainMenuButton.addActionListener(e -> gameController.switchToMenuController());
         lostMessagePanel.add(lostMessage);
         cont.add(lostMessagePanel);
+        cont.add(mainMenuButton);
         gameController.setMainContent(cont);
     }
 

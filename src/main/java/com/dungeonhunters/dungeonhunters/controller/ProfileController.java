@@ -34,6 +34,7 @@ public class ProfileController extends JFrame {
     public Map<Item,ItemEquipType> inventoryItems;
     private int activeItems=0;
     public int selected = 1;
+    public int additionalDmg;
     private final Shop shop;
     private final DeckService deckService;
     private final ItemBaseService itemBaseService;
@@ -497,6 +498,7 @@ public class ProfileController extends JFrame {
                             player.setDmg(player.getDmg() + c.getItemBase().getDmg());
                             inventoryItems.replace(c,ItemEquipType.EQUIPPED);
                             activeItems++;
+                            additionalDmg+=c.getItemBase().getDmg();
                             equipButton.setText(ItemEquipType.EQUIPPED.toString());
                             createStatisticPanel();
                             createInfoPanel();
@@ -508,6 +510,7 @@ public class ProfileController extends JFrame {
                         activeItems--;
                         inventoryItems.replace(c,ItemEquipType.UNEQUIPPED);
                         equipButton.setText(ItemEquipType.UNEQUIPPED.toString());
+                        additionalDmg-=c.getItemBase().getDmg();
                         createStatisticPanel();
                         createInfoPanel();
                         createPlayerInventoryView(panel);
