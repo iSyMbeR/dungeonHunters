@@ -8,6 +8,7 @@ import com.dungeonhunters.dungeonhunters.service.CardService;
 import com.dungeonhunters.dungeonhunters.service.DeckService;
 import com.dungeonhunters.dungeonhunters.service.EnemyService;
 import com.dungeonhunters.dungeonhunters.service.PlayerService;
+import org.hibernate.cfg.JPAIndexHolder;
 import org.springframework.data.jpa.repository.query.Jpa21Utils;
 import org.springframework.stereotype.Controller;
 
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.plaf.basic.DefaultMenuLayout;
 import java.awt.*;
 import java.util.Map;
 
@@ -73,58 +75,6 @@ public class FightController extends JFrame {
         buildEnemyPanel();
         buildActionPanel();
         buildCardPanel();
-    }
-
-
-
-    private void buildCardPanel() {
-        List<Card> cardList = new ArrayList<>();
-        cardList.add(cardService.getCardById(1l));
-        cardList.add(cardService.getCardById(2l));
-        System.out.println(cardList);
-        JLabel cardLabel = new JLabel("karty here");
-
-        BufferedImage buttonCardIcon = null;
-
-
-        for (Card c : cardList){
-
-            //wczytywanie icon
-            try {
-                buttonCardIcon = ImageIO.read(new File("src\\main\\resources\\Static\\CardFight\\"+ c.getType()+".png"));
-            } catch (IOException e) {
-                e.printStackTrace();
-                System.out.println("nie znaleziono" + c.getName());
-            }
-            JButton cardButton = new JButton(new ImageIcon(buttonCardIcon));
-            cardButton.setSize(new Dimension(200,100));
-            cardButton.setForeground(Color.BLACK);
-            cardButton.setText(c.getName());
-            cardButton.setHorizontalTextPosition(cardLabel.CENTER);
-            cardButton.setVerticalTextPosition(cardLabel.TOP);
-            cardButton.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    cardButton.setForeground(Color.BLUE);
-                }
-
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    cardButton.setForeground(Color.WHITE);
-                }
-            });
-            cardButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    System.out.println(e.getActionCommand());
-                }
-            });
-            cardButton.setContentAreaFilled(false);
-            cardPanel.setBackground(Color.white);
-            cardPanel.add(cardLabel);
-            cardPanel.add(cardButton);
-        }
-
     }
 
     private void buildActionPanel() {
@@ -232,6 +182,7 @@ public class FightController extends JFrame {
         JLabel enemyDef = new JLabel("Defense: " + fight.enemy.getDefense(),SwingConstants.RIGHT);
 
         JPanel enemyStatus = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        enemyStatus.setBackground(Color.white);
         for (Map.Entry<Card, Integer> entry : fight.enemyStatus.entrySet()) {
             JLabel l = new JLabel(entry.getKey().getType().toString() + ": " + entry.getValue());
             l.setPreferredSize(new Dimension(250, 25));
@@ -286,20 +237,23 @@ public class FightController extends JFrame {
         playerPanel.setPreferredSize(new Dimension(600, 350));
         enemyPanel.setPreferredSize(new Dimension(600, 350));
         actionPanel.setPreferredSize(new Dimension(100, 400));
-        cardPanel.setPreferredSize(new Dimension(800, 400));
+        JScrollPane scrollableCards = new JScrollPane(cardPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollableCards.setPreferredSize(new Dimension(800, 400));
+        scrollableCards.setBorder(null);
+        scrollableCards.getVerticalScrollBar().setUnitIncrement(16);
         logPanel.setPreferredSize(new Dimension(300,400));
         logPanel.setLayout(new FlowLayout(FlowLayout.LEFT,0,2));
-        JScrollPane scrollable = new JScrollPane(logPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollable.setPreferredSize(new Dimension(300, 400));
-        scrollable.setBorder(null);
-        scrollable.getVerticalScrollBar().setUnitIncrement(16);
+        JScrollPane scrollableLogs = new JScrollPane(logPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollableLogs.setPreferredSize(new Dimension(300, 400));
+        scrollableLogs.setBorder(null);
+        scrollableLogs.getVerticalScrollBar().setUnitIncrement(16);
         mainPanel.add(turnPanel);
         mainPanel.add(playerPanel);
         mainPanel.add(enemyPanel);
         mainPanel.add(actionPanel);
-        mainPanel.add(cardPanel);
         removeLayoutGapsFromPanel();
-        mainPanel.add(scrollable);
+        mainPanel.add(scrollableCards);
+        mainPanel.add(scrollableLogs);
 
     }
 
@@ -323,25 +277,6 @@ public class FightController extends JFrame {
     public void setPlayer(Player player) {
         this.fight.setPlayer(player);
     }
-//    public void getCardPanel() {
-//        cardPanel = new JPanel();
-//        cardPanel.setLayout(new BoxLayout(cardPanel,BoxLayout.Y_AXIS));
-//        List<Card> cardList = deckService.getDeckById(fight.player.getDeck().getId()).getCardSet();
-//        for(Card c : cardList){
-//
-//            JLabel name = new JLabel(c.getName()+" "+c.getType()+": "+c.getValue()+" cost: "+c.getCost());
-//            cardPanel.add(name);
-//        }
-//        cardPanel.add(new JLabel("Back"));
-//        cardPanel.setFocusable(true);
-//        createControls(cardPanel, new AbstractAction() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                if(selected!=cardPanel.getComponentCount())useCard(cardList.get(selected-1));
-//                switchControlToOptionsMenu();
-//            }
-//        });
-//    }
 
     private void checkToEndBattle(int battleStatus) {
         if (battleStatus == -1) endGame();

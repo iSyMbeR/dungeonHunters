@@ -128,6 +128,9 @@ public class LogoController {
             case "Crystal":
                 file = new File("src\\main\\resources\\Static\\CardImages\\Crystal.png");
                 break;
+            case "Crystal-small":
+                file = new File("src\\main\\resources\\Static\\CardImages\\Crystal-small.png");
+                break;
             case "Gold":
                 file = new File("src\\main\\resources\\Static\\CardImages\\Gold.png");
                 break;
