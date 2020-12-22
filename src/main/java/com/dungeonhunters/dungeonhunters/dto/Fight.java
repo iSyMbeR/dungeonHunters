@@ -27,7 +27,7 @@ public class Fight {
     public int turn = 0;
     public int enemyMaxHp = 0;
     public CardActionStrategyFactory cardActionFactory;
-    public List<String> loot = new ArrayList<>();
+    public Map<String,Integer> loot = new HashMap<>();
     public boolean playerBlocked, miss, reducedDmg, sleep;
     public final EnemyService enemyService;
     public final PlayerService playerService;
@@ -194,9 +194,9 @@ public class Fight {
         int goldLoot = enemy.getGoldDrop();
         int expGained = enemy.getExperienceDrop();
 
-        loot.add("Gold");
-        loot.add("Experience");
-        loot.add(generateRandomItem());
+        loot.put("GoldCoin",goldLoot);
+        loot.put("Xp",expGained);
+        loot.put(generateRandomItem(),1);
 
         if (player.getExperience() + expGained >= 100) {
             player.setExperience(player.getExperience() + expGained);
@@ -221,7 +221,7 @@ public class Fight {
         actionsLeft = 0;
         turn = 0;
         enemyMaxHp = 0;
-        loot = new ArrayList<>();
+        loot = new HashMap<>();
         playerStatus = new HashMap<>();
         enemyStatus = new HashMap<>();
         playerBlocked = false;

@@ -549,8 +549,6 @@ public class ProfileController extends JFrame {
                         inventoryItems.replace(c,ItemEquipType.UNEQUIPPED);
                         equipButton.setText(ItemEquipType.UNEQUIPPED.toString());
                         additionalDmg-=c.getItemBase().getDmg();
-                        createStatisticPanel();
-
                         createInfoPanel();
                         createPlayerPanel();
                         createPlayerInventoryView(panel);
