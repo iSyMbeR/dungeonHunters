@@ -122,6 +122,7 @@ public class Fight {
             List<Card> cardSet = deck.getCardSet();
             cardSet.remove(card);
             deck.setCardSet(cardSet);
+//            player.setDeck(deck);
             deckService.addDeck(deck);
             return "Card: " + card.getName() + " used, " + actionsLeft + " actions left.";
         }

@@ -8,6 +8,7 @@ import com.dungeonhunters.dungeonhunters.service.CardService;
 import com.dungeonhunters.dungeonhunters.service.DeckService;
 import com.dungeonhunters.dungeonhunters.service.EnemyService;
 import com.dungeonhunters.dungeonhunters.service.PlayerService;
+import org.hibernate.cfg.JPAIndexHolder;
 import org.springframework.data.jpa.repository.query.Jpa21Utils;
 import org.springframework.stereotype.Controller;
 
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.plaf.basic.DefaultMenuLayout;
 import java.awt.*;
 import java.util.Map;
 
@@ -76,23 +78,81 @@ public class FightController extends JFrame {
     }
 
 
+    private void buildCardPanel(){
+        cardPanel.removeAll();
+        cardPanel.setLayout(new FlowLayout(FlowLayout.CENTER,25,25));
+        List<Card> cardList = deckService.getDeckById(fight.player.getDeck().getId()).getCardSet();
+        int cardCount = cardList.size();
+        int height = 0;
+        while(cardCount>0){
+            cardCount-=4;
+            height+=260;
+        }
+        cardPanel.setPreferredSize(new Dimension(800,height));
+        for(Card c : cardList){
+            JPanel singleCard = new JPanel(new FlowLayout(FlowLayout.CENTER,0,0));
+            singleCard.setPreferredSize(new Dimension(164,209));
+            singleCard.setBorder(BorderFactory.createLineBorder(Color.BLACK,2));
+            singleCard.setBackground(Color.white);
 
-    private void buildCardPanel() {
+            JPanel costPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT,0,0));
+            costPanel.setBackground(null);
+            costPanel.setPreferredSize(new Dimension(160,20));
+
+            for(int i=0;i<c.getCost();i++){
+                JLabel crystal = LogoController.getLogoCard("Crystal-small");
+                crystal.setPreferredSize(new Dimension(20,20));
+                costPanel.add(crystal);
+            }
+            singleCard.add(costPanel);
+
+            JLabel cardName = new JLabel(c.getName(),SwingConstants.CENTER);
+            cardName.setPreferredSize(new Dimension(160,20));
+            cardName.setFont(new Font("Arial", Font.BOLD,12));
+
+            JLabel cardImage = LogoController.getLogoCard(c.getType().toString());
+            cardImage.setPreferredSize(new Dimension(160,100));
+
+            JLabel effect = new JLabel(c.getValue() + " " + c.getType().toString(), SwingConstants.CENTER);
+            effect.setPreferredSize(new Dimension(160,20));
+
+            JButton useButton = new JButton("Use");
+            useButton.setPreferredSize(new Dimension(80,40));
+            useButton.setAlignmentX(SwingConstants.CENTER);
+            useButton.setFont(new Font("Arial",Font.BOLD,20));
+            useButton.setBorder(null);
+            useButton.setBackground(Color.blue);
+            useButton.setForeground(Color.white);
+            useButton.setFocusPainted(false);
+            useButton.addActionListener(e -> {
+                useCard(c);
+            });
+
+            singleCard.add(costPanel);
+            singleCard.add(cardName);
+            singleCard.add(cardImage);
+            singleCard.add(effect);
+            singleCard.add(useButton);
+            cardPanel.add(singleCard);
+        }
+        cardPanel.revalidate();
+        cardPanel.repaint();
+    }
+    private void buildCardPanel_old() {
         List<Card> cardList = new ArrayList<>();
         cardList.add(cardService.getCardById(1l));
         cardList.add(cardService.getCardById(2l));
         System.out.println(cardList);
         JLabel cardLabel = new JLabel("karty here");
-
         BufferedImage buttonCardIcon = null;
-        try {
-            buttonCardIcon = ImageIO.read(new File("src\\main\\resources\\Static\\CardFight\\AttackCard.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("nie znaleziono ");
-        }
 
         for (Card c : cardList){
+            try {
+                buttonCardIcon = ImageIO.read(new File("src\\main\\resources\\Static\\CardFight\\"+ c.getType()+".png"));
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("nie znaleziono" + c.getName());
+            }
             System.out.println(c.getName());
             JButton cardButton = new JButton(new ImageIcon(buttonCardIcon));
             cardButton.setSize(new Dimension(200,100));
@@ -232,6 +292,7 @@ public class FightController extends JFrame {
         JLabel enemyDef = new JLabel("Defense: " + fight.enemy.getDefense(),SwingConstants.RIGHT);
 
         JPanel enemyStatus = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        enemyStatus.setBackground(Color.white);
         for (Map.Entry<Card, Integer> entry : fight.enemyStatus.entrySet()) {
             JLabel l = new JLabel(entry.getKey().getType().toString() + ": " + entry.getValue());
             l.setPreferredSize(new Dimension(250, 25));
@@ -286,20 +347,23 @@ public class FightController extends JFrame {
         playerPanel.setPreferredSize(new Dimension(600, 350));
         enemyPanel.setPreferredSize(new Dimension(600, 350));
         actionPanel.setPreferredSize(new Dimension(100, 400));
-        cardPanel.setPreferredSize(new Dimension(800, 400));
+        JScrollPane scrollableCards = new JScrollPane(cardPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollableCards.setPreferredSize(new Dimension(800, 400));
+        scrollableCards.setBorder(null);
+        scrollableCards.getVerticalScrollBar().setUnitIncrement(16);
         logPanel.setPreferredSize(new Dimension(300,400));
         logPanel.setLayout(new FlowLayout(FlowLayout.LEFT,0,2));
-        JScrollPane scrollable = new JScrollPane(logPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollable.setPreferredSize(new Dimension(300, 400));
-        scrollable.setBorder(null);
-        scrollable.getVerticalScrollBar().setUnitIncrement(16);
+        JScrollPane scrollableLogs = new JScrollPane(logPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollableLogs.setPreferredSize(new Dimension(300, 400));
+        scrollableLogs.setBorder(null);
+        scrollableLogs.getVerticalScrollBar().setUnitIncrement(16);
         mainPanel.add(turnPanel);
         mainPanel.add(playerPanel);
         mainPanel.add(enemyPanel);
         mainPanel.add(actionPanel);
-        mainPanel.add(cardPanel);
         removeLayoutGapsFromPanel();
-        mainPanel.add(scrollable);
+        mainPanel.add(scrollableCards);
+        mainPanel.add(scrollableLogs);
 
     }
 
