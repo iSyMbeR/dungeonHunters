@@ -14,8 +14,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 
-import static com.dungeonhunters.dungeonhunters.controller.ProfileController.inventoryItems;
-
 @Data
 @Component
 public class Fight {
@@ -273,7 +271,6 @@ public class Fight {
             playerService.addPlayer(player);
             //inventoryService.updateItemsSetList(player.getInventory().getId(), player.getInventory().getItemList());
             inventoryService.addInventory(player.getInventory());
-            inventoryItems.put(item, ItemEquipType.UNEQUIPPED);
             return "You have received " + item.getItemBase().getName();
         }
 

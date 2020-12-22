@@ -421,6 +421,8 @@ public class FightController extends JFrame {
         JPanel cont = new JPanel();
         JPanel lostMessagePanel = new JPanel();
         JLabel lostMessage = new JLabel("You lost. Your character has been deleted");
+        JButton mainMenuButton = new JButton("Exit to main menu");
+        mainMenuButton.addActionListener(e -> gameController.switchToMenuController());
         lostMessagePanel.add(lostMessage);
         cont.add(lostMessagePanel);
         gameController.setMainContent(cont);

@@ -31,8 +31,7 @@ public class ProfileController extends JFrame {
     public final PlayerService playerService;
     public GameController gameController;
     public Player player;
-    public static Map<Item,ItemEquipType> inventoryItems = new HashMap<>();
-    private boolean equipped = false;
+    public Map<Item,ItemEquipType> inventoryItems;
     private int activeItems=0;
     public int selected = 1;
     private final Shop shop;
@@ -41,20 +40,22 @@ public class ProfileController extends JFrame {
     public JPanel infoPanel, playerPanel,statisticPanel,selectPanel;
 
 
+
     ProfileController(ItemBaseService itemBaseService, DeckService deckService, Shop shop, PlayerService playerService) {
         this.deckService = deckService;
         this.playerService = playerService;
         this.itemBaseService = itemBaseService;
         this.shop = shop;
+        this.inventoryItems = new HashMap<>();
     }
 
     public void createView() {
-        if (!equipped) {
-            System.out.println("lista itemów odswieżona");
-            for (Item c : player.getInventory().getItemList()) {
-                inventoryItems.put(c,ItemEquipType.UNEQUIPPED);
-            }
-            equipped = true;
+
+        for (Item c : player.getInventory().getItemList()) {
+            inventoryItems.putIfAbsent(c, ItemEquipType.UNEQUIPPED);
+        }
+        for(Map.Entry<Item,ItemEquipType> entry : inventoryItems.entrySet()){
+            System.out.println(entry.getValue());
         }
         panel = new JPanel();
         panel.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
@@ -460,7 +461,6 @@ public class ProfileController extends JFrame {
         } else {
 
             for (Item c : playerInventoryItemsList) {
-
                 JLabel itemIcon = getLogoItem(c.getItemBase().getName());
                 JPanel itemContainer = new JPanel();
                 JLabel itemName = new JLabel(c.getItemBase().getName());
