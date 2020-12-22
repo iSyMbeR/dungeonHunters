@@ -194,8 +194,8 @@ public class Fight {
         int goldLoot = enemy.getGoldDrop();
         int expGained = enemy.getExperienceDrop();
 
-        loot.add("You dropped " + goldLoot + " gold");
-        loot.add("You gained " + expGained + " experience");
+        loot.add("Gold");
+        loot.add("Experience");
         loot.add(generateRandomItem());
 
         if (player.getExperience() + expGained >= 100) {
@@ -262,9 +262,8 @@ public class Fight {
             }
 
         }
-        if (!exist) {
+//        if (!exist) {
             playerListItem.add(item);
-
             player.getInventory().setItemList(playerListItem);
             player.setInventory(player.getInventory());
             // nie trybi zapisanie inventory
@@ -272,10 +271,9 @@ public class Fight {
             playerService.addPlayer(player);
             //inventoryService.updateItemsSetList(player.getInventory().getId(), player.getInventory().getItemList());
             inventoryService.addInventory(player.getInventory());
-            return "You have received " + item.getItemBase().getName();
-        }
-
-        return item.getItemBase().getName() + " You already own it";
+            return item.getItemBase().getName();
+//        }
+//        return item.getItemBase().getName();
     }
 
     public void generateArea() {
