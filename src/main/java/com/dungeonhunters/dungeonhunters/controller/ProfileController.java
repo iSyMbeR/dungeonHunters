@@ -397,6 +397,8 @@ public class ProfileController extends JFrame {
     }
 
     private void exitGame() {
+        player.setDmg(player.getDmg() - additionalDmg );
+        playerService.addPlayer(player);
         System.exit(0);
     }
 
@@ -513,6 +515,31 @@ public class ProfileController extends JFrame {
                 JLabel itemName = new JLabel(c.getItemBase().getName());
                 JLabel itemDescription = new JLabel(c.getItemBase().getDmg() + " atk");
                 JButton equipButton = new JButton(inventoryItems.get(c).toString());
+
+//                int itemSellValue;
+//                if(c.getItemBase().getDmg() <= 5 ) itemSellValue = 1;
+//                else if (c.getItemBase().getDmg() > 6 && c.getItemBase().getDmg() < 17) itemSellValue = 2;
+//                else itemSellValue = 4;
+//
+//                JButton sellButton = new JButton(itemSellValue+"");
+//                sellButton.setForeground(Color.WHITE);
+//                sellButton.addMouseListener(new MouseAdapter() {
+//                    @Override
+//                    public void mouseClicked(MouseEvent e) {
+//                        inventoryItems.remove(c);
+//                        player.setGold(player.getGold() + itemSellValue);
+//                    }
+//
+//                    @Override
+//                    public void mouseEntered(MouseEvent e) {
+//                        sellButton.setForeground(Color.BLUE);
+//                    }
+//
+//                    @Override
+//                    public void mouseExited(MouseEvent e) {
+//                        sellButton.setForeground(Color.WHITE);
+//                    }
+//                });
                 equipButton.setForeground(Color.WHITE);
                 if(inventoryItems.get(c) == ItemEquipType.EQUIPPED) {
                     equipButton.setBackground(Color.LIGHT_GRAY);
@@ -559,6 +586,7 @@ public class ProfileController extends JFrame {
                 itemContainer.add(itemName);
                 itemContainer.add(itemDescription);
                 itemContainer.add(equipButton);
+                //itemContainer.add(sellButton);
                 styleItemInventoryEntry(itemContainer);
                 panel.add(itemContainer);
             }
