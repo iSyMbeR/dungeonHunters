@@ -32,6 +32,9 @@ public class LogoController {
             case "Czlowiek":
                 file = new File("src\\main\\resources\\Static\\PlayerLogo\\Czlowiek.png");
                 break;
+            case "Nosacz":
+                file = new File("src\\main\\resources\\Static\\PlayerLogo\\Nosacz.png");
+                break;
             default:
                 System.out.println("Logo not found");
         }
