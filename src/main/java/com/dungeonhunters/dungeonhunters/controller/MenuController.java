@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.dungeonhunters.dungeonhunters.controller.LogoController.getLogoPlayer;
+import static com.dungeonhunters.dungeonhunters.dto.MenuStrings.CHARACTER_APPEARANCE;
+import static com.dungeonhunters.dungeonhunters.dto.MenuStrings.CHARACTER_NAME;
 
 @Controller
 public class MenuController extends JFrame {
@@ -37,23 +39,17 @@ public class MenuController extends JFrame {
         menu.setLayout(new FlowLayout());
         menu.setPreferredSize(new Dimension(200, playerService.getSize() * 46 + 30));
         JButton b = new JButton("Stwórz nową postać");
-        b.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                showPlayerCreation2();
-                //showPlayerCreation();
-            }
+        b.addActionListener(e -> {
+            showPlayerCreation2();
+            //showPlayerCreation();
         });
         setButtonStyle(b, Color.LIGHT_GRAY);
         menu.add(b);
         for (Player player : players) {
             b = new JButton(player.getName());
-            b.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    gameController.setCurrentPlayer(player);
-                    gameController.switchToProfileController();
-                }
+            b.addActionListener(e -> {
+                gameController.setCurrentPlayer(player);
+                gameController.switchToProfileController();
             });
             setButtonStyle(b, Color.white);
             menu.add(b);
@@ -93,7 +89,7 @@ public class MenuController extends JFrame {
 
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
-        JLabel l = new JLabel("Podaj nazwę postaci: ");
+        JLabel l = new JLabel(CHARACTER_NAME);
         JTextField tf = new JTextField(20);
         tf.setBorder(null);
         tf.setBackground(null);
@@ -132,19 +128,14 @@ public class MenuController extends JFrame {
         logoList.setLayout(new FlowLayout());
         logoList.setPreferredSize(new Dimension(200, 600));
         logoList.setAlignmentY(Component.CENTER_ALIGNMENT);
-        JLabel info = new JLabel("Wybierz wygląd postaci");
+        JLabel info = new JLabel(CHARACTER_APPEARANCE);
         logoList.add(info);
 
 
         for (LogoType o : LogoType.values()) {
             JButton b = new JButton(String.valueOf(o));
 
-            b.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    showPlayerCreation(e.getActionCommand());
-                }
-            });
+            b.addActionListener(e -> showPlayerCreation(e.getActionCommand()));
             setButtonStyle(b, Color.white);
             logoList.add(b);
         }

@@ -24,6 +24,7 @@ import javax.swing.plaf.basic.DefaultMenuLayout;
 import java.awt.*;
 import java.util.Map;
 
+import static com.dungeonhunters.dungeonhunters.dto.MenuStrings.*;
 
 
 @Controller
@@ -78,7 +79,7 @@ public class FightController extends JFrame {
     }
 
     private void buildActionPanel() {
-        actionPanel.setLayout(new FlowLayout(FlowLayout.CENTER,25,25));
+        actionPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 25, 25));
         actionPanel.setBackground(Color.lightGray);
         JButton attackButton = LogoController.getButtonWithIcon("attack-green");
         styleOptionButton(attackButton);
@@ -94,62 +95,62 @@ public class FightController extends JFrame {
         actionPanel.add(nextTurnButton);
 
     }
-    private void styleOptionButton(JButton b){
-        b.setPreferredSize(new Dimension(50,50));
+
+    private void styleOptionButton(JButton b) {
+        b.setPreferredSize(new Dimension(50, 50));
         b.setBackground(null);
         b.setForeground(null);
         b.setBorder(null);
         b.setFocusPainted(false);
     }
-    private void buildCardPanel(){
+
+    private void buildCardPanel() {
         cardPanel.removeAll();
-        cardPanel.setLayout(new FlowLayout(FlowLayout.CENTER,25,25));
+        cardPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 25, 25));
         List<Card> cardList = deckService.getDeckById(fight.player.getDeck().getId()).getCardSet();
         int cardCount = cardList.size();
         int height = 25;
-        while(cardCount>0){
-            cardCount-=4;
-            height+=235;
+        while (cardCount > 0) {
+            cardCount -= 4;
+            height += 235;
         }
-        cardPanel.setPreferredSize(new Dimension(800,height));
-        for(Card c : cardList){
-            JPanel singleCard = new JPanel(new FlowLayout(FlowLayout.CENTER,0,0));
-            singleCard.setPreferredSize(new Dimension(164,210));
-            singleCard.setBorder(BorderFactory.createLineBorder(Color.BLACK,2));
+        cardPanel.setPreferredSize(new Dimension(800, height));
+        for (Card c : cardList) {
+            JPanel singleCard = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+            singleCard.setPreferredSize(new Dimension(164, 210));
+            singleCard.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
             singleCard.setBackground(Color.white);
 
-            JPanel costPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT,0,0));
+            JPanel costPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
             costPanel.setBackground(null);
-            costPanel.setPreferredSize(new Dimension(160,20));
+            costPanel.setPreferredSize(new Dimension(160, 20));
 
-            for(int i=0;i<c.getCost();i++){
+            for (int i = 0; i < c.getCost(); i++) {
                 JLabel crystal = LogoController.getLogoCard("Crystal-small");
-                crystal.setPreferredSize(new Dimension(20,20));
+                crystal.setPreferredSize(new Dimension(20, 20));
                 costPanel.add(crystal);
             }
             singleCard.add(costPanel);
 
-            JLabel cardName = new JLabel(c.getName(),SwingConstants.CENTER);
-            cardName.setPreferredSize(new Dimension(160,20));
-            cardName.setFont(new Font("Arial", Font.BOLD,12));
+            JLabel cardName = new JLabel(c.getName(), SwingConstants.CENTER);
+            cardName.setPreferredSize(new Dimension(160, 20));
+            cardName.setFont(new Font("Arial", Font.BOLD, 12));
 
             JLabel cardImage = LogoController.getLogoCard(c.getType().toString());
-            cardImage.setPreferredSize(new Dimension(160,100));
+            cardImage.setPreferredSize(new Dimension(160, 100));
 
             JLabel effect = new JLabel(c.getValue() + " " + c.getType().toString(), SwingConstants.CENTER);
-            effect.setPreferredSize(new Dimension(160,20));
+            effect.setPreferredSize(new Dimension(160, 20));
 
-            JButton useButton = new JButton("Use");
-            useButton.setPreferredSize(new Dimension(80,40));
+            JButton useButton = new JButton(USE);
+            useButton.setPreferredSize(new Dimension(80, 40));
             useButton.setAlignmentX(SwingConstants.CENTER);
-            useButton.setFont(new Font("Arial",Font.BOLD,20));
+            useButton.setFont(new Font("Arial", Font.BOLD, 20));
             useButton.setBorder(null);
             useButton.setBackground(Color.blue);
             useButton.setForeground(Color.white);
             useButton.setFocusPainted(false);
-            useButton.addActionListener(e -> {
-                useCard(c);
-            });
+            useButton.addActionListener(e -> useCard(c));
 
             singleCard.add(costPanel);
             singleCard.add(cardName);
@@ -161,6 +162,7 @@ public class FightController extends JFrame {
         cardPanel.revalidate();
         cardPanel.repaint();
     }
+
     private void buildPlayerPanel() {
         playerPanel.removeAll();
         playerPanel.setBackground(Color.lightGray);
@@ -174,21 +176,21 @@ public class FightController extends JFrame {
         playerIconContainer.add(playerIcon);
 
         int value;
-        if(gameController.profileController.additionalDmg > oldAdditonalDmg){
+        if (gameController.profileController.additionalDmg > oldAdditonalDmg) {
             value = gameController.profileController.additionalDmg - oldAdditonalDmg;
             fight.player.setDmg(fight.player.getDmg() + value);
             oldAdditonalDmg = gameController.profileController.additionalDmg;
-        } else if (gameController.profileController.additionalDmg < oldAdditonalDmg){
+        } else if (gameController.profileController.additionalDmg < oldAdditonalDmg) {
             value = oldAdditonalDmg - gameController.profileController.additionalDmg;
             fight.player.setDmg(fight.player.getDmg() - value);
             oldAdditonalDmg = gameController.profileController.additionalDmg;
         }
 
-        JPanel stats = new JPanel(new FlowLayout(FlowLayout.LEFT,25,5));
+        JPanel stats = new JPanel(new FlowLayout(FlowLayout.LEFT, 25, 5));
         JLabel playerName = new JLabel(fight.player.getName());
-        JLabel playerHp = new JLabel("HP " + fight.player.getCurrentHp() + "/" + fight.player.getHp());
-        JLabel playerDmg = new JLabel("Attack damage: " + fight.player.getDmg());
-        JLabel playerDef = new JLabel("Defense: " + fight.player.getDef());
+        JLabel playerHp = new JLabel(HP + fight.player.getCurrentHp() + "/" + fight.player.getHp());
+        JLabel playerDmg = new JLabel(ATTACK_DMG + fight.player.getDmg());
+        JLabel playerDef = new JLabel(DEFENSE + fight.player.getDef());
 
         JPanel playerStatus = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         playerStatus.setBackground(Color.white);
@@ -211,31 +213,32 @@ public class FightController extends JFrame {
         playerPanel.revalidate();
         playerPanel.repaint();
     }
-    private void styleStatsPanel(JPanel stats){
+
+    private void styleStatsPanel(JPanel stats) {
         stats.setPreferredSize(new Dimension(250, 300));
         stats.setBackground(Color.white);
         Component[] components = stats.getComponents();
-        JLabel c = (JLabel)components[0];
-        c.setPreferredSize(new Dimension(200,24));
-        c.setFont(new Font("Arial",Font.BOLD,24));
+        JLabel c = (JLabel) components[0];
+        c.setPreferredSize(new Dimension(200, 24));
+        c.setFont(new Font("Arial", Font.BOLD, 24));
 
         c = (JLabel) components[1];
-        c.setPreferredSize(new Dimension(200,20));
+        c.setPreferredSize(new Dimension(200, 20));
         c.setForeground(Color.red);
-        c.setFont(new Font("Arial",Font.BOLD,20));
+        c.setFont(new Font("Arial", Font.BOLD, 20));
 
         c = (JLabel) components[2];
-        c.setPreferredSize(new Dimension(200,20));
-        c.setBorder(BorderFactory.createEmptyBorder(10,0,0,0));
+        c.setPreferredSize(new Dimension(200, 20));
+        c.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
 
         c = (JLabel) components[3];
-        c.setPreferredSize(new Dimension(200,20));
+        c.setPreferredSize(new Dimension(200, 20));
         //c.setBorder(BorderFactory.createEmptyBorder(10,0,10,0));
     }
 
     private void buildEnemyPanel() {
         enemyPanel.removeAll();
-        enemyPanel.setBackground(Color.lightGray);;
+        enemyPanel.setBackground(Color.lightGray);
         JPanel enemyIconContainer = new JPanel(new FlowLayout(FlowLayout.LEFT, 25, 25));
         enemyIconContainer.setPreferredSize(new Dimension(350, 350));
         enemyIconContainer.setBackground(Color.lightGray);
@@ -245,14 +248,14 @@ public class FightController extends JFrame {
         enemyIcon.setBackground(Color.orange);
         enemyIconContainer.add(enemyIcon);
 
-        JPanel stats = new JPanel(new FlowLayout(FlowLayout.LEFT,25,5));
-        JLabel enemyName = new JLabel(fight.enemy.getName(),SwingConstants.RIGHT);
-        JLabel enemyHp = new JLabel("HP " + fight.enemy.getHp() + "/" + fight.getEnemyMaxHp(),SwingConstants.RIGHT);
-        JLabel enemyDmg = new JLabel("Attack damage: " + fight.enemy.getDmg(),SwingConstants.RIGHT);
-        JLabel enemyDef = new JLabel("Defense: " + fight.enemy.getDefense(),SwingConstants.RIGHT);
+        JPanel stats = new JPanel(new FlowLayout(FlowLayout.LEFT, 25, 5));
+        JLabel enemyName = new JLabel(fight.enemy.getName(), SwingConstants.RIGHT);
+        JLabel enemyHp = new JLabel(HP + fight.enemy.getHp() + "/" + fight.getEnemyMaxHp(), SwingConstants.RIGHT);
+        JLabel enemyDmg = new JLabel(ATTACK_DMG + fight.enemy.getDmg(), SwingConstants.RIGHT);
+        JLabel enemyDef = new JLabel(DEFENSE + fight.enemy.getDefense(), SwingConstants.RIGHT);
 
         JPanel enemyStatus = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        enemyStatus.setPreferredSize(new Dimension(200,100));
+        enemyStatus.setPreferredSize(new Dimension(200, 100));
         enemyStatus.setBackground(Color.white);
         for (Map.Entry<Card, Integer> entry : fight.enemyStatus.entrySet()) {
             JLabel l = new JLabel(entry.getKey().getType().toString() + ": " + entry.getValue(), SwingConstants.RIGHT);
@@ -289,7 +292,7 @@ public class FightController extends JFrame {
 
         JPanel center = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
         center.setPreferredSize(new Dimension(200, 50));
-        JLabel turnCount = new JLabel("Turn: " + fight.getTurn());
+        JLabel turnCount = new JLabel(TURN + ": " + fight.getTurn());
         turnCount.setPreferredSize(new Dimension(200, 50));
         turnCount.setHorizontalAlignment(JLabel.CENTER);
         center.add(turnCount);
@@ -312,11 +315,11 @@ public class FightController extends JFrame {
         scrollableCards.setPreferredSize(new Dimension(800, 400));
         scrollableCards.setBorder(null);
         scrollableCards.getVerticalScrollBar().setUnitIncrement(16);
-        logPanel.setPreferredSize(new Dimension(298,398));
-        logPanel.setLayout(new FlowLayout(FlowLayout.LEFT,0,2));
+        logPanel.setPreferredSize(new Dimension(298, 398));
+        logPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 2));
         JScrollPane scrollableLogs = new JScrollPane(logPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollableLogs.setPreferredSize(new Dimension(300, 400));
-        scrollableLogs.setBorder(BorderFactory.createLineBorder(Color.GRAY,1));
+        scrollableLogs.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
         scrollableLogs.getVerticalScrollBar().setUnitIncrement(16);
         mainPanel.add(turnPanel);
         mainPanel.add(playerPanel);
@@ -363,13 +366,16 @@ public class FightController extends JFrame {
         fight.looseBattleAndUpdatePlayer();
         showFailureScreen();
     }
-    private void logInfo(String message){
-        if((logPanel.getComponents().length+2)*14>logPanel.getHeight()) logPanel.setPreferredSize(new Dimension(300,(logPanel.getComponents().length+2)*14));
+
+    private void logInfo(String message) {
+        if ((logPanel.getComponents().length + 2) * 14 > logPanel.getHeight())
+            logPanel.setPreferredSize(new Dimension(300, (logPanel.getComponents().length + 2) * 14));
         JLabel m = new JLabel(message);
-        m.setPreferredSize(new Dimension(250,12));
-        m.setFont(new Font("Arail", Font.ITALIC,12));
+        m.setPreferredSize(new Dimension(250, 12));
+        m.setFont(new Font("Arail", Font.ITALIC, 12));
         logPanel.add(m);
     }
+
     private void useCard(Card card) {
         String message = fight.useCard(card);
         logInfo(message);
@@ -388,7 +394,7 @@ public class FightController extends JFrame {
     }
 
 
-    public void defend(){
+    public void defend() {
         String message = fight.playerDefend();
         logInfo(message);
         buildPlayerPanel();
@@ -405,25 +411,26 @@ public class FightController extends JFrame {
         buildTurnPanel();
         checkToEndBattle(fight.checkEndBattleConditions());
     }
+
     private void showLootScreen() {
         JPanel lootScreen = new JPanel();
-        lootScreen.setLayout(new FlowLayout(FlowLayout.CENTER,100,0));
-        JPanel lootContainer = new JPanel(new FlowLayout(FlowLayout.CENTER,100,50));
-        for(Map.Entry<String,Integer> entry: fight.loot.entrySet()){
+        lootScreen.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 0));
+        JPanel lootContainer = new JPanel(new FlowLayout(FlowLayout.CENTER, 100, 50));
+        for (Map.Entry<String, Integer> entry : fight.loot.entrySet()) {
             JPanel lootItem = new JPanel();
-            lootItem.setLayout(new FlowLayout(FlowLayout.CENTER,0,0));
-            lootItem.setPreferredSize(new Dimension(120,150));
+            lootItem.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
+            lootItem.setPreferredSize(new Dimension(120, 150));
 //            lootItem.setBorder(BorderFactory.createLineBorder(Color.black,2));
             JLabel lootItemIcon = LogoController.getLogoItem(entry.getKey());
-            lootItemIcon.setPreferredSize(new Dimension(120,100));
-            JLabel lootItemLabel = new JLabel(entry.getKey()+" x"+entry.getValue(),SwingConstants.CENTER);
-            lootItemLabel.setPreferredSize(new Dimension(120,50));
+            lootItemIcon.setPreferredSize(new Dimension(120, 100));
+            JLabel lootItemLabel = new JLabel(entry.getKey() + " x" + entry.getValue(), SwingConstants.CENTER);
+            lootItemLabel.setPreferredSize(new Dimension(120, 50));
             lootItem.add(lootItemIcon);
             lootItem.add(lootItemLabel);
             lootContainer.add(lootItem);
         }
-        JButton exitButton = new JButton("Go to town");
-        exitButton.setPreferredSize(new Dimension(400,80));
+        JButton exitButton = new JButton(GO_TO_TOWN);
+        exitButton.setPreferredSize(new Dimension(400, 80));
         exitButton.setBackground(Color.CYAN);
         exitButton.addActionListener(e -> gameController.switchToProfileController());
         exitButton.setBorder(null);
@@ -433,14 +440,15 @@ public class FightController extends JFrame {
         gameController.setMainContent(lootScreen);
         fight.clearBattle();
     }
+
     private void showFailureScreen() {
         JPanel cont = new JPanel();
         cont.setLayout(new FlowLayout());
-        cont.setPreferredSize(new Dimension(10,200));
+        cont.setPreferredSize(new Dimension(10, 200));
         cont.setAlignmentX(Component.CENTER_ALIGNMENT);
         JPanel lostMessagePanel = new JPanel();
-        JLabel lostMessage = new JLabel("You lost. Your character has been deleted");
-        JButton mainMenuButton = new JButton("Exit to main menu");
+        JLabel lostMessage = new JLabel(YOU_LOST_CHARACTER);
+        JButton mainMenuButton = new JButton(EXIT_MAIN_MENU);
 
         mainMenuButton.setForeground(Color.WHITE);
         mainMenuButton.setBackground(Color.BLACK);

@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 
+import static com.dungeonhunters.dungeonhunters.dto.MenuStrings.*;
+
 
 @Data
 @Component
@@ -27,7 +29,7 @@ public class Fight {
     public int turn = 0;
     public int enemyMaxHp = 0;
     public CardActionStrategyFactory cardActionFactory;
-    public Map<String,Integer> loot = new HashMap<>();
+    public Map<String, Integer> loot = new HashMap<>();
     public boolean playerBlocked, miss, reducedDmg, sleep;
     public final EnemyService enemyService;
     public final PlayerService playerService;
@@ -70,7 +72,7 @@ public class Fight {
             }
             if (validEnemies.size() == 0) {
                 Enemy en = Enemy.builder()
-                        .name("Ostry przeciwnik")
+                        .name(OPPONENT)
                         .dmg(2)
                         .hp(200)
                         .stage(15)
@@ -88,11 +90,11 @@ public class Fight {
     public String enemyTurn() {
         if (miss) {
             miss = false;
-            return enemy.getName() + " missed";
+            return enemy.getName() + MISSED;
         }
         if (sleep) {
             sleep = false;
-            return enemy.getName() + " is sleeping ...";
+            return enemy.getName() + IS_SLEEPING;
         }
         int damage = enemy.getDmg();
         if (reducedDmg) {
@@ -105,10 +107,10 @@ public class Fight {
                 player.setCurrentHp(player.getCurrentHp() - damage);
             }
             playerBlocked = false;
-            return player.getName() + " received " + damage + " damage (damage reduced by defense) from " + enemy.getName() + " attack.";
+            return player.getName() + RECEIVED + damage + DAMAGE_FROM_REDUCED_BY_DEFENSE + enemy.getName() + ATTACK;
         } else {
             player.setCurrentHp(player.getCurrentHp() - enemy.getDmg());
-            return player.getName() + " received " + damage + " damage from " + enemy.getName() + " attack.";
+            return player.getName() + RECEIVED + damage + DAMAGE_FROM + enemy.getName() + ATTACK;
         }
     }
 
@@ -123,9 +125,9 @@ public class Fight {
             deck.setCardSet(cardSet);
 //            player.setDeck(deck);
             deckService.addDeck(deck);
-            return "Card: " + card.getName() + " used, " + actionsLeft + " actions left.";
+            return CARD + card.getName() + USED + actionsLeft + ACTIONS_LEFT;
         }
-        return "Card require " + card.getCost() + " actions to use. You have " + actionsLeft;
+        return CARD_REQUIRE + card.getCost() + ACTIONS_TO_USE + actionsLeft;
     }
 
     public String playerAttack() {
@@ -133,9 +135,9 @@ public class Fight {
             int totalDmgDealt = player.getDmg();
             enemy.setHp(enemy.getHp() - totalDmgDealt);
             actionsLeft--;
-            return player.getName() + " deal " + totalDmgDealt + " to " + enemy.getName() + ", " + actionsLeft + " actions left.";
+            return player.getName() + DEAL + totalDmgDealt + TO + enemy.getName() + ", " + actionsLeft + ACTIONS_LEFT;
         }
-        return "Action limit reached, 0 actions left.";
+        return ACTIONS_LIMIT_REACHED;
     }
 
     public int checkEndBattleConditions() {
@@ -145,17 +147,17 @@ public class Fight {
     }
 
     public String playerDefend() {
-        if(!playerBlocked){
+        if (!playerBlocked) {
             if (actionsLeft > 0) {
                 Card card = Card.builder().type(CardType.Block).value(1).build();
-                playerStatus.put(card,card.getValue());
+                playerStatus.put(card, card.getValue());
                 playerBlocked = true;
                 actionsLeft--;
-                return player.getName() + " is defending himself, " + actionsLeft + " actions left.";
+                return player.getName() + IS_DEFENDING + actionsLeft + ACTIONS_LEFT;
             }
-            return "Action limit reached, 0 actions left.";
+            return ACTIONS_LIMIT_REACHED;
         }
-        return "You are already blocking";
+        return YOU_ARE_BLOCKING;
 
     }
 
@@ -165,7 +167,7 @@ public class Fight {
         actionsLeft = 2;
         updateStatus();
         refreshStatus();
-        return "Turn " + (turn - 1) + " ended, started " + turn + " turn, " + actionsLeft + " actions left.";
+        return TURN + (turn - 1) + ENDED_STARTED + turn + " " + TURN.toLowerCase() + ", " + actionsLeft + ACTIONS_LEFT;
     }
 
     private void updateStatus() {
@@ -194,9 +196,9 @@ public class Fight {
         int goldLoot = enemy.getGoldDrop();
         int expGained = enemy.getExperienceDrop();
 
-        loot.put("GoldCoin",goldLoot);
-        loot.put("Xp",expGained);
-        loot.put(generateRandomItem(),1);
+        loot.put("GoldCoin", goldLoot);
+        loot.put("Xp", expGained);
+        loot.put(generateRandomItem(), 1);
 
         if (player.getExperience() + expGained >= 100) {
             player.setExperience(player.getExperience() + expGained);
@@ -263,15 +265,15 @@ public class Fight {
 
         }
 //        if (!exist) {
-            playerListItem.add(item);
-            player.getInventory().setItemList(playerListItem);
-            player.setInventory(player.getInventory());
-            // nie trybi zapisanie inventory
-            itemService.addItem(item);
-            playerService.addPlayer(player);
-            //inventoryService.updateItemsSetList(player.getInventory().getId(), player.getInventory().getItemList());
-            inventoryService.addInventory(player.getInventory());
-            return item.getItemBase().getName();
+        playerListItem.add(item);
+        player.getInventory().setItemList(playerListItem);
+        player.setInventory(player.getInventory());
+        // nie trybi zapisanie inventory
+        itemService.addItem(item);
+        playerService.addPlayer(player);
+        //inventoryService.updateItemsSetList(player.getInventory().getId(), player.getInventory().getItemList());
+        inventoryService.addInventory(player.getInventory());
+        return item.getItemBase().getName();
 //        }
 //        return item.getItemBase().getName();
     }
