@@ -25,12 +25,15 @@ import static com.dungeonhunters.dungeonhunters.dto.MenuStrings.*;
 @Setter
 public final class Settings {
     private static Settings instance = null;
+    public static int counter = 0;
     private String currentLanguage = "en";
 
     public static Settings getInstance() {
         if (instance == null) {
             instance = new Settings();
+         // System.out.println(++counter + "instancja klasy settings");
         }
+      //System.out.println("ciągle ta sama instancja, nie utworzysz nowej byku");
         return instance;
     }
 
@@ -41,6 +44,15 @@ public final class Settings {
 
     public void changeLanguage(){
         if(currentLanguage.toLowerCase().equals("pl")){
+            BLACKSMITH = "Kowal";
+            UPGRADE = "Ulepsz";
+            TRY_AGAIN = "%) Sprobuj jeszcze raz";
+            UPGRADE_FAIL = "Nie udało się ulepszyć :( ";
+            CHANCE = "(szansa ";
+            ITEM_RECEIVED = "Przedmiot otrzymał ";
+            ADDITIONAL_DMG = " dodatkowy atak ";
+            UPGRADE_TITLE = "Kuźnia u Harada";
+            UPGRADE_INFO = "Mozesz posiadać tylko jeden item z bonusem, idz na wyprawe, aby móc ulepszyc przedmiot jeszcze raz";
             ENTER_DUNGEON = "Wejdz do dungeonu";
             SHOW_INVENTORY = "Pokaz ekwipunek";
             INVENTORY = "Ekwipunek";
@@ -67,9 +79,9 @@ public final class Settings {
             CARD = "Karta: ";
             CARD_REQUIRE = "Karta wymaga ";
             USED = " użyto, ";
-            ACTIONS_LEFT = " ruchów pozostało.";
+            ACTIONS_LEFT = " ruchów left.";
             ACTIONS_TO_USE = " ruchów do użycia. Masz";
-            ACTIONS_LIMIT_REACHED = " Osiągnieto limit ruchów, 0 ruchów pozostało.";
+            ACTIONS_LIMIT_REACHED = " Osiągnieto limit , 0 ruchów left.";
             DEAL = " zadał ";
             TO = " dla ";
             BUY = "Kup";
@@ -80,9 +92,9 @@ public final class Settings {
             DAMAGE_FROM = " obrażeń od ";
             DAMAGE_FROM_REDUCED_BY_DEFENSE = " obrażeń (obrażenia zmniejszone przez obronę) od ";
             ATTACK = " attack.";
-            IS_DEFENDING = " is defending himself, ";
+            IS_DEFENDING = " broni się, ";
             YOU_ARE_BLOCKING = "Już blokujesz";
-            TURN = "Kolejka ";
+            TURN = "Tura ";
             USE = "Użyj ";
             ENDED_STARTED = " zakonczono, rozpoczęto ";
             CHARACTER_NAME = "Wybierz nazwę postaci:";
@@ -91,6 +103,15 @@ public final class Settings {
             YOU_LOST_CHARACTER = "Przegrałes. Twoja postać została usunięta";
             EXIT_MAIN_MENU = "Wyjście do menu głównego";
         } else {
+            BLACKSMITH = "Blacksmith";
+            UPGRADE = "Upgrade";
+            TRY_AGAIN =  "Try again";
+            UPGRADE_FAIL = "Upgrade failed :( ";
+            CHANCE = "(chance ";
+            ITEM_RECEIVED = "Item received ";
+            ADDITIONAL_DMG = " additional dmg ";
+            UPGRADE_TITLE = "Smithy Info";
+            UPGRADE_INFO = "Available only 1 upgraded item, go to dungeon and upgrade item again";
             ENTER_DUNGEON = "Enter Dungeon";
             SHOW_INVENTORY = "Show Inventory";
             INVENTORY = "Inventory";
@@ -145,93 +166,6 @@ public final class Settings {
         }
 
     }
-
-//    public void getSettingsView(JPanel panel){
-//        JPanel settingButtons = new JPanel();
-//        settingButtons.setPreferredSize(new Dimension(100,50));
-//        JPanel contentPanel = new JPanel();
-//        settingButtons.setBackground(Color.lightGray);
-//        JLabel settingsLabel = new JLabel("Settings");
-//
-//        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-//        panel.removeAll();
-//        settingButtons.removeAll();
-//        settingButtons.setLayout(new FlowLayout(FlowLayout.CENTER));
-//        panel.setBackground(Color.lightGray);
-//        //settingButtons.setBackground(Color.lightGray);
-//
-//        JButton changeCharacterLogo = new JButton("Zmien Logo");
-//        JButton changeCharacterName = new JButton("Zmien nazwe");
-//        changeCharacterName.addMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mouseClicked(MouseEvent e) {
-//                settingButtons.setBackground(Color.white);
-//                contentPanel.setBackground(Color.white);
-//                contentPanel.setBorder(BorderFactory.createEmptyBorder(20,0,0,0));
-//                changeNameView(contentPanel);
-//            }
-//
-//            @Override
-//            public void mouseEntered(MouseEvent e) {
-//                super.mouseEntered(e);
-//            }
-//
-//            @Override
-//            public void mouseExited(MouseEvent e) {
-//                super.mouseExited(e);
-//            }
-//        });
-//        JButton logout = new JButton("Wyloguj się");
-//        JButton deleteAccount = new JButton("Usun konto");
-//
-//        settingButtons.add(changeCharacterName);
-//        settingButtons.add(changeCharacterLogo);
-//        settingButtons.add(logout);
-//        settingButtons.add(deleteAccount);
-//
-//        contentPanel.revalidate();
-//        contentPanel.repaint();
-//
-//        settingButtons.revalidate();
-//        settingButtons.repaint();
-//
-//        panel.add(settingsLabel);
-//        panel.add(settingButtons);
-//        panel.add(contentPanel);
-//        panel.revalidate();
-//        panel.repaint();
-//
-//    }
-//
-//    public void changeNameView(JPanel panel){
-//        panel.removeAll();
-//        JTextField tf = new JTextField(20);
-//        tf.setBorder(BorderFactory.createLineBorder(Color.GREEN,2));
-//        tf.setBackground(Color.lightGray);
-//        JButton confirmButton = new JButton("Zmien");
-//        System.out.println(player.getName() + "Przed");
-//        confirmButton.addMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mouseClicked(MouseEvent e) {
-//                player.setName(tf.getText());
-//            }
-//
-//            @Override
-//            public void mouseEntered(MouseEvent e) {
-//                super.mouseEntered(e);
-//            }
-//
-//            @Override
-//            public void mouseExited(MouseEvent e) {
-//                super.mouseExited(e);
-//            }
-//        });
-//        //panel.setLayout(new FlowLayout(FlowLayout.CENTER));
-//        panel.add(tf);
-//        panel.add(confirmButton);
-//        panel.revalidate();
-//        panel.repaint();
-//    }
 
 
 }

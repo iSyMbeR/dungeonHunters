@@ -1,5 +1,6 @@
 package com.dungeonhunters.dungeonhunters.dto;
 
+import com.dungeonhunters.dungeonhunters.Decorator.*;
 import com.dungeonhunters.dungeonhunters.controller.GameController;
 import com.dungeonhunters.dungeonhunters.controller.ProfileController;
 import com.dungeonhunters.dungeonhunters.factory.AbstractCardActionFactory;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 
+import static com.dungeonhunters.dungeonhunters.controller.ProfileController.upgradeCounter;
 import static com.dungeonhunters.dungeonhunters.dto.MenuStrings.*;
 
 
@@ -195,7 +197,10 @@ public class Fight {
     public void generateLootAndUpdatePlayer() {
         int goldLoot = enemy.getGoldDrop();
         int expGained = enemy.getExperienceDrop();
-
+        //jezeli item z bonusem jest zalozny zmienia stan 3(usuniety bonus)
+        if(upgradeCounter == 2){
+            upgradeCounter = 3;
+        }
         loot.put("GoldCoin", goldLoot);
         loot.put("Xp", expGained);
         loot.put(generateRandomItem(), 1);
@@ -242,7 +247,7 @@ public class Fight {
     }
 
     public String generateRandomItem() {
-        boolean exist = false;
+
         Set<Item> playerListItem = player.getInventory().getItemList();
         int generatedLongItemBase = 1 + (int) (Math.random() * (itemBaseService.getSize()) - 1);
         int generatedLongBonus = 1 + (int) (Math.random() * (bonusService.getSize()) - 1);
@@ -251,31 +256,21 @@ public class Fight {
         List<Bonus> bonusListFromBase = bonusService.getAllBonuses();
         List<Bonus> bonusList = new ArrayList<>();
         bonusList.add(bonusListFromBase.get(generatedLongBonus - 1));
-
         Item item = Item.builder()
                 .itemBase(itemBaseList.get(generatedLongItemBase - 1))
                 .bonus(bonusList)
                 .build();
 
-
-        for (Item i : playerListItem) {
-            if (i.getItemBase().getName().equals(item.getItemBase().getName())) {
-                exist = true;
-            }
-
-        }
-//        if (!exist) {
         playerListItem.add(item);
         player.getInventory().setItemList(playerListItem);
         player.setInventory(player.getInventory());
-        // nie trybi zapisanie inventory
+
         itemService.addItem(item);
         playerService.addPlayer(player);
-        //inventoryService.updateItemsSetList(player.getInventory().getId(), player.getInventory().getItemList());
         inventoryService.addInventory(player.getInventory());
         return item.getItemBase().getName();
-//        }
-//        return item.getItemBase().getName();
+
+
     }
 
     public void generateArea() {

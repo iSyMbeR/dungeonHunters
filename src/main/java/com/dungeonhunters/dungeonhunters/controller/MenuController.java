@@ -41,7 +41,6 @@ public class MenuController extends JFrame {
         JButton b = new JButton("Stwórz nową postać");
         b.addActionListener(e -> {
             showPlayerCreation2();
-            //showPlayerCreation();
         });
         setButtonStyle(b, Color.LIGHT_GRAY);
         menu.add(b);
@@ -55,7 +54,6 @@ public class MenuController extends JFrame {
             menu.add(b);
         }
         panel.add(scrollable);
-
         gameController.setMainContent(panel);
     }
 

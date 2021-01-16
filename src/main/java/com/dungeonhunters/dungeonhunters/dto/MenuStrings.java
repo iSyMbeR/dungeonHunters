@@ -54,6 +54,15 @@ public class MenuStrings {
     public static String GO_TO_TOWN = "Go to town";
     public static String YOU_LOST_CHARACTER = "You lost. Your character has been deleted";
     public static String EXIT_MAIN_MENU = "Exit to main menu";
+    public static String BLACKSMITH = "Blacksmith";
+    public static String UPGRADE = "Upgrade";
+    public static String TRY_AGAIN = "%) Try again";
+    public static String UPGRADE_FAIL = "Upgrade failed :( ";
+    public static String CHANCE = "(chance ";
+    public static String ITEM_RECEIVED = "Item received ";
+    public static String ADDITIONAL_DMG = " additional dmg ";
+    public static String UPGRADE_TITLE = "Smithy Info";
+    public static String UPGRADE_INFO = "Available only 1 upgraded item, go to dungeon and upgrade item again";
 
 
 }

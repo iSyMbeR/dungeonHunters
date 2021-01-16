@@ -233,7 +233,6 @@ public class FightController extends JFrame {
 
         c = (JLabel) components[3];
         c.setPreferredSize(new Dimension(200, 20));
-        //c.setBorder(BorderFactory.createEmptyBorder(10,0,10,0));
     }
 
     private void buildEnemyPanel() {
