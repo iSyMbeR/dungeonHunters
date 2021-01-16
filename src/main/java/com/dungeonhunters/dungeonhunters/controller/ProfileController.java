@@ -44,6 +44,7 @@ public class ProfileController extends JFrame {
     private final DeckService deckService;
     public JPanel infoPanel, playerPanel, statisticPanel, selectPanel;
     private Settings settings;
+    // 0 = no upgrade item, 1 = upgrade item exist, 2 = in use, 3 = to delete
     public static int upgradeCounter = 0;
     private int bonusValue = 0;
 
