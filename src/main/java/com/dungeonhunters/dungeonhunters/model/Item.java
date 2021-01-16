@@ -1,13 +1,12 @@
 package com.dungeonhunters.dungeonhunters.model;
 
+import com.dungeonhunters.dungeonhunters.Decorator.Equipment;
 import lombok.*;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.List;
-import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -15,7 +14,7 @@ import java.util.UUID;
 @Entity
 @ToString
 @Builder
-public class Item implements Serializable {
+public class Item implements Equipment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -27,5 +26,13 @@ public class Item implements Serializable {
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable
     private List<Bonus> bonus;
+
+
+    @Override
+    public int getDmg() {
+        return itemBase.getDmg();
+    }
+
+
 
 }
