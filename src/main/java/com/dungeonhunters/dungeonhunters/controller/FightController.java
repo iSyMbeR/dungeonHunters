@@ -1,5 +1,6 @@
 package com.dungeonhunters.dungeonhunters.controller;
 
+import com.dungeonhunters.dungeonhunters.Iter.*;
 
 import com.dungeonhunters.dungeonhunters.dto.Fight;
 import com.dungeonhunters.dungeonhunters.model.Card;
@@ -7,23 +8,15 @@ import com.dungeonhunters.dungeonhunters.model.Player;
 import com.dungeonhunters.dungeonhunters.service.CardService;
 import com.dungeonhunters.dungeonhunters.service.DeckService;
 import com.dungeonhunters.dungeonhunters.service.EnemyService;
-import com.dungeonhunters.dungeonhunters.service.PlayerService;
-import org.hibernate.cfg.JPAIndexHolder;
-import org.springframework.data.jpa.repository.query.Jpa21Utils;
 import org.springframework.stereotype.Controller;
 
-import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.plaf.basic.DefaultMenuLayout;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
-
 
 
 @Controller
@@ -50,9 +43,6 @@ public class FightController extends JFrame {
     }
 
     public void createView() {
-        generateArena();
-        generateEnemy();
-        fight.nextTurn();
         logPanel = new JPanel();
         mainPanel = new JPanel();
         turnPanel = new JPanel();
@@ -60,6 +50,11 @@ public class FightController extends JFrame {
         enemyPanel = new JPanel();
         actionPanel = new JPanel();
         cardPanel = new JPanel();
+        generateArena();
+        generateEnemy();
+        fight.nextTurn();
+        String message = fight.getEnemyIntent();
+        logInfo(message);
         setupPanelPlacement();
         buildPanels();
         gameController.setMainContent(mainPanel);
@@ -187,6 +182,14 @@ public class FightController extends JFrame {
         JPanel stats = new JPanel(new FlowLayout(FlowLayout.LEFT,25,5));
         JLabel playerName = new JLabel(fight.player.getName());
         JLabel playerHp = new JLabel("HP " + fight.player.getCurrentHp() + "/" + fight.player.getHp());
+        HealthBar hb = new HealthBar(fight.player.getCurrentHp());
+        Iterator<HealthBox> it = hb.iterator();
+        JPanel playerHealthBar = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        while(it.hasNext()){
+            HealthBox box = it.next();
+            playerHealthBar.add(new JLabel(String.valueOf(box.value)));
+        }
+
         JLabel playerDmg = new JLabel("Attack damage: " + fight.player.getDmg());
         JLabel playerDef = new JLabel("Defense: " + fight.player.getDef());
 
@@ -201,6 +204,7 @@ public class FightController extends JFrame {
 
         stats.add(playerName);
         stats.add(playerHp);
+        stats.add(playerHealthBar);
         stats.add(playerDmg);
         stats.add(playerDef);
         stats.add(playerStatus);
@@ -224,11 +228,29 @@ public class FightController extends JFrame {
         c.setForeground(Color.red);
         c.setFont(new Font("Arial",Font.BOLD,20));
 
-        c = (JLabel) components[2];
+        JPanel healthBar = (JPanel) components[2];
+        int height = ((healthBar.getComponentCount())/10);
+        int width =0;
+        if(healthBar.getComponentCount()%10>0) height++;
+        healthBar.setPreferredSize(new Dimension(200,20*height));
+        healthBar.setBackground(Color.white);
+        Component[] healthBoxes = healthBar.getComponents();
+        for(Component box : healthBoxes){
+            JLabel l = (JLabel) box;
+            width = Integer.parseInt(l.getText())*2;
+            l.setPreferredSize(new Dimension(width,20));
+            l.setBorder(BorderFactory.createEmptyBorder(0,0,0,2));
+            l.setOpaque(true);
+            l.setBackground(Color.red);
+            l.setForeground(Color.red);
+
+        }
+
+        c = (JLabel) components[3];
         c.setPreferredSize(new Dimension(200,20));
         c.setBorder(BorderFactory.createEmptyBorder(10,0,0,0));
 
-        c = (JLabel) components[3];
+        c = (JLabel) components[4];
         c.setPreferredSize(new Dimension(200,20));
         //c.setBorder(BorderFactory.createEmptyBorder(10,0,10,0));
     }
@@ -248,6 +270,15 @@ public class FightController extends JFrame {
         JPanel stats = new JPanel(new FlowLayout(FlowLayout.LEFT,25,5));
         JLabel enemyName = new JLabel(fight.enemy.getName(),SwingConstants.RIGHT);
         JLabel enemyHp = new JLabel("HP " + fight.enemy.getHp() + "/" + fight.getEnemyMaxHp(),SwingConstants.RIGHT);
+
+        HealthBar hb = new HealthBar(fight.enemy.getHp());
+        Iterator<HealthBox> it = hb.iterator();
+        JPanel enemyHealthBar = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+        while(it.hasNext()){
+            HealthBox box = it.next();
+            enemyHealthBar.add(new JLabel(String.valueOf(box.value)));
+        }
+
         JLabel enemyDmg = new JLabel("Attack damage: " + fight.enemy.getDmg(),SwingConstants.RIGHT);
         JLabel enemyDef = new JLabel("Defense: " + fight.enemy.getDefense(),SwingConstants.RIGHT);
 
@@ -263,6 +294,7 @@ public class FightController extends JFrame {
 
         stats.add(enemyName);
         stats.add(enemyHp);
+        stats.add(enemyHealthBar);
         stats.add(enemyDmg);
         stats.add(enemyDef);
         stats.add(enemyStatus);
@@ -399,6 +431,8 @@ public class FightController extends JFrame {
         message = fight.enemyTurn();
         logInfo(message);
         message = fight.nextTurn();
+        logInfo(message);
+        message = fight.getEnemyIntent();
         logInfo(message);
         buildPlayerPanel();
         buildEnemyPanel();
