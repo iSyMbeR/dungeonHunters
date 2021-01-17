@@ -1,6 +1,7 @@
 package com.dungeonhunters.dungeonhunters.controller;
 
 
+import com.dungeonhunters.dungeonhunters.Settings;
 import com.dungeonhunters.dungeonhunters.model.*;
 
 import com.dungeonhunters.dungeonhunters.service.*;
