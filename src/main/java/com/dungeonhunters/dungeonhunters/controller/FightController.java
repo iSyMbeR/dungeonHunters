@@ -201,7 +201,7 @@ public class FightController extends JFrame {
         }
 
         JLabel playerDmg = new JLabel(ATTACK_DMG + fight.player.getDmg());
-        JLabel playerDef = new JLabel(DEFENSE + " + fight.player.getDef());
+        JLabel playerDef = new JLabel(DEFENSE + fight.player.getDef());
 
 
         JPanel playerStatus = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
