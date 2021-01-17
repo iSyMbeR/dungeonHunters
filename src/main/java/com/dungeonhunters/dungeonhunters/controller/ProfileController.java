@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
+import static com.dungeonhunters.dungeonhunters.controller.FightController.LOST;
 import static com.dungeonhunters.dungeonhunters.controller.LogoController.getLogoItem;
 import static com.dungeonhunters.dungeonhunters.dto.MenuStrings.*;
 
@@ -47,6 +48,7 @@ public class ProfileController extends JFrame {
     public static int upgradeCounter = 0;
     private int bonusValue = 0;
 
+
     ProfileController(DeckService deckService, Shop shop, PlayerService playerService) {
         this.deckService = deckService;
         this.playerService = playerService;
@@ -56,8 +58,10 @@ public class ProfileController extends JFrame {
     }
 
     public void createView() {
-        settings = Settings.getInstance();
 
+        settings = Settings.getInstance();
+        System.out.println("PLayer stats"+ player.toString() + " i dmg " + player.getDmg());
+        resetStatsAfterReloadCharacter();
         if(upgradeCounter == 3){
             upgradedItems.clear();
             upgradeCounter = 0;
@@ -677,4 +681,16 @@ public class ProfileController extends JFrame {
         p.getActionMap().put("pressedEnter", action);
     }
 
+    public void resetStatsAfterReloadCharacter(){
+        if(LOST == 1){
+            upgradeCounter = 0;
+            bonusValue = 0;
+            selected = 1;
+            activeItems = 0;
+            inventoryItems.clear();
+            upgradedItems.clear();
+            additionalDmg = 0;
+            LOST = 2;
+        }
+    }
 }

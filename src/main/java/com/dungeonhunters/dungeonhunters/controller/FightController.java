@@ -7,20 +7,11 @@ import com.dungeonhunters.dungeonhunters.model.Player;
 import com.dungeonhunters.dungeonhunters.service.CardService;
 import com.dungeonhunters.dungeonhunters.service.DeckService;
 import com.dungeonhunters.dungeonhunters.service.EnemyService;
-import com.dungeonhunters.dungeonhunters.service.PlayerService;
-import org.hibernate.cfg.JPAIndexHolder;
-import org.springframework.data.jpa.repository.query.Jpa21Utils;
 import org.springframework.stereotype.Controller;
 
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.plaf.basic.DefaultMenuLayout;
 import java.awt.*;
 import java.util.Map;
 
@@ -35,6 +26,7 @@ public class FightController extends JFrame {
     private final CardService cardService;
     public final Fight fight;
     public int oldAdditonalDmg;
+    public static int LOST = 0;
     public JPanel mainPanel;
     public JPanel actionPanel;
     public JPanel cardPanel;
@@ -176,16 +168,21 @@ public class FightController extends JFrame {
         playerIconContainer.add(playerIcon);
 
         int value;
-        if (gameController.profileController.additionalDmg > oldAdditonalDmg) {
-            value = gameController.profileController.additionalDmg - oldAdditonalDmg;
-            fight.player.setDmg(fight.player.getDmg() + value);
-            oldAdditonalDmg = gameController.profileController.additionalDmg;
-        } else if (gameController.profileController.additionalDmg < oldAdditonalDmg) {
-            value = oldAdditonalDmg - gameController.profileController.additionalDmg;
-            fight.player.setDmg(fight.player.getDmg() - value);
-            oldAdditonalDmg = gameController.profileController.additionalDmg;
+        if (LOST == 2) {
+            fight.player = gameController.profileController.player;
+            oldAdditonalDmg = 0;
+            LOST = 0;
+        } else {
+            if (gameController.profileController.additionalDmg > oldAdditonalDmg) {
+                value = gameController.profileController.additionalDmg - oldAdditonalDmg;
+                fight.player.setDmg(fight.player.getDmg() + value);
+                oldAdditonalDmg = gameController.profileController.additionalDmg;
+            } else if (gameController.profileController.additionalDmg < oldAdditonalDmg) {
+                value = oldAdditonalDmg - gameController.profileController.additionalDmg;
+                fight.player.setDmg(fight.player.getDmg() - value);
+                oldAdditonalDmg = gameController.profileController.additionalDmg;
+            }
         }
-
         JPanel stats = new JPanel(new FlowLayout(FlowLayout.LEFT, 25, 5));
         JLabel playerName = new JLabel(fight.player.getName());
         JLabel playerHp = new JLabel(HP + fight.player.getCurrentHp() + "/" + fight.player.getHp());
@@ -363,6 +360,7 @@ public class FightController extends JFrame {
 
     private void endGame() {
         fight.looseBattleAndUpdatePlayer();
+        LOST = 1;
         showFailureScreen();
     }
 
