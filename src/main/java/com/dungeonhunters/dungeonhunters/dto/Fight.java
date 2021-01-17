@@ -1,6 +1,8 @@
 package com.dungeonhunters.dungeonhunters.dto;
 
+import com.dungeonhunters.dungeonhunters.Strategy.*;
 import com.dungeonhunters.dungeonhunters.Decorator.*;
+
 import com.dungeonhunters.dungeonhunters.controller.GameController;
 import com.dungeonhunters.dungeonhunters.controller.ProfileController;
 import com.dungeonhunters.dungeonhunters.factory.AbstractCardActionFactory;
@@ -30,6 +32,7 @@ public class Fight {
     public int actionsLeft = 0;
     public int turn = 0;
     public int enemyMaxHp = 0;
+    public Strategy strategy;
     public CardActionStrategyFactory cardActionFactory;
     public Map<String, Integer> loot = new HashMap<>();
     public boolean playerBlocked, miss, reducedDmg, sleep;
@@ -63,7 +66,21 @@ public class Fight {
         this.inventoryService = inventoryService;
         this.areaService = areaService;
     }
-
+    public void chooseStrategy(){
+        Random r = new Random();
+        switch( r.nextInt(2)){
+            case 0:
+                this.strategy = new AttackAndBlockStrategy();
+                break;
+            case 1:
+                this.strategy = new BigAttackStrategy();
+                break;
+            case 2:
+                this.strategy = new AttackStrategy();
+                break;
+        }
+        ;
+    }
     public void createEnemy() {
         if (enemy == null) {
             Random r = new Random();
@@ -98,7 +115,7 @@ public class Fight {
             sleep = false;
             return enemy.getName() + IS_SLEEPING;
         }
-        int damage = enemy.getDmg();
+        int damage = strategy.getEnemyDmg(enemy);
         if (reducedDmg) {
             damage = damage / 2;
             reducedDmg = false;
@@ -134,7 +151,8 @@ public class Fight {
 
     public String playerAttack() {
         if (actionsLeft > 0) {
-            int totalDmgDealt = player.getDmg();
+            int totalDmgDealt = player.getDmg() - strategy.getEnemyDmgReduction(enemy);
+            if(totalDmgDealt<0) totalDmgDealt = 0;
             enemy.setHp(enemy.getHp() - totalDmgDealt);
             actionsLeft--;
             return player.getName() + DEAL + totalDmgDealt + TO + enemy.getName() + ", " + actionsLeft + ACTIONS_LEFT;
@@ -169,7 +187,12 @@ public class Fight {
         actionsLeft = 2;
         updateStatus();
         refreshStatus();
-        return TURN + (turn - 1) + ENDED_STARTED + turn + " " + TURN.toLowerCase() + ", " + actionsLeft + ACTIONS_LEFT;
+        chooseStrategy();
+        return TURN.toLowerCase() + (turn - 1) + ENDED_STARTED;
+    }
+    public String getEnemyIntent(){
+        return strategy.getEnemyIntent();
+        //return TURN + (turn - 1) + ENDED_STARTED + turn + " " + TURN.toLowerCase() + ", " + actionsLeft + ACTIONS_LEFT;
     }
 
     private void updateStatus() {
