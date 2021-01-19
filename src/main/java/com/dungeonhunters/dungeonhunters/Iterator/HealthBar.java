@@ -1,6 +1,5 @@
-package com.dungeonhunters.dungeonhunters.Iter;
+package com.dungeonhunters.dungeonhunters.Iterator;
 import java.util.Iterator;
-import com.dungeonhunters.dungeonhunters.Iter.HealthBox;
 
 public class HealthBar {
     private HealthBox health[][];
@@ -24,7 +23,7 @@ public class HealthBar {
             }
         }
     }
-    public Iterator<HealthBox> iterator(){
+    public Iterator<HealthBox> createIterator(){
         return new CustomIterator(0,0);
     }
     private class CustomIterator implements Iterator<HealthBox>{

@@ -415,6 +415,13 @@ public class ProfileController extends JFrame {
         panel.removeAll();
         JLabel deckName = new JLabel(DECK);
 
+        JFrame myFrame = new JFrame();
+        JPanel mainPanel = new JPanel();
+        JLabel newLabel = new JLabel("To jest widok główny");
+        mainPanel.add(newLabel);
+        myFrame.add(mainPanel);
+
+
         deckName.setPreferredSize(new Dimension(850, 40));
         deckName.setFont(new Font("Arial", Font.BOLD, 20));
         panel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
@@ -641,45 +648,12 @@ public class ProfileController extends JFrame {
         panel.repaint();
     }
 
-    public void refreshColor(JPanel p) {
-        Component[] components = p.getComponents();
-        for (Component c : components) {
-            c.setForeground(Color.BLACK);
-        }
-        p.getComponent(selected - 1).setForeground(Color.red);
-    }
-
     public void setPlayer(Player player) {
         this.player = player;
     }
 
     public void setGameController(GameController gameController) {
         this.gameController = gameController;
-    }
-
-    public void createControls(JPanel p, AbstractAction action) {
-        selected = 1;
-        refreshColor(p);
-        Action incrementSelection = new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (selected < p.getComponentCount()) selected++;
-                refreshColor(p);
-            }
-        };
-        Action decrementSelection = new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (selected != 1) selected--;
-                refreshColor(p);
-            }
-        };
-        p.getInputMap().put(KeyStroke.getKeyStroke("UP"), "pressedUp");
-        p.getInputMap().put(KeyStroke.getKeyStroke("DOWN"), "pressedDown");
-        p.getInputMap().put(KeyStroke.getKeyStroke("ENTER"), "pressedEnter");
-        p.getActionMap().put("pressedUp", decrementSelection);
-        p.getActionMap().put("pressedDown", incrementSelection);
-        p.getActionMap().put("pressedEnter", action);
     }
 
     public void resetStatsAfterReloadCharacter(){

@@ -1,4 +1,4 @@
-package com.dungeonhunters.dungeonhunters.Iter;
+package com.dungeonhunters.dungeonhunters.Iterator;
 
 public class HealthBox {
     public int value;

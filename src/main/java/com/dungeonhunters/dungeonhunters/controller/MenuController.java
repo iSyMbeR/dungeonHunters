@@ -9,10 +9,8 @@ import org.springframework.stereotype.Controller;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
 import java.util.List;
 
-import static com.dungeonhunters.dungeonhunters.controller.LogoController.getLogoPlayer;
 import static com.dungeonhunters.dungeonhunters.dto.MenuStrings.CHARACTER_APPEARANCE;
 import static com.dungeonhunters.dungeonhunters.dto.MenuStrings.CHARACTER_NAME;
 
