@@ -47,6 +47,7 @@ public class Fight {
     public ProfileController profileController;
     public GameController gameController;
     public final Shop shop;
+    public int damage, totalDmgDealt;
 
     @Autowired
     public void setCardActionFactory(CardActionStrategyFactory cardActionFactory) {
@@ -115,7 +116,7 @@ public class Fight {
             sleep = false;
             return enemy.getName() + IS_SLEEPING;
         }
-        int damage = strategy.getEnemyDmg(enemy);
+        damage = strategy.getEnemyDmg(enemy);
         if (reducedDmg) {
             damage = damage / 2;
             reducedDmg = false;
@@ -151,7 +152,7 @@ public class Fight {
 
     public String playerAttack() {
         if (actionsLeft > 0) {
-            int totalDmgDealt = player.getDmg() - strategy.getEnemyDmgReduction(enemy);
+            totalDmgDealt = player.getDmg() - strategy.getEnemyDmgReduction(enemy);
             if(totalDmgDealt<0) totalDmgDealt = 0;
             enemy.setHp(enemy.getHp() - totalDmgDealt);
             actionsLeft--;
